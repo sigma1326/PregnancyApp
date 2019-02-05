@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
+
+    <TextView
+        android:id="@+id/tv_blood_type"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/date_bkg"
+        android:gravity="center"
+        android:textColor="#801210"
+        android:ems="3"
+        android:textSize="50sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/view_blood_type"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_chainStyle="spread"
+        app:layout_constraintWidth_percent="0.45"
+        tools:fontFamily="@font/iransans_medium"
+        tools:text="O^+" />
+
+
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        android:background="#B7fdfdfe"
+        app:layout_constraintBottom_toTopOf="@+id/view_blood_type"
+        app:layout_constraintEnd_toEndOf="@+id/tv_blood_type"
+        app:layout_constraintStart_toStartOf="@+id/tv_blood_type"
+        app:layout_constraintTop_toBottomOf="@+id/tv_blood_type" />
+
+    <com.simorgh.numberpicker.NumberPicker
+        android:id="@+id/np_blood_type"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/view_blood_type"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view_blood_type"
+        app:np_orientation="horizontal"
+        app:np_selectedTextColor="#ffffff"
+        app:np_selectedTextSize="@dimen/selected_text_size"
+        app:np_textAlign="textAlignCenter"
+        app:np_textSize="@dimen/text_size" />
+
+    <View
+        android:id="@+id/view_blood_type"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_top"
+        android:background="@drawable/tv_bubble_rectangle_bkg"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@id/view_negative"
+        app:layout_constraintDimensionRatio="2.5:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_blood_type"
+        app:layout_constraintWidth_percent=".24" />
+
+    <View
+        android:id="@+id/view3"
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        android:background="#B7fdfdfe"
+        app:layout_constraintBottom_toTopOf="@+id/view_negative"
+        app:layout_constraintEnd_toEndOf="@+id/tv_blood_type"
+        app:layout_constraintStart_toStartOf="@+id/tv_blood_type"
+        app:layout_constraintTop_toBottomOf="@+id/view_blood_type" />
+
+
+    <com.simorgh.numberpicker.NumberPicker
+        android:id="@+id/np_negative"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/view_negative"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view_negative"
+        app:np_orientation="horizontal"
+        app:np_selectedTextColor="#ffffff"
+        app:np_selectedTextSize="@dimen/selected_text_size"
+        app:np_textAlign="textAlignCenter"
+        app:np_textSize="@dimen/text_size" />
+
+    <View
+        android:id="@+id/view_negative"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_top"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/tv_bubble_rectangle_bkg"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="2.5:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_blood_type"
+        app:layout_constraintWidth_percent=".24" />
+</androidx.constraintlayout.widget.ConstraintLayout>

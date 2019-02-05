@@ -32,11 +32,47 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha02'
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
+    implementation 'com.google.android.material:material:1.1.0-alpha02'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'android.arch.navigation:navigation-fragment:1.0.0-alpha11'
+    implementation 'android.arch.navigation:navigation-ui:1.0.0-alpha11'
+    implementation 'androidx.core:core:1.0.1'
+    //Calligraphy
+    implementation 'io.github.inflationx:calligraphy3:3.0.0'
+    implementation 'io.github.inflationx:viewpump:1.0.0'
+    //RX
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.2'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    // Gson
+    implementation 'com.google.code.gson:gson:2.8.5'
+    // Room
+    // RxJava support for Room
+    implementation 'androidx.room:room-rxjava2:2.1.0-alpha04'
+    // ReactiveStreams support for LiveData
+    implementation 'androidx.lifecycle:lifecycle-reactivestreams:2.0.0'
+    implementation "androidx.room:room-runtime:$rootProject.roomVersion"
+    annotationProcessor "androidx.room:room-compiler:$rootProject.roomVersion"
+    androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
+    // Lifecycle components
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.archLifecycleVersion"
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$rootProject.archLifecycleVersion"
+    implementation 'com.facebook.stetho:stetho:1.5.0'
+    implementation 'com.andkulikov:transitionseverywhere:2.0.0-alpha01'
+    //    implementation 'com.google.android:flexbox:1.1.0'
+    //    implementation 'com.github.rubensousa:gravitysnaphelper:2.0'
+    implementation 'org.sufficientlysecure:html-textview:3.6'
     implementation project(':database')
     implementation project(':threadutils')
     implementation project(':logger')
+    implementation project(':nicedatepicker')
+    implementation project(':calendarutil')
+    implementation project(':bloodtypepicker')
 }

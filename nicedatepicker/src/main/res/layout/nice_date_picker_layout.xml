@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/date_bkg"
+        android:gravity="center"
+        android:lineSpacingExtra="1dp"
+        android:textColor="#801210"
+        android:textSize="@dimen/date_text_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/view_day"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_chainStyle="spread"
+        app:layout_constraintWidth_percent="0.45"
+        tools:fontFamily="@font/iransans_medium"
+        tools:text="12\nآذر\n1397" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        android:background="#B7fdfdfe"
+        app:layout_constraintBottom_toTopOf="@id/view_day"
+        app:layout_constraintEnd_toEndOf="@+id/tv_date"
+        app:layout_constraintStart_toStartOf="@+id/tv_date"
+        app:layout_constraintTop_toBottomOf="@+id/tv_date" />
+
+
+    <com.simorgh.numberpicker.NumberPicker
+        android:id="@+id/np_day"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/view2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view_day"
+        app:np_max="31"
+        app:np_min="1"
+        app:np_orientation="horizontal"
+        app:np_selectedTextColor="#ffffff"
+        app:np_selectedTextSize="@dimen/selected_text_size"
+        app:np_textAlign="textAlignCenter"
+        app:np_textSize="@dimen/text_size"
+        app:np_value="5" />
+
+    <View
+        android:id="@+id/view_day"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_top"
+        android:background="@drawable/tv_bubble_bkg"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@id/view_month"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_date"
+        app:layout_constraintWidth_percent=".14" />
+
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        android:background="#B7fdfdfe"
+        app:layout_constraintBottom_toTopOf="@+id/view_month"
+        app:layout_constraintEnd_toEndOf="@+id/tv_date"
+        app:layout_constraintStart_toStartOf="@+id/tv_date"
+        app:layout_constraintTop_toBottomOf="@+id/view_day" />
+
+    <com.simorgh.numberpicker.NumberPicker
+        android:id="@+id/np_month"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/view_month"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view_month"
+        app:np_orientation="horizontal"
+        app:np_selectedTextColor="#ffffff"
+        app:np_selectedTextSize="@dimen/selected_text_size"
+        app:np_textAlign="textAlignCenter"
+        app:np_textSize="@dimen/text_size" />
+
+    <View
+        android:id="@+id/view_month"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_top"
+        android:background="@drawable/tv_bubble_rectangle_bkg"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@id/view_year"
+        app:layout_constraintDimensionRatio="2.5:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_day"
+        app:layout_constraintWidth_percent=".24" />
+
+    <View
+        android:id="@+id/view3"
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        android:background="#B7fdfdfe"
+        app:layout_constraintBottom_toTopOf="@+id/view_year"
+        app:layout_constraintEnd_toEndOf="@+id/tv_date"
+        app:layout_constraintStart_toStartOf="@+id/tv_date"
+        app:layout_constraintTop_toBottomOf="@+id/view_month" />
+
+
+    <com.simorgh.numberpicker.NumberPicker
+        android:id="@+id/np_year"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/view_year"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view_year"
+        app:np_orientation="horizontal"
+        app:np_selectedTextColor="#ffffff"
+        app:np_selectedTextSize="@dimen/selected_text_size"
+        app:np_textAlign="textAlignCenter"
+        app:np_textSize="@dimen/text_size" />
+
+    <View
+        android:id="@+id/view_year"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_top"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/tv_bubble_rectangle_bkg"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="2.5:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_month"
+        app:layout_constraintWidth_percent=".24" />
+</androidx.constraintlayout.widget.ConstraintLayout>

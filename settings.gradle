@@ -1,1 +1,1 @@
-include ':app', ':database', ':threadutils', ':logger'
+include ':app', ':database', ':threadutils', ':logger', ':nicedatepicker', ':numberpicker', ':calendarutil', ':bloodtypepicker'

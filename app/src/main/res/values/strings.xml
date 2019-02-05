@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">PregnancyApp</string>
+
+
+    <string name="start_from">از تاریخ</string>
+    <string name="end_range">تا تاریخ</string>
+    <string name="report_items">موارد ارسالی</string>
+    <string name="time_range">بازه‌ی زمانی</string>
+    <string name="make_report">ایجاد و ارسال گزارش</string>
+    <string name="enter_pregnancy_start_date">زمان تقریبی شروع بارداری را وارد نمایید</string>
+    <string name="enter_birth_date">سال تولد خود را وارد نمایید</string>
+    <string name="next_stage">مرحله بعد</string>
+    <string name="login">ورود</string>
+    <string name="select_blood_type">گروه خونی خود را وارد نمایید</string>
 </resources>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/register_navigation"
+    app:startDestination="@id/pregnancyStartDateFragment">
+
+    <fragment
+        android:id="@+id/motherBirthDayFragment"
+        android:name="com.simorgh.pregnancyapp.View.register.MotherBirthDayFragment"
+        android:label="mother_birth_day_fragment"
+        tools:layout="@layout/mother_birth_day_fragment">
+        <action
+            android:id="@+id/action_motherBirthDayFragment_to_mainActivity"
+            app:destination="@id/mainActivity"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/pregnancyStartDateFragment"
+        android:name="com.simorgh.pregnancyapp.View.register.PregnancyStartDateFragment"
+        android:label="pregnancy_start_date_fragment"
+        tools:layout="@layout/pregnancy_start_date_fragment">
+        <action
+            android:id="@+id/action_pregnancyStartDateFragment_to_bloodTypeFragment"
+            app:destination="@id/bloodTypeFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
+            app:popUpTo="@+id/pregnancyStartDateFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bloodTypeFragment"
+        android:name="com.simorgh.pregnancyapp.View.register.BloodTypeFragment"
+        android:label="blood_type_fragment"
+        tools:layout="@layout/blood_type_fragment">
+        <action
+            android:id="@+id/action_bloodTypeFragment_to_motherBirthDayFragment"
+            app:destination="@id/motherBirthDayFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
+            app:popUpTo="@+id/bloodTypeFragment" />
+    </fragment>
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.simorgh.pregnancyapp.View.main.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+</navigation>
