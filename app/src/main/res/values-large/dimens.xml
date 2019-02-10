@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="radius_1">95dp</dimen>
+    <dimen name="bubble_pregnancy_info_text_size">15.7sp</dimen>
+    <dimen name="btn_pregnancy_category_text_size">17.3sp</dimen>
+</resources>

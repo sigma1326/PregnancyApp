@@ -3,8 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_marginBottom="@dimen/bottom_bar_height"
     android:layout_height="match_parent"
     tools:context=".View.main.SettingsFragment">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bkg1" />
 
     <ImageView
         android:id="@+id/img_logo"
@@ -26,14 +33,14 @@
         android:layout_marginEnd="18dp"
         android:layout_marginRight="18dp"
         android:lineSpacingExtra="-3.9sp"
+        android:text="اطلاعات فردی"
         android:textColor="#af0608"
         android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/img_logo"
-        tools:fontFamily="@font/iransans_medium"
-        tools:text="اطلاعات فردی" />
+        tools:fontFamily="@font/iransans_medium" />
 
 
     <TextView
@@ -42,13 +49,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:lineSpacingExtra="-5.6sp"
+        android:text="تاریخ شروع بارداری"
         android:textColor="#6c1112"
         android:textSize="11.7sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toEndOf="@+id/tv_pregnancy_start_date"
         app:layout_constraintTop_toBottomOf="@+id/tv_personal_info_title"
-        tools:fontFamily="@font/iransans_medium"
-        tools:text="تاریخ شروع بارداری" />
+        tools:fontFamily="@font/iransans_medium" />
 
 
     <TextView
@@ -56,6 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:lineSpacingExtra="-5.6sp"
+        android:text="1397/3/21"
         android:textColor="#af0608"
         android:textSize="11.7sp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_pregnancy_start_date_title"
@@ -64,8 +72,7 @@
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/tv_pregnancy_start_date_title"
-        tools:fontFamily="@font/iransans_medium"
-        tools:text="1397/3/21" />
+        tools:fontFamily="@font/iransans_medium" />
 
     <TextView
         android:id="@+id/tv_birth_date_title"
@@ -73,27 +80,27 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="29dp"
         android:lineSpacingExtra="-5.6sp"
+        android:text="تاریخ تولد"
         android:textColor="#6c1112"
         android:textSize="11.7sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toEndOf="@+id/tv_birth_date"
         app:layout_constraintTop_toBottomOf="@+id/tv_pregnancy_start_date_title"
-        tools:fontFamily="@font/iransans_medium"
-        tools:text="تاریخ تولد" />
+        tools:fontFamily="@font/iransans_medium" />
 
     <TextView
         android:id="@+id/tv_birth_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:lineSpacingExtra="-5.6sp"
+        android:text="1345/12/2"
         android:textColor="#af0608"
         android:textSize="11.7sp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_birth_date_title"
         app:layout_constraintEnd_toStartOf="@+id/tv_birth_date_title"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/tv_birth_date_title"
-        tools:fontFamily="@font/iransans_medium"
-        tools:text="1345/12/2" />
+        tools:fontFamily="@font/iransans_medium" />
 
     <TextView
         android:id="@+id/tv_blood_type_title"
@@ -101,27 +108,27 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="29dp"
         android:lineSpacingExtra="-5.6sp"
+        android:text="گروه خونی"
         android:textColor="#6c1112"
         android:textSize="11.7sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toEndOf="@+id/tv_blood_type"
         app:layout_constraintTop_toBottomOf="@+id/tv_birth_date_title"
-        tools:fontFamily="@font/iransans_medium"
-        tools:text="گروه خونی" />
+        tools:fontFamily="@font/iransans_medium" />
 
     <TextView
         android:id="@+id/tv_blood_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:lineSpacingExtra="-5.6sp"
+        android:text="O+"
         android:textColor="#af0608"
         android:textSize="11.7sp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_blood_type_title"
         app:layout_constraintEnd_toStartOf="@+id/tv_blood_type_title"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/tv_blood_type_title"
-        tools:fontFamily="@font/iransans_medium"
-        tools:text="O+" />
+        tools:fontFamily="@font/iransans_medium" />
 
     <TextView
         android:id="@+id/tv_font_size_title"
@@ -129,27 +136,27 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="29dp"
         android:lineSpacingExtra="-5.6sp"
+        android:text="اندازه فونت"
         android:textColor="#6c1112"
         android:textSize="11.7sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toEndOf="@+id/tv_font_size"
         app:layout_constraintTop_toBottomOf="@+id/tv_blood_type_title"
-        tools:fontFamily="@font/iransans_medium"
-        tools:text="اندازه فونت" />
+        tools:fontFamily="@font/iransans_medium" />
 
     <TextView
         android:id="@+id/tv_font_size"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:lineSpacingExtra="-5.6sp"
+        android:text="25"
         android:textColor="#af0608"
         android:textSize="11.7sp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_font_size_title"
         app:layout_constraintEnd_toStartOf="@+id/tv_font_size_title"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/tv_font_size_title"
-        tools:fontFamily="@font/iransans_medium"
-        tools:text="25" />
+        tools:fontFamily="@font/iransans_medium" />
 
     <View
         android:id="@+id/view_divider1"
@@ -171,14 +178,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="11dp"
         android:lineSpacingExtra="-3.9sp"
+        android:text="دریافت خروجی"
         android:textColor="#af0608"
         android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="@+id/tv_personal_info_title"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/view_divider1"
-        tools:fontFamily="@font/iransans_medium"
-        tools:text="دریافت خروجی" />
+        tools:fontFamily="@font/iransans_medium" />
 
 
     <TextView
@@ -187,14 +194,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="19dp"
         android:lineSpacingExtra="-5.6sp"
+        android:text="گزارش گیری برای پزشک"
         android:textColor="#6c1112"
         android:textSize="11.7sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/tv_report_title"
-        tools:fontFamily="@font/iransans_medium"
-        tools:text="گزارش گیری برای پزشک" />
+        tools:fontFamily="@font/iransans_medium" />
 
     <View
         android:id="@+id/view_divider2"
@@ -215,14 +222,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:lineSpacingExtra="-5.6sp"
+        android:text="درباره ما"
         android:textColor="#6c1112"
         android:textSize="11.7sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/view_divider2"
-        tools:fontFamily="@font/iransans_medium"
-        tools:text="درباره ما" />
+        tools:fontFamily="@font/iransans_medium" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"

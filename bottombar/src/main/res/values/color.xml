@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="shadow">#59000000</color>
+    <color name="selected_color">#ca3b3a</color>
+    <color name="unselected_color">#E0E0E0</color>
+    <color name="circle_color">#ca3b3a</color>
+    <color name="circle_icon_color">#ffffff</color>
+    <color name="background_color">#ffffff</color>
+    <color name="main_background_color">@android:color/transparent</color>
+</resources>

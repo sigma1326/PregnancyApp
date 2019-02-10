@@ -15,7 +15,8 @@ import android.view.ViewGroup;
 
 import com.simorgh.logger.Logger;
 import com.simorgh.pregnancyapp.R;
-import com.simorgh.pregnancyapp.ViewModel.MotherBirthDayViewModel;
+import com.simorgh.pregnancyapp.View.TitleChangeListener;
+import com.simorgh.pregnancyapp.ViewModel.register.MotherBirthDayViewModel;
 
 import java.util.Objects;
 

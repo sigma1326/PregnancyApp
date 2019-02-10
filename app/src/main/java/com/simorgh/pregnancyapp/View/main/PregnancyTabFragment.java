@@ -13,15 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.simorgh.pregnancyapp.R;
-import com.simorgh.pregnancyapp.ViewModel.PregnancyTabViewModel;
+import com.simorgh.pregnancyapp.ViewModel.main.PregnancyTabViewModel;
 
 public class PregnancyTabFragment extends Fragment {
 
     private PregnancyTabViewModel mViewModel;
-
-    public static PregnancyTabFragment newInstance() {
-        return new PregnancyTabFragment();
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

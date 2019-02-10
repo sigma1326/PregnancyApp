@@ -15,7 +15,8 @@ import android.view.ViewGroup;
 
 import com.simorgh.logger.Logger;
 import com.simorgh.pregnancyapp.R;
-import com.simorgh.pregnancyapp.ViewModel.BloodTypeViewModel;
+import com.simorgh.pregnancyapp.View.TitleChangeListener;
+import com.simorgh.pregnancyapp.ViewModel.register.BloodTypeViewModel;
 
 import java.util.Objects;
 

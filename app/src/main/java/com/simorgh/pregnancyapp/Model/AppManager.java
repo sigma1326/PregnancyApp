@@ -2,12 +2,14 @@ package com.simorgh.pregnancyapp.Model;
 
 import android.os.Handler;
 import android.os.StrictMode;
+import android.os.Trace;
 
 import com.facebook.stetho.Stetho;
 import com.simorgh.database.Repository;
 import com.simorgh.pregnancyapp.BuildConfig;
 import com.simorgh.pregnancyapp.R;
 import com.simorgh.threadutils.ThreadUtils;
+import com.squareup.leakcanary.LeakCanary;
 
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
@@ -41,6 +43,14 @@ public class AppManager extends android.app.Application {
                 Stetho.initializeWithDefaults(this);
             }
 
+//            if (LeakCanary.isInAnalyzerProcess(this)) {
+//                // This process is dedicated to LeakCanary for heap analysis.
+//                // You should not init your app in this process.
+//                return;
+//            }
+//            LeakCanary.install(this);
+            // Normal app init code...
+
             initTypeFace();
 
 //            User user = new User();
@@ -54,13 +64,15 @@ public class AppManager extends android.app.Application {
     }
 
     private void initTypeFace() {
-        ViewPump.init(ViewPump.builder()
-                .addInterceptor(new CalligraphyInterceptor(
-                        new CalligraphyConfig.Builder()
-                                .setDefaultFontPath("fonts/iransans_medium.ttf")
-                                .setFontAttrId(R.attr.fontPath)
-                                .build()))
-                .build());
+       ThreadUtils.execute(() -> {
+           ViewPump.init(ViewPump.builder()
+                   .addInterceptor(new CalligraphyInterceptor(
+                           new CalligraphyConfig.Builder()
+                                   .setDefaultFontPath("fonts/iransans_medium.ttf")
+                                   .setFontAttrId(R.attr.fontPath)
+                                   .build()))
+                   .build());
+       });
     }
 
     @Override

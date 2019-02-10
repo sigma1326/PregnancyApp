@@ -195,35 +195,21 @@
         tools:fontFamily="@font/iransans_medium" />
 
 
-    <CheckBox
-        android:id="@+id/chb_drugs"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:checked="true"
-        android:gravity="center"
-        android:layoutDirection="rtl"
-        android:text="آیتم‌های ارسالی"
-        android:textColor="#555555"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/tv_report_options"
-        app:layout_constraintTop_toBottomOf="@+id/chb_pain"
-        tools:fontFamily="@font/iransans_medium" />
 
     <Button
         android:id="@+id/btn_make_report"
         android:layout_width="0dp"
         android:layout_height="53dp"
         android:layout_marginTop="12dp"
+        android:background="@drawable/btn_make_report_bkg"
         android:gravity="center"
         android:text="@string/make_report"
         android:textColor="#ffffff"
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chb_drugs"
+        app:layout_constraintTop_toBottomOf="@+id/chb_pain"
         app:layout_constraintWidth_percent=".83"
-        tools:background="@drawable/btn_make_report_bkg"
         tools:fontFamily="@font/iransans_medium" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

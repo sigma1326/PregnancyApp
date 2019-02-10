@@ -5,17 +5,16 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.simorgh.logger.Logger;
 import com.simorgh.pregnancyapp.R;
+import com.simorgh.pregnancyapp.View.TitleChangeListener;
 import com.simorgh.threadutils.ThreadUtils;
 import com.transitionseverywhere.ChangeText;
 import com.transitionseverywhere.extra.Scale;
@@ -48,6 +47,8 @@ public class RegisterActivity extends AppCompatActivity implements TitleChangeLi
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_register);
+
+        getWindow().setBackgroundDrawable(null);
 
         // this is a generic way of getting your root view element
         View rootView = findViewById(android.R.id.content);

@@ -12,4 +12,6 @@
     <string name="next_stage">مرحله بعد</string>
     <string name="login">ورود</string>
     <string name="select_blood_type">گروه خونی خود را وارد نمایید</string>
+    <string name="make_report_for_doctor">گزارش‌گیری برای پزشک</string>
+    <string name="read_more">ادامه مطلب</string>
 </resources>

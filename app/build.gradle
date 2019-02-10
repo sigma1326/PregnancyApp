@@ -36,14 +36,14 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha02'
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
-    implementation 'com.google.android.material:material:1.1.0-alpha02'
+    implementation 'com.google.android.material:material:1.1.0-alpha03'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'android.arch.navigation:navigation-fragment:1.0.0-alpha11'
-    implementation 'android.arch.navigation:navigation-ui:1.0.0-alpha11'
+    implementation 'android.arch.navigation:navigation-fragment:1.0.0-beta01'
+    implementation 'android.arch.navigation:navigation-ui:1.0.0-beta01'
     implementation 'androidx.core:core:1.0.1'
     //Calligraphy
     implementation 'io.github.inflationx:calligraphy3:3.0.0'
@@ -75,4 +75,12 @@ dependencies {
     implementation project(':nicedatepicker')
     implementation project(':calendarutil')
     implementation project(':bloodtypepicker')
+    implementation project(':bottombar')
+    implementation 'androidx.cardview:cardview:1.0.0'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
+    // Optional, if you use support library fragments:
+    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
+    androidTestImplementation 'androidx.test:rules:1.1.2-alpha01'
+    implementation project(':expandablelayout')
 }
