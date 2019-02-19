@@ -3,9 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    tools:background="@color/white"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layerType="hardware"
+    android:orientation="vertical"
+    tools:background="@color/white">
 
     <com.simorgh.pregnancyapp.ui.DrugInsertView
         android:id="@+id/drug_insert_view"
@@ -33,7 +34,7 @@
         app:layout_constraintStart_toStartOf="@+id/drug_insert_view"
         app:layout_constraintTop_toBottomOf="@+id/drug_insert_view"
         tools:listitem="@layout/drug_item_layout"
-        tools:visibility="visible" />
+        tools:visibility="gone" />
 
     <View
         android:id="@+id/divider1"
@@ -107,6 +108,83 @@
         app:layout_constraintTop_toBottomOf="@id/fever_view" />
 
 
+    <com.simorgh.pregnancyapp.ui.CigaretteView
+        android:id="@+id/cigarette_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        app:layout_constraintEnd_toEndOf="@id/drug_insert_view"
+        app:layout_constraintStart_toStartOf="@id/drug_insert_view"
+        app:layout_constraintTop_toBottomOf="@id/divider4" />
+
+
+    <View
+        android:id="@+id/divider5"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="22dp"
+        android:background="#b7b7b7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cigarette_view" />
+
+
+    <com.simorgh.pregnancyapp.ui.AlcoholView
+        android:id="@+id/alcohol_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        app:layout_constraintEnd_toEndOf="@id/drug_insert_view"
+        app:layout_constraintStart_toStartOf="@id/drug_insert_view"
+        app:layout_constraintTop_toBottomOf="@id/divider5" />
+
+    <View
+        android:id="@+id/divider6"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="22dp"
+        android:background="#b7b7b7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/alcohol_view" />
+
+    <com.simorgh.pregnancyapp.ui.SleepView
+        android:id="@+id/sleep_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        app:layout_constraintEnd_toEndOf="@id/drug_insert_view"
+        app:layout_constraintStart_toStartOf="@id/drug_insert_view"
+        app:layout_constraintTop_toBottomOf="@id/divider6" />
+
+    <View
+        android:id="@+id/divider7"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="22dp"
+        android:background="#b7b7b7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sleep_view" />
+
+    <com.simorgh.pregnancyapp.ui.ExerciseView
+        android:id="@+id/exercise_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        app:layout_constraintEnd_toEndOf="@id/drug_insert_view"
+        app:layout_constraintStart_toStartOf="@id/drug_insert_view"
+        app:layout_constraintTop_toBottomOf="@id/divider7" />
+    <View
+        android:id="@+id/divider8"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="22dp"
+        android:background="#b7b7b7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/exercise_view" />
+
     <Button
         android:id="@+id/btn_apply_changes"
         android:layout_width="0dp"
@@ -123,7 +201,7 @@
         android:textSize="16.7sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/divider4"
+        app:layout_constraintTop_toBottomOf="@id/divider8"
         tools:fontFamily="@font/iransans_medium" />
 
     <Space
@@ -135,13 +213,11 @@
 
     <ImageView
         android:id="@+id/image_bubble_background"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:adjustViewBounds="false"
-        android:cropToPadding="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.5"
         android:scaleType="centerCrop"
         android:src="@drawable/bubble_bkg"
-        android:alpha="0.5"
         android:tint="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

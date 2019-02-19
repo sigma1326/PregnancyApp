@@ -35,7 +35,7 @@ public class AddLogFragment extends Fragment {
     private ViewStub viewStub;
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,@Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.add_log_fragment, container, false);
     }
 
@@ -49,27 +49,24 @@ public class AddLogFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ThreadUtils.runOnUIThread(() -> {
-            viewStub = view.findViewById(R.id.view_stub_add_log);
-            viewStub.inflate();
+        viewStub = view.findViewById(R.id.view_stub_add_log);
+        viewStub.inflate();
 
 
-            backButton = view.findViewById(R.id.img_back);
-            datePicker = view.findViewById(R.id.date_picker);
+        backButton = view.findViewById(R.id.img_back);
+        datePicker = view.findViewById(R.id.date_picker);
 
 
-            backButton.setOnClickListener(v -> {
-                try {
-                    Navigation.findNavController(Objects.requireNonNull(getActivity()), R.id.main_nav_host_fragment)
-                    .navigateUp();
-                } catch (Exception e) {
-                    Logger.printStackTrace(e);
-                }
+        backButton.setOnClickListener(v -> {
+            try {
+                Navigation.findNavController(Objects.requireNonNull(getActivity()), R.id.main_nav_host_fragment)
+                        .navigateUp();
+            } catch (Exception e) {
+                Logger.printStackTrace(e);
+            }
 
-            });
+        });
 
-
-        },200);
 
     }
 

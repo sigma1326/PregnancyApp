@@ -24,6 +24,7 @@ public class ExpansionLayout extends NestedScrollView {
     private final List<IndicatorListener> indicatorListeners = new ArrayList<>();
     private final List<Listener> listeners = new ArrayList<>();
     private boolean expanded = false;
+    private int duration = 0;
     private Animator animator;
 
     public ExpansionLayout(Context context) {
@@ -48,6 +49,7 @@ public class ExpansionLayout extends NestedScrollView {
             final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ExpansionLayout);
             if (a != null) {
                 expanded = a.getBoolean(R.styleable.ExpansionLayout_expansion_expanded, expanded);
+                duration = a.getInt(R.styleable.ExpansionLayout_expansion_duration, 200);
                 a.recycle();
             }
         }
@@ -123,7 +125,7 @@ public class ExpansionLayout extends NestedScrollView {
         onViewAdded();
     }
 
-    private void onViewAdded(){
+    private void onViewAdded() {
         if (getChildCount() != 0) {
             final View childView = getChildAt(0);
             childView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -136,19 +138,10 @@ public class ExpansionLayout extends NestedScrollView {
                         expand(false);
                     }
 
-                    childView.addOnLayoutChangeListener(new OnLayoutChangeListener() {
-                        @Override
-                        public void onLayoutChange(View view, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                            if (expanded && animator == null) {
-                                final int height = bottom - top;
-                                post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        setHeight(height);
-
-                                    }
-                                });
-                            }
+                    childView.addOnLayoutChangeListener((view, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+                        if (expanded && animator == null) {
+                            final int height = bottom - top;
+                            post(() -> setHeight(height));
                         }
                     });
 
@@ -165,12 +158,8 @@ public class ExpansionLayout extends NestedScrollView {
         pingIndicatorListeners(false);
         if (animated) {
             final ValueAnimator valueAnimator = ValueAnimator.ofFloat(1f * getHeight(), 0f);
-            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                    setHeight((Float) valueAnimator.getAnimatedValue());
-                }
-            });
+            valueAnimator.addUpdateListener(valueAnimator1 -> setHeight((Float) valueAnimator1.getAnimatedValue()));
+            valueAnimator.setDuration(duration);
             valueAnimator.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
@@ -213,12 +202,8 @@ public class ExpansionLayout extends NestedScrollView {
         pingIndicatorListeners(true);
         if (animated) {
             final ValueAnimator valueAnimator = ValueAnimator.ofFloat(0f, getChildAt(0).getHeight());
-            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                    setHeight((Float) valueAnimator.getAnimatedValue());
-                }
-            });
+            valueAnimator.addUpdateListener(valueAnimator1 -> setHeight((Float) valueAnimator1.getAnimatedValue()));
+            valueAnimator.setDuration(duration);
             valueAnimator.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
@@ -263,11 +248,11 @@ public class ExpansionLayout extends NestedScrollView {
 
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
-        if(state instanceof Bundle){
+        if (state instanceof Bundle) {
             final Bundle savedInstance = (Bundle) state;
             boolean expanded = savedInstance.getBoolean("expanded");
-            if(expanded){
-               expand(false);
+            if (expanded) {
+                expand(false);
             } else {
                 collapse(false);
             }

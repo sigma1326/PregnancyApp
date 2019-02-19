@@ -23,6 +23,7 @@
 
     <declare-styleable name="ExpansionLayout">
         <attr name="expansion_expanded" format="boolean"/>
+        <attr name="expansion_duration" format="integer"/>
     </declare-styleable>
 
     <attr name="expansion_openOnlyOne" format="boolean"/>

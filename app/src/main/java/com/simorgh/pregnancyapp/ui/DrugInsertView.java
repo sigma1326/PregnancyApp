@@ -1,12 +1,17 @@
 package com.simorgh.pregnancyapp.ui;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.simorgh.expandablelayout.ExpandableLayout;
+import com.simorgh.expandablelayout.ExpansionLayout;
+import com.simorgh.expandablelayout.viewgroup.ExpansionsViewGroupLinearLayout;
 import com.simorgh.pregnancyapp.R;
 
 import androidx.annotation.Keep;
@@ -15,8 +20,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.ViewCompat;
 
 @Keep
-public class DrugInsertView extends ConstraintLayout {
-    private ExpandableLayout expandableLayout;
+public class DrugInsertView extends ExpansionsViewGroupLinearLayout {
+    private ExpansionLayout expandableLayout;
     private EditText description;
     private ImageView imgDescription;
     private ImageView imgApply;
@@ -37,10 +42,11 @@ public class DrugInsertView extends ConstraintLayout {
         initView(context, attrs);
     }
 
-    public DrugInsertView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        initView(context, attrs);
-    }
+//    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+//    public DrugInsertView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+//        super(context, attrs, defStyleAttr, defStyleRes);
+//        initView(context, attrs);
+//    }
 
     private void initView(@NonNull final Context context, AttributeSet attrs) {
         View v = View.inflate(context, R.layout.drug_insert_layout, this);
@@ -53,7 +59,7 @@ public class DrugInsertView extends ConstraintLayout {
         imgApply = v.findViewById(R.id.img_apply);
 
         imgDescription.setOnClickListener(v1 -> {
-            expandableLayout.toggle();
+            expandableLayout.toggle(true);
         });
 
     }

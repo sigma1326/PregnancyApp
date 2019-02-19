@@ -40,4 +40,12 @@
     <string name="general">مقالات عمومی</string>
     <string name="childbirth">زایمان</string>
     <string name="nutrition">تغذیه و ورزش</string>
+    <string name="use_cigarette">مصرف سیگار</string>
+    <string name="had">داشتم</string>
+    <string name="had_not">نداشتم</string>
+    <string name="use_alcohol">مصرف الکل</string>
+    <string name="sleep_time">میزان خواب</string>
+    <string name="hour">(ساعت)</string>
+    <string name="minute">(دقیقه)</string>
+    <string name="exercise_time">میزان ورزش</string>
 </resources>

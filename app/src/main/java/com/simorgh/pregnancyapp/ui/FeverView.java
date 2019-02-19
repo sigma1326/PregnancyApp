@@ -6,9 +6,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.simorgh.expandablelayout.ExpandableLayout;
+import com.simorgh.expandablelayout.ExpansionLayout;
+import com.simorgh.expandablelayout.viewgroup.ExpansionsViewGroupLinearLayout;
 import com.simorgh.pregnancyapp.R;
 
 import androidx.annotation.Keep;
@@ -17,8 +20,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.ViewCompat;
 
 @Keep
-public class FeverView extends ConstraintLayout {
-    private ExpandableLayout expandableLayout;
+public class FeverView extends ExpansionsViewGroupLinearLayout {
+    private ExpansionLayout expandableLayout;
     private EditText description;
     private Button have;
     private Button haveNot;
@@ -41,10 +44,10 @@ public class FeverView extends ConstraintLayout {
         initView(context, attrs);
     }
 
-    public FeverView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        initView(context, attrs);
-    }
+//    public FeverView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+//        super(context, attrs, defStyleAttr, defStyleRes);
+//        initView(context, attrs);
+//    }
 
     private void initView(@NonNull final Context context, AttributeSet attrs) {
         View v = View.inflate(context, R.layout.fever_layout, this);
@@ -59,7 +62,7 @@ public class FeverView extends ConstraintLayout {
         imgDescription = v.findViewById(R.id.img_description);
 
         imgDescription.setOnClickListener(v1 -> {
-            expandableLayout.toggle();
+            expandableLayout.toggle(true);
         });
 
     }

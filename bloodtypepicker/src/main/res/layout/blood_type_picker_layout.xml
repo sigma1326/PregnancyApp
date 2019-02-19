@@ -14,7 +14,7 @@
         android:background="@drawable/date_bkg"
         android:gravity="center"
         android:textColor="#801210"
-        android:ems="3"
+        android:ems="4"
         android:textSize="50sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="@id/view_blood_type"

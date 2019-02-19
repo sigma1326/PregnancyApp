@@ -1,13 +1,18 @@
 package com.simorgh.pregnancyapp.ui;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.simorgh.expandablelayout.ExpandableLayout;
+import com.simorgh.expandablelayout.ExpansionLayout;
+import com.simorgh.expandablelayout.viewgroup.ExpansionsViewGroupLinearLayout;
 import com.simorgh.pregnancyapp.R;
 
 import org.w3c.dom.Text;
@@ -18,8 +23,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.ViewCompat;
 
 @Keep
-public class BloodPressureView extends ConstraintLayout {
-    private ExpandableLayout expandableLayout;
+public class BloodPressureView extends ExpansionsViewGroupLinearLayout {
+    private ExpansionLayout expandableLayout;
     private EditText description;
     private EditText min;
     private EditText max;
@@ -42,10 +47,11 @@ public class BloodPressureView extends ConstraintLayout {
         initView(context, attrs);
     }
 
-    public BloodPressureView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        initView(context, attrs);
-    }
+//    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+//    public BloodPressureView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+//        super(context, attrs, defStyleAttr, defStyleRes);
+//        initView(context, attrs);
+//    }
 
     private void initView(@NonNull final Context context, AttributeSet attrs) {
         View v = View.inflate(context, R.layout.blood_pressure_layout, this);
@@ -60,7 +66,7 @@ public class BloodPressureView extends ConstraintLayout {
         imgDescription = v.findViewById(R.id.img_description);
 
         imgDescription.setOnClickListener(v1 -> {
-            expandableLayout.toggle();
+            expandableLayout.toggle(true);
         });
 
     }

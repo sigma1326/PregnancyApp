@@ -5,78 +5,90 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
+    android:background="@null"
     android:layerType="hardware"
-
     android:orientation="vertical"
     tools:background="@color/white">
 
+
     <com.simorgh.expandablelayout.ExpansionHeader
+        android:id="@+id/expansion_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:expansion_layout="@id/expandable_layout">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginRight="0dp"
+                android:ems="4"
+                android:gravity="start|center"
+                android:text="@string/sleep_time"
+                android:textColor="#494949"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@id/et_time"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/et_time"
+                app:layout_constraintTop_toTopOf="@id/et_time"
+                tools:fontFamily="@font/iransans_medium" />
+
             <EditText
-                android:id="@+id/et_drug_name"
+                android:id="@+id/et_time"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
                 android:background="@drawable/btn_range_bkg"
                 android:gravity="center"
-                android:hint="@string/enter_drug_name"
+                android:hint="@string/hour"
                 android:imeOptions="actionNext"
+                android:inputType="number|numberSigned"
                 android:lineSpacingExtra="-6.6sp"
                 android:lines="1"
-                android:maxLength="30"
+                android:maxLength="4"
+                android:maxLines="1"
                 android:singleLine="true"
                 android:text=""
+                android:textAlignment="center"
                 android:textColor="#494949"
                 android:textColorHint="#80545454"
                 android:textSize="13.5sp"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tv_title"
                 app:layout_constraintStart_toEndOf="@+id/img_description"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:fontFamily="@font/iransans_medium" />
 
-            <ImageView
-                android:id="@+id/img_description"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
-                android:background="@drawable/bkg_round"
-                android:padding="10dp"
-                android:tint="@color/white"
-                app:layout_constraintBottom_toBottomOf="@+id/et_drug_name"
-                app:layout_constraintEnd_toStartOf="@id/et_drug_name"
-                app:layout_constraintStart_toEndOf="@id/img_apply"
-                app:layout_constraintTop_toTopOf="@+id/et_drug_name"
-                app:srcCompat="@drawable/ic_edit" />
 
             <ImageView
-                android:id="@+id/img_apply"
+                android:id="@+id/img_description"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="@drawable/bkg_round"
                 android:padding="10dp"
                 android:scaleX="-1"
                 android:tint="@color/white"
-                app:layout_constraintBottom_toBottomOf="@+id/et_drug_name"
-                app:layout_constraintEnd_toStartOf="@id/img_apply"
+                app:layout_constraintBottom_toBottomOf="@+id/et_time"
+                app:layout_constraintEnd_toStartOf="@id/img_description"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/et_drug_name"
-                app:srcCompat="@drawable/ic_send" />
+                app:layout_constraintTop_toTopOf="@+id/et_time"
+                app:srcCompat="@drawable/ic_edit" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.simorgh.expandablelayout.ExpansionHeader>
 
     <Space
         android:id="@+id/space"
         android:layout_width="match_parent"
-        android:layout_height="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_drug_name" />
+        android:layout_height="8dp" />
 
     <com.simorgh.expandablelayout.ExpansionLayout
         android:id="@+id/expandable_layout"
@@ -85,8 +97,8 @@
         android:background="@drawable/btn_range_bkg"
         android:paddingStart="18dp"
         android:paddingEnd="18dp"
-        tools:expansion_expanded="true"
-        app:expansion_duration="200">
+        app:expansion_duration="200"
+        tools:expansion_expanded="true">
 
         <EditText
             android:id="@+id/et_description"
@@ -116,5 +128,4 @@
 
 
     </com.simorgh.expandablelayout.ExpansionLayout>
-
 </com.simorgh.expandablelayout.viewgroup.ExpansionsViewGroupLinearLayout>

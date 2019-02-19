@@ -45,10 +45,10 @@
         <action
             android:id="@+id/action_homeFragment_to_addLogFragment"
             app:destination="@id/addLogFragment"
-            app:enterAnim="@anim/slide_in_bottom"
-            app:exitAnim="@anim/slide_out_top"
-            app:popEnterAnim="@anim/slide_in_top"
-            app:popExitAnim="@anim/slide_out_bottom"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
             app:popUpTo="@+id/homeFragment" />
     </fragment>
     <fragment
@@ -80,10 +80,10 @@
         <action
             android:id="@+id/action_articlesFragment_to_addLogFragment"
             app:destination="@id/addLogFragment"
-            app:enterAnim="@anim/slide_in_bottom"
-            app:exitAnim="@anim/slide_out_top"
-            app:popEnterAnim="@anim/slide_in_top"
-            app:popExitAnim="@anim/slide_out_bottom"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
             app:popUpTo="@+id/articlesFragment" />
         <action
             android:id="@+id/action_articlesFragment_to_homeFragment"
@@ -164,10 +164,10 @@
         <action
             android:id="@+id/action_logsFragment_to_addLogFragment"
             app:destination="@id/addLogFragment"
-            app:enterAnim="@anim/slide_in_bottom"
-            app:exitAnim="@anim/slide_out_top"
-            app:popEnterAnim="@anim/slide_in_top"
-            app:popExitAnim="@anim/slide_out_bottom"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
             app:popUpTo="@+id/logsFragment" />
         <action
             android:id="@+id/action_logsFragment_to_homeFragment"

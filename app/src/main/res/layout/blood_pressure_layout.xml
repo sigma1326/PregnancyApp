@@ -1,39 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.simorgh.expandablelayout.viewgroup.ExpansionsViewGroupLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="@null"
+    android:layerType="hardware"
+
+    android:orientation="vertical"
     tools:background="@color/white">
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="8dp"
-        android:id="@+id/space"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_min" />
 
-    <com.simorgh.expandablelayout.ExpandableLayout
+    <com.simorgh.expandablelayout.ExpansionHeader
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginRight="0dp"
+                android:ems="4"
+                android:gravity="start|center"
+                android:text="@string/blood_pressure"
+                android:textColor="#494949"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@id/et_min"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/et_min"
+                app:layout_constraintTop_toTopOf="@id/et_min"
+                tools:fontFamily="@font/iransans_medium" />
+
+            <EditText
+                android:id="@+id/et_min"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:background="@drawable/btn_range_bkg"
+                android:gravity="center"
+                android:hint="@string/min"
+                android:imeOptions="actionNext"
+                android:inputType="number|numberSigned"
+                android:lineSpacingExtra="-6.6sp"
+                android:lines="1"
+                android:maxLength="4"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="#494949"
+                android:textColorHint="#80545454"
+                android:textSize="13.5sp"
+                app:layout_constraintEnd_toStartOf="@id/tv_title"
+                app:layout_constraintStart_toEndOf="@+id/et_max"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:fontFamily="@font/iransans_medium" />
+
+            <EditText
+                android:id="@+id/et_max"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
+                android:background="@drawable/btn_range_bkg"
+                android:gravity="center"
+                android:hint="@string/max"
+                android:imeOptions="actionNext"
+                android:inputType="number|numberSigned|numberDecimal"
+                android:lines="1"
+                android:maxLength="4"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="#494949"
+                android:textColorHint="#80545454"
+                android:textSize="13.5sp"
+                app:layout_constraintBottom_toBottomOf="@+id/et_min"
+                app:layout_constraintEnd_toStartOf="@id/et_min"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toEndOf="@id/img_description"
+                app:layout_constraintTop_toTopOf="@+id/et_min"
+                tools:fontFamily="@font/iransans_medium" />
+
+            <ImageView
+                android:id="@+id/img_description"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bkg_round"
+                android:padding="10dp"
+                android:scaleX="-1"
+                android:tint="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/et_min"
+                app:layout_constraintEnd_toStartOf="@id/img_description"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/et_min"
+                app:srcCompat="@drawable/ic_edit" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.simorgh.expandablelayout.ExpansionHeader>
+
+
+    <Space
+        android:id="@+id/space"
+        android:layout_width="match_parent"
+        android:layout_height="8dp" />
+
+    <com.simorgh.expandablelayout.ExpansionLayout
         android:id="@+id/expandable_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_range_bkg"
         android:paddingStart="18dp"
         android:paddingEnd="18dp"
-        app:el_duration="200"
-        app:el_expanded="false"
-        tools:el_expanded="true"
-        app:el_parallax="0.5"
-        app:layout_constraintEnd_toEndOf="@+id/et_min"
-        app:layout_constraintStart_toStartOf="@+id/img_description"
-        app:layout_constraintTop_toBottomOf="@+id/space">
+        app:expansion_duration="200"
+        tools:expansion_expanded="true">
 
         <EditText
             android:id="@+id/et_description"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:background="@null"
@@ -58,92 +150,6 @@
             tools:fontFamily="@font/iransans_medium" />
 
 
-    </com.simorgh.expandablelayout.ExpandableLayout>
+    </com.simorgh.expandablelayout.ExpansionLayout>
 
-
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginRight="0dp"
-        android:gravity="center"
-        android:ems="3"
-        android:text="@string/blood_pressure"
-        android:textColor="#494949"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@id/et_min"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/et_min"
-        app:layout_constraintTop_toTopOf="@id/et_min"
-        tools:fontFamily="@font/iransans_medium" />
-
-    <EditText
-        android:id="@+id/et_min"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:background="@drawable/btn_range_bkg"
-        android:gravity="center"
-        android:hint="@string/min"
-        android:imeOptions="actionNext"
-        android:inputType="number|numberSigned"
-        android:lineSpacingExtra="-6.6sp"
-        android:lines="1"
-        android:maxLength="4"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:text=""
-        android:textAlignment="center"
-        android:textColor="#494949"
-        android:textColorHint="#80545454"
-        android:textSize="13.5sp"
-        app:layout_constraintEnd_toStartOf="@id/tv_title"
-        app:layout_constraintStart_toEndOf="@+id/et_max"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:fontFamily="@font/iransans_medium" />
-
-    <EditText
-        android:id="@+id/et_max"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="4dp"
-        android:background="@drawable/btn_range_bkg"
-        android:gravity="center"
-        android:hint="@string/max"
-        android:imeOptions="actionNext"
-        android:inputType="number|numberSigned|numberDecimal"
-        android:lines="1"
-        android:maxLength="4"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:text=""
-        android:textAlignment="center"
-        android:textColor="#494949"
-        android:textColorHint="#80545454"
-        android:textSize="13.5sp"
-        app:layout_constraintBottom_toBottomOf="@+id/et_min"
-        app:layout_constraintEnd_toStartOf="@id/et_min"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toEndOf="@id/img_description"
-        app:layout_constraintTop_toTopOf="@+id/et_min"
-        tools:fontFamily="@font/iransans_medium"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="4dp" />
-
-    <ImageView
-        android:id="@+id/img_description"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/bkg_round"
-        android:padding="10dp"
-        android:scaleX="-1"
-        android:tint="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/et_min"
-        app:layout_constraintEnd_toStartOf="@id/img_description"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/et_min"
-        app:srcCompat="@drawable/ic_edit" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</com.simorgh.expandablelayout.viewgroup.ExpansionsViewGroupLinearLayout>
