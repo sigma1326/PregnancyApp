@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@null"
+    tools:background="@color/white">
+
+    <Space
+        android:id="@+id/space"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_have" />
+
+    <com.simorgh.expandablelayout.ExpandableLayout
+        android:id="@+id/expandable_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_range_bkg"
+        android:paddingStart="18dp"
+        android:paddingEnd="18dp"
+        app:el_duration="300"
+        app:el_expanded="false"
+        app:el_parallax="0.5"
+        app:layout_constraintEnd_toEndOf="@+id/btn_have"
+        app:layout_constraintStart_toStartOf="@+id/img_description"
+        app:layout_constraintTop_toBottomOf="@+id/space"
+        tools:el_expanded="true">
+
+        <EditText
+            android:id="@+id/et_description"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:gravity="end"
+            android:hint="@string/description"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:lines="1"
+            android:maxLength="50"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:text=""
+            android:textAlignment="viewEnd"
+            android:textColor="#494949"
+            android:textColorHint="#80545454"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread"
+            tools:fontFamily="@font/iransans_medium" />
+
+
+    </com.simorgh.expandablelayout.ExpandableLayout>
+
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="0dp"
+        android:ems="3"
+        android:gravity="center"
+        android:text="@string/fever"
+        android:textColor="#494949"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/btn_have"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btn_have"
+        app:layout_constraintTop_toTopOf="@id/btn_have"
+        tools:fontFamily="@font/iransans_medium" />
+
+    <Button
+        android:id="@+id/btn_have"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:background="@drawable/btn_have_bkg"
+        android:gravity="center"
+        android:lineSpacingExtra="-6.6sp"
+        android:lines="1"
+        android:maxLength="4"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:text="@string/have"
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:textColorHint="#80545454"
+        android:textSize="13.5sp"
+        app:layout_constraintEnd_toStartOf="@id/tv_title"
+        app:layout_constraintStart_toEndOf="@+id/btn_have_not"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:fontFamily="@font/iransans_medium" />
+
+    <Button
+        android:id="@+id/btn_have_not"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        android:background="@drawable/btn_have_not_bkg"
+        android:gravity="center"
+        android:hint="@string/have_not"
+        android:lines="1"
+        android:maxLength="4"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:text=""
+        android:textAlignment="center"
+        android:textColor="#80545454"
+        android:textSize="13.5sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_have"
+        app:layout_constraintEnd_toStartOf="@id/btn_have"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toEndOf="@id/img_description"
+        app:layout_constraintTop_toTopOf="@+id/btn_have"
+        tools:fontFamily="@font/iransans_medium" />
+
+    <ImageView
+        android:id="@+id/img_description"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bkg_round"
+        android:padding="10dp"
+        android:scaleX="-1"
+        android:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_have"
+        app:layout_constraintEnd_toStartOf="@id/img_description"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_have"
+        app:srcCompat="@drawable/ic_edit" />
+</androidx.constraintlayout.widget.ConstraintLayout>

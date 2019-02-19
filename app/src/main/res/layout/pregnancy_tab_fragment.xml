@@ -4,8 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.main.PregnancyTabFragment">
-
+    android:rotation="180"
+    tools:background="@color/white"
+    tools:context=".View.main.PregnancyTabFragment"
+    tools:rotation="0">
 
     <ImageView
         android:id="@+id/img_pregnant_woman"
@@ -17,7 +19,7 @@
         android:scaleType="fitXY"
         android:src="@drawable/pregnant_woman"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="h,2.13"
+        app:layout_constraintDimensionRatio="h,1.9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent=".4"
         app:layout_constraintHorizontal_bias="1.0"
@@ -26,8 +28,9 @@
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintWidth_percent=".34" />
 
+
     <Button
-        android:id="@+id/btn_sitting"
+        android:id="@+id/btn_fitness"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="24dp"
@@ -36,46 +39,22 @@
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
         android:background="@drawable/btn_article_category_bkg"
-        android:drawableEnd="@drawable/ic_pregnant_woman"
-        android:drawableRight="@drawable/ic_pregnant_woman"
-        android:lineSpacingExtra="-12.3sp"
-        android:paddingStart="32dp"
-        android:paddingEnd="32dp"
-        android:textColor="#ffffff"
-        android:textSize="@dimen/btn_pregnancy_category_text_size"
-        app:layout_constraintDimensionRatio="w,.16"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_pregnant_woman"
-        tools:fontFamily="@font/iransans_medium"
-        tools:text=" نشستن در دوران بارداری" />
-
-    <Button
-        android:id="@+id/btn_nutrition"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="14dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:background="@drawable/btn_article_category_bkg"
         android:drawableEnd="@drawable/ic_nutrition"
         android:drawableRight="@drawable/ic_nutrition"
         android:lineSpacingExtra="-12.3sp"
         android:paddingStart="32dp"
         android:paddingEnd="32dp"
+        android:text="@string/nutrition"
         android:textColor="#ffffff"
         android:textSize="@dimen/btn_pregnancy_category_text_size"
-        app:layout_constraintDimensionRatio="w,.16"
+        app:layout_constraintDimensionRatio="w,.14"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_sitting"
-        tools:fontFamily="@font/iransans_medium"
-        tools:text="تغذیه در دوران بارداری" />
+        app:layout_constraintTop_toBottomOf="@+id/img_pregnant_woman"
+        tools:fontFamily="@font/iransans_medium" />
 
     <Button
-        android:id="@+id/btn_emergency"
+        android:id="@+id/btn_general"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="24dp"
@@ -84,19 +63,69 @@
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
         android:background="@drawable/btn_article_category_bkg"
-        android:drawableEnd="@drawable/ic_emergency"
-        android:drawableRight="@drawable/ic_emergency"
+        android:drawableEnd="@drawable/ic_general"
+        android:drawableRight="@drawable/ic_general"
+        android:lineSpacingExtra="-12.3sp"
+        android:paddingStart="28dp"
+        android:paddingEnd="40dp"
+        android:text="@string/general"
+        android:textColor="#ffffff"
+        android:textSize="@dimen/btn_pregnancy_category_text_size"
+        app:layout_constraintDimensionRatio="w,.14"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_fitness"
+        tools:fontFamily="@font/iransans_medium"
+        android:paddingLeft="28dp"
+        android:paddingRight="40dp" />
+
+    <Button
+        android:id="@+id/btn_faq"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:background="@drawable/btn_article_category_bkg"
+        android:drawableEnd="@drawable/ic_faq"
+        android:drawableRight="@drawable/ic_faq"
         android:lineSpacingExtra="-12.3sp"
         android:paddingStart="32dp"
         android:paddingEnd="32dp"
+        android:text="@string/faq"
         android:textColor="#ffffff"
         android:textSize="@dimen/btn_pregnancy_category_text_size"
-        app:layout_constraintDimensionRatio="w,.16"
+        app:layout_constraintDimensionRatio="w,.14"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_nutrition"
-        tools:fontFamily="@font/iransans_medium"
-        tools:text="اطلاعات اورژانسی دوران بارداری" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_general"
+        tools:fontFamily="@font/iransans_medium" />
+
+    <Button
+        android:id="@+id/btn_give_birth"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:background="@drawable/btn_article_category_bkg"
+        android:drawableEnd="@drawable/ic_pregnant_woman"
+        android:drawableRight="@drawable/ic_pregnant_woman"
+        android:lineSpacingExtra="-12.3sp"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
+        android:text="@string/childbirth"
+        android:textColor="#ffffff"
+        android:textSize="@dimen/btn_pregnancy_category_text_size"
+        app:layout_constraintDimensionRatio="w,.14"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_faq"
+        tools:fontFamily="@font/iransans_medium" />
 
     <TextView
         android:id="@+id/tv_remaining_days"
@@ -105,6 +134,7 @@
         android:background="@drawable/tv_bubble_bkg"
         android:gravity="center"
         android:lineSpacingExtra="6.7sp"
+        android:text="124 روز \n باقی‌مانده"
         android:textColor="#b9150e"
         android:textSize="@dimen/bubble_pregnancy_info_text_size"
         app:layout_constraintBottom_toBottomOf="@+id/img_pregnant_woman"
@@ -114,8 +144,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/img_pregnant_woman"
         app:layout_constraintWidth_percent=".25"
-        tools:fontFamily="@font/iransans_medium"
-        tools:text="124 روز \n باقی‌مانده" />
+        tools:fontFamily="@font/iransans_medium" />
 
     <TextView
         android:id="@+id/tv_delivaery_date"
@@ -124,6 +153,7 @@
         android:background="@drawable/tv_bubble_bkg"
         android:gravity="center"
         android:lineSpacingExtra="6.7sp"
+        android:text="28 آبان \n روز زایمان"
         android:textColor="#b9150e"
         android:textSize="@dimen/bubble_pregnancy_info_text_size"
         app:layout_constraintBottom_toBottomOf="@+id/img_pregnant_woman"
@@ -136,8 +166,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent=".23"
-        tools:fontFamily="@font/iransans_medium"
-        tools:text="28 آبان \n روز زایمان" />
+        tools:fontFamily="@font/iransans_medium" />
 
     <TextView
         android:id="@+id/tv_current_week"
@@ -146,6 +175,7 @@
         android:background="@drawable/tv_bubble_bkg"
         android:gravity="center"
         android:lineSpacingExtra="6.7sp"
+        android:text="هفته 22"
         android:textColor="#b9150e"
         android:textSize="@dimen/bubble_pregnancy_info_text_size"
         app:layout_constraintBottom_toBottomOf="@+id/img_pregnant_woman"
@@ -158,6 +188,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent=".21"
-        tools:fontFamily="@font/iransans_medium"
-        tools:text="هفته 22" />
+        tools:fontFamily="@font/iransans_medium" />
 </androidx.constraintlayout.widget.ConstraintLayout>

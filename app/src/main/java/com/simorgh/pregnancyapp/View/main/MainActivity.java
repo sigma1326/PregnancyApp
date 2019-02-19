@@ -2,7 +2,6 @@ package com.simorgh.pregnancyapp.View.main;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.transition.TransitionManager;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -23,15 +22,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
+import androidx.transition.TransitionManager;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
-public class MainActivity extends AppCompatActivity implements TitleChangeListener, BottomBar.OnItemClickListener, BottomBar.OnCircleItemClickListener, NavController.OnDestinationChangedListener {
+public class MainActivity extends AppCompatActivity implements BottomBar.OnItemClickListener
+        , BottomBar.OnCircleItemClickListener, NavController.OnDestinationChangedListener {
 
-    private TextView title;
     private BottomBar bottomBar;
     private NavController navController;
-    private AppBarLayout toolbarLayout;
-    private ImageButton backButton;
     private Animation animToolbarGone;
     private Animation animToolbarShow;
     private Animation animBottomGone;
@@ -46,27 +44,13 @@ public class MainActivity extends AppCompatActivity implements TitleChangeListen
         getWindow().setBackgroundDrawable(null);
 
 
-
-        title = findViewById(R.id.tv_app_title);
         bottomBar = findViewById(R.id.bottomBar);
-        toolbarLayout = findViewById(R.id.toolbar);
         navController = Navigation.findNavController(MainActivity.this, R.id.main_nav_host_fragment);
-        backButton = findViewById(R.id.img_back);
 
         bottomBar.setItemClickListener(this);
         bottomBar.setCircleItemClickListener(this);
 
         navController.addOnDestinationChangedListener(this);
-
-        backButton.setOnClickListener(v -> {
-            if (navController != null) {
-                try {
-                    navController.navigateUp();
-                } catch (Exception e) {
-                    Logger.printStackTrace(e);
-                }
-            }
-        });
 
         TransitionManager.beginDelayedTransition(findViewById(R.id.main_container));
 
@@ -100,24 +84,24 @@ public class MainActivity extends AppCompatActivity implements TitleChangeListen
             }
         });
 
-        animToolbarShow.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                if (toolbarLayout != null) {
-                    toolbarLayout.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
+//        animToolbarShow.setAnimationListener(new Animation.AnimationListener() {
+//            @Override
+//            public void onAnimationStart(Animation animation) {
+//                if (toolbarLayout != null) {
+//                    toolbarLayout.setVisibility(View.VISIBLE);
+//                }
+//            }
+//
+//            @Override
+//            public void onAnimationEnd(Animation animation) {
+//
+//            }
+//
+//            @Override
+//            public void onAnimationRepeat(Animation animation) {
+//
+//            }
+//        });
 
         animBottomGone.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -137,24 +121,24 @@ public class MainActivity extends AppCompatActivity implements TitleChangeListen
 
             }
         });
-        animToolbarGone.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                if (toolbarLayout != null) {
-                    toolbarLayout.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
+//        animToolbarGone.setAnimationListener(new Animation.AnimationListener() {
+//            @Override
+//            public void onAnimationStart(Animation animation) {
+//
+//            }
+//
+//            @Override
+//            public void onAnimationEnd(Animation animation) {
+//                if (toolbarLayout != null) {
+//                    toolbarLayout.setVisibility(View.GONE);
+//                }
+//            }
+//
+//            @Override
+//            public void onAnimationRepeat(Animation animation) {
+//
+//            }
+//        });
     }
 
     @Override
@@ -169,21 +153,12 @@ public class MainActivity extends AppCompatActivity implements TitleChangeListen
         animBottomShow.cancel();
         animToolbarGone.cancel();
         animToolbarShow.cancel();
-        title = null;
         bottomBar = null;
         navController = null;
-        toolbarLayout = null;
-        backButton = null;
         animToolbarShow = null;
         animToolbarGone = null;
     }
 
-    @Override
-    public void onTitleChanged(String titleText) {
-        if (title != null) {
-            title.setText(titleText);
-        }
-    }
 
     @Override
     public void onClick(BottomBar.BottomItem item, boolean fromUser) {
@@ -292,45 +267,37 @@ public class MainActivity extends AppCompatActivity implements TitleChangeListen
 
     @Override
     public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
-        if (bottomBar != null && toolbarLayout != null) {
+        if (bottomBar != null) {
             switch (Objects.requireNonNull(controller.getCurrentDestination()).getId()) {
                 case R.id.homeFragment:
-                    runToolbarAnim(false);
                     runBottomAnim(true);
                     bottomBar.setSelectedIndex(4);
                     break;
                 case R.id.articlesFragment:
-                    runToolbarAnim(false);
                     runBottomAnim(true);
                     bottomBar.setSelectedIndex(3);
                     break;
                 case R.id.logsFragment:
-                    runToolbarAnim(false);
                     runBottomAnim(true);
                     bottomBar.setSelectedIndex(2);
                     break;
                 case R.id.settingsFragment:
-                    runToolbarAnim(false);
                     runBottomAnim(true);
                     bottomBar.setSelectedIndex(1);
                     break;
                 case R.id.addLogFragment:
-                    runToolbarAnim(false);
                     runBottomAnim(false);
                     bottomBar.setSelectedIndex(-1);
                     break;
                 case R.id.articleDetailFragment:
-                    runToolbarAnim(true);
                     runBottomAnim(false);
                     bottomBar.setSelectedIndex(-1);
                     break;
                 case R.id.pregnancyCategoriesDetailFragment:
-                    runToolbarAnim(true);
                     runBottomAnim(false);
                     bottomBar.setSelectedIndex(-1);
                     break;
                 case R.id.makeReportFragment:
-                    runToolbarAnim(true);
                     runBottomAnim(false);
                     bottomBar.setSelectedIndex(-1);
                     break;
@@ -341,21 +308,21 @@ public class MainActivity extends AppCompatActivity implements TitleChangeListen
     private boolean isAnimatingToolbar;
     private boolean isAnimatingBottomBar;
 
-    private void runToolbarAnim(boolean visible) {
-        if (toolbarLayout == null) {
-            return;
-        }
-        if (visible) {
-            if (toolbarLayout.getVisibility() != View.VISIBLE) {
-                toolbarLayout.startAnimation(animToolbarShow);
-            }
-        } else {
-            if (toolbarLayout.getVisibility() != View.GONE) {
-                toolbarLayout.startAnimation(animToolbarGone);
-            }
-
-        }
-    }
+//    private void runToolbarAnim(boolean visible) {
+//        if (toolbarLayout == null) {
+//            return;
+//        }
+//        if (visible) {
+//            if (toolbarLayout.getVisibility() != View.VISIBLE) {
+//                toolbarLayout.startAnimation(animToolbarShow);
+//            }
+//        } else {
+//            if (toolbarLayout.getVisibility() != View.GONE) {
+//                toolbarLayout.startAnimation(animToolbarGone);
+//            }
+//
+//        }
+//    }
 
     private void runBottomAnim(boolean visible) {
         if (bottomBar == null) {

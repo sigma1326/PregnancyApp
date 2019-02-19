@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@null"
+    tools:background="@color/white">
+
+    <Space
+        android:id="@+id/space"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_drug_name" />
+
+    <com.simorgh.expandablelayout.ExpandableLayout
+        android:id="@+id/expandable_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_range_bkg"
+        android:paddingStart="18dp"
+        android:paddingEnd="18dp"
+        app:el_duration="200"
+        app:el_expanded="false"
+        app:el_parallax="0.5"
+        app:layout_constraintEnd_toEndOf="@+id/et_drug_name"
+        app:layout_constraintStart_toStartOf="@+id/img_apply"
+        app:layout_constraintTop_toBottomOf="@+id/space"
+        tools:el_expanded="true">
+
+        <EditText
+            android:id="@+id/et_description"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:gravity="end"
+            android:hint="@string/description"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:lines="1"
+            android:maxLength="50"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:text=""
+            android:textAlignment="viewEnd"
+            android:textColor="#494949"
+            android:textColorHint="#80545454"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread"
+            tools:fontFamily="@font/iransans_medium" />
+
+
+    </com.simorgh.expandablelayout.ExpandableLayout>
+
+
+    <EditText
+        android:id="@+id/et_drug_name"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:background="@drawable/btn_range_bkg"
+        android:gravity="center"
+        android:hint="@string/enter_drug_name"
+        android:imeOptions="actionNext"
+        android:lineSpacingExtra="-6.6sp"
+        android:lines="1"
+        android:maxLength="30"
+        android:singleLine="true"
+        android:text=""
+        android:textColor="#494949"
+        android:textColorHint="#80545454"
+        android:textSize="13.5sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/img_description"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:fontFamily="@font/iransans_medium" />
+
+    <ImageView
+        android:id="@+id/img_description"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/bkg_round"
+        android:padding="10dp"
+        android:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/et_drug_name"
+        app:layout_constraintEnd_toStartOf="@id/et_drug_name"
+        app:layout_constraintStart_toEndOf="@id/img_apply"
+        app:layout_constraintTop_toTopOf="@+id/et_drug_name"
+        app:srcCompat="@drawable/ic_edit" />
+
+    <ImageView
+        android:id="@+id/img_apply"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bkg_round"
+        android:padding="10dp"
+        android:scaleX="-1"
+        android:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/et_drug_name"
+        app:layout_constraintEnd_toStartOf="@id/img_apply"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/et_drug_name"
+        app:srcCompat="@drawable/ic_send" />
+</androidx.constraintlayout.widget.ConstraintLayout>

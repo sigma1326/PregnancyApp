@@ -12,9 +12,10 @@ import android.view.View;
 import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
 
+import com.simorgh.expandablelayout.util.FastOutSlowInInterpolator;
+
 import androidx.annotation.Keep;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 
 
 @Keep
@@ -97,7 +98,7 @@ public class ExpandableLayout extends ConstraintLayout {
 
         int size = orientation == LinearLayout.HORIZONTAL ? width : height;
 
-        setVisibility(expansion == 0 && size == 0 ? GONE : VISIBLE);
+        setVisibility(expansion == 0 && size == 0 ? INVISIBLE : VISIBLE);
 
         int expansionDelta = size - Math.round(size * expansion);
         if (parallax > 0) {

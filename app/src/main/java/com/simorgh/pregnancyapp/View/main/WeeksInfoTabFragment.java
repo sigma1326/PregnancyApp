@@ -1,5 +1,6 @@
 package com.simorgh.pregnancyapp.View.main;
 
+import androidx.core.view.ViewCompat;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -30,4 +31,11 @@ public class WeeksInfoTabFragment extends Fragment {
         mViewModel = ViewModelProviders.of(this).get(WeeksInfoTabViewModel.class);
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ViewCompat.setLayoutDirection(view, ViewCompat.LAYOUT_DIRECTION_LTR);
+
+    }
 }
+

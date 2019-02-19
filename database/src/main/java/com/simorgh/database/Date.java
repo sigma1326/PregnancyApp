@@ -30,13 +30,52 @@ public class Date implements Parcelable {
         this.seconds = seconds;
     }
 
-    public Date(final long milli) {
+    public Date(long milli) {
+        int length = String.valueOf(milli).length();
+        if (length < 14) {
+            if (length == 13) {
+                milli *= 10;
+            } else if (length == 12) {
+                milli *= 100;
+            } else if (length == 11) {
+                milli *= 1000;
+            } else if (length == 10) {
+                milli *= 10000;
+            }
+        }
         year = Integer.parseInt(String.valueOf(milli).substring(0, 4));
         month = Integer.parseInt(String.valueOf(milli).substring(4, 6));
         day = Integer.parseInt(String.valueOf(milli).substring(6, 8));
         hour = Integer.parseInt(String.valueOf(milli).substring(8, 10));
         minute = Integer.parseInt(String.valueOf(milli).substring(10, 12));
         seconds = Integer.parseInt(String.valueOf(milli).substring(12, 14));
+    }
+
+    public void setMillis(long milli) {
+        int length = String.valueOf(milli).length();
+        if (length < 14) {
+            if (length == 13) {
+                milli *= 10;
+            } else if (length == 12) {
+                milli *= 100;
+            } else if (length == 11) {
+                milli *= 1000;
+            } else if (length == 10) {
+                milli *= 10000;
+            }
+        }
+        year = Integer.parseInt(String.valueOf(milli).substring(0, 4));
+        month = Integer.parseInt(String.valueOf(milli).substring(4, 6));
+        day = Integer.parseInt(String.valueOf(milli).substring(6, 8));
+        hour = Integer.parseInt(String.valueOf(milli).substring(8, 10));
+        minute = Integer.parseInt(String.valueOf(milli).substring(10, 12));
+        seconds = Integer.parseInt(String.valueOf(milli).substring(12, 14));
+    }
+
+    public void clearHourMinuteSeconds() {
+        hour = 0;
+        minute = 0;
+        seconds = 0;
     }
 
     public Date(final Calendar calendar) {
@@ -134,6 +173,12 @@ public class Date implements Parcelable {
         ret = ret * 100 + minute;
         ret = ret * 100 + seconds;
         return ret;
+    }
+
+    public Calendar getCalendar() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day, hour, minute, seconds);
+        return calendar;
     }
 
     @SuppressLint("DefaultLocale")

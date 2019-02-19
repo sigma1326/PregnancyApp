@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TimeLineView">
+        <attr name="text" format="string" />
+        <attr name="lineColor" format="color" />
+        <attr name="textColor" format="color|reference" />
+        <attr name="textSize" format="dimension" />
+        <attr name="lineSize" format="dimension" />
+        <attr name="linePadding" format="dimension" />
+        <attr name="markerInCenter" format="boolean" />
+        <attr name="showStartLine" format="boolean" />
+        <attr name="showEndLine" format="boolean" />
+    </declare-styleable>
+</resources>

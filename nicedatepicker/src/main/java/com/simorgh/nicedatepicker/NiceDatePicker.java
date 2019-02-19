@@ -32,11 +32,18 @@ public class NiceDatePicker extends ConstraintLayout {
     private PersianCalendar persianCalendar;
     private PersianCalendar selectedPersianDate;
 
+    private volatile OnDateSelectedListener onDateSelectedListener;
+
+    private volatile Date date;
+
+
     {
         ThreadUtils.execute(() -> {
             calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
             persianCalendar = CalendarTool.GregorianToPersian(calendar);
             selectedPersianDate = CalendarTool.GregorianToPersian(calendar);
+
+            date = new Date(calendar.getTimeInMillis());
         });
 
     }
@@ -163,6 +170,12 @@ public class NiceDatePicker extends ConstraintLayout {
             if (selectedPersianDate != null) {
                 selectedPersianDate.setPersianDate(npYear.getValue(), npMonth.getValue(), npDay.getValue());
             }
+            ThreadUtils.execute(() -> {
+                if (onDateSelectedListener != null) {
+                    date.setMillis(CalendarTool.PersianToGregorian(selectedPersianDate).getTimeInMillis());
+                    onDateSelectedListener.OnDateSelected(date);
+                }
+            });
         }
     }
 
@@ -178,5 +191,13 @@ public class NiceDatePicker extends ConstraintLayout {
         calendar.setTimeInMillis(selectedDate.getMilli());
         selectedPersianDate = CalendarTool.GregorianToPersian(calendar);
         updateView();
+    }
+
+    public OnDateSelectedListener getOnDateSelectedListener() {
+        return onDateSelectedListener;
+    }
+
+    public void setOnDateSelectedListener(OnDateSelectedListener onDateSelectedListener) {
+        this.onDateSelectedListener = onDateSelectedListener;
     }
 }

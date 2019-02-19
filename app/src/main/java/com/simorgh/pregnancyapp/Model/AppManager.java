@@ -40,7 +40,7 @@ public class AppManager extends android.app.Application {
             Repository repository = new Repository(this);
 
             if (BuildConfig.DEBUG) {
-                Stetho.initializeWithDefaults(this);
+//                Stetho.initializeWithDefaults(this);
             }
 
 //            if (LeakCanary.isInAnalyzerProcess(this)) {

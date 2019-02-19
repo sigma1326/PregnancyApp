@@ -11,6 +11,7 @@ import com.simorgh.pregnancyapp.R;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.ViewCompat;
 
 @Keep
 public class MotherWeekInfoView extends ConstraintLayout {
@@ -43,6 +44,7 @@ public class MotherWeekInfoView extends ConstraintLayout {
 
     private void initView(@NonNull final Context context, AttributeSet attrs) {
         View v = View.inflate(context, R.layout.mother_week_info_layout, this);
+        ViewCompat.setLayoutDirection(v, ViewCompat.LAYOUT_DIRECTION_LTR);
 
         expandableLayout = v.findViewById(R.id.expandable_layout);
         summary = v.findViewById(R.id.tv_summary);

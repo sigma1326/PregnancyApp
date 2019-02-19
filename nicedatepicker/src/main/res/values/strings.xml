@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">NiceDatePicker</string>
+    <string name="can_not_be_selected">قابل انتخاب نیست</string>
 </resources>

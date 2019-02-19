@@ -1,1 +1,12 @@
-include ':app', ':database', ':threadutils', ':logger', ':nicedatepicker', ':numberpicker', ':calendarutil', ':bloodtypepicker', ':bottombar', ':expandablelayout'
+include ':app',
+        ':database',
+        ':threadutils',
+        ':logger',
+        ':nicedatepicker',
+        ':numberpicker',
+        ':calendarutil',
+        ':bloodtypepicker',
+        ':bottombar',
+        ':expandablelayout',
+        ':fluidslider',
+        ':timelineview'
