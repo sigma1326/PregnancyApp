@@ -23,7 +23,6 @@ import java.util.Objects;
 public class PregnancyCategoriesDetailFragment extends Fragment {
 
     private PregnancyCategoriesDetailViewModel mViewModel;
-    private TitleChangeListener titleChangeListener;
 
 
     @Override
@@ -40,23 +39,6 @@ public class PregnancyCategoriesDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Objects.requireNonNull(titleChangeListener).onTitleChanged("test");
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        try {
-            titleChangeListener = (TitleChangeListener) context;
-        } catch (Exception e) {
-            Logger.printStackTrace(e);
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        titleChangeListener = null;
     }
 
 }

@@ -22,17 +22,26 @@
         android:src="@drawable/home_bkg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent=".58"
+        app:layout_constraintHeight_percent=".55"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
+    <com.simorgh.weekslider.WeekSlider
+        android:id="@+id/week_slider"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="@id/img_embryo_back"
+        app:layout_constraintStart_toStartOf="@id/img_embryo_back"
+        app:layout_constraintTop_toBottomOf="@+id/img_embryo_big" />
 
     <ImageView
         android:id="@+id/img_bubbles"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:scaleType="center"
-        android:src="@drawable/group_45"
+        android:src="@drawable/bubble_bkg"
         app:layout_constraintBottom_toBottomOf="@id/guildline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -62,7 +71,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/card_embryo_bkg"
-        app:layout_constraintHeight_percent=".18"
+        app:layout_constraintHeight_percent=".2"
         app:layout_constraintStart_toStartOf="@id/guildline_embryo"
         app:layout_constraintTop_toBottomOf="@+id/img_embryo_back"
         app:layout_constraintWidth_percent="0.97" />
@@ -78,7 +87,7 @@
         android:background="@drawable/card_mother_bkg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/guildline_mother"
-        app:layout_constraintHeight_percent=".18"
+        app:layout_constraintHeight_percent=".2"
         app:layout_constraintTop_toBottomOf="@+id/card_embryo"
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintWidth_percent=".97" />
@@ -194,14 +203,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintWidth_percent=".58" />
+        app:layout_constraintWidth_percent=".50" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guildline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="1.0" />
+        app:layout_constraintGuide_percent="0.0" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guildline_mother"

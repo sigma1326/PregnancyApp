@@ -21,6 +21,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 import android.view.animation.OvershootInterpolator;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +69,7 @@ public class FluidSlider extends View {
 
     public static final float TEXT_SIZE = 12;
     public static final float TEXT_OFFSET = 8;
-    public static final String TEXT_END = "42";
+    public static final String TEXT_END = "40";
     private static final int DEFAULT_WIDTH = 350;
 
     public static final int COLOR_BAR = Color.parseColor("#ffca3b3a");
@@ -115,7 +116,7 @@ public class FluidSlider extends View {
 
 
     private long duration = (long) ANIMATION_DURATION;
-    private Pair<Integer, Integer> minMax = new Pair<>(1, 42);
+    private Pair<Integer, Integer> minMax = new Pair<>(1, 40);
 
     public int getColorBar() {
         return paintBar.getColor();
