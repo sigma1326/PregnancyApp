@@ -92,7 +92,7 @@ public class NiceDatePickerSmall extends ConstraintLayout {
             ThreadUtils.runOnUIThread(() -> {
                 updateView();
                 updateBubbleText();
-            }, 500);
+            }, 0);
         });
 
 

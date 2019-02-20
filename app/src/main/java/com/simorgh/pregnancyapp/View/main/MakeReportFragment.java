@@ -23,7 +23,6 @@ import java.util.Objects;
 public class MakeReportFragment extends Fragment {
 
     private MakeReportViewModel mViewModel;
-    private TitleChangeListener titleChangeListener;
 
 
 
@@ -41,22 +40,15 @@ public class MakeReportFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Objects.requireNonNull(titleChangeListener).onTitleChanged(getString(R.string.make_report_for_doctor));
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        try {
-            titleChangeListener = (TitleChangeListener) context;
-        } catch (Exception e) {
-            Logger.printStackTrace(e);
-        }
     }
 
     @Override
     public void onDetach() {
-        titleChangeListener = null;
         super.onDetach();
     }
 }

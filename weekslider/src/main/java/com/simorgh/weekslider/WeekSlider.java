@@ -96,13 +96,13 @@ public class WeekSlider extends View {
                 h = (int) dp2px(100);
                 break;
             case Configuration.SCREENLAYOUT_SIZE_NORMAL:
-                h = (int) dp2px(50);
+                h = (int) dp2px(65);
                 break;
             case Configuration.SCREENLAYOUT_SIZE_SMALL:
-                h = (int) dp2px(50);
+                h = (int) dp2px(65);
                 break;
             default:
-                h = (int) dp2px(50);
+                h = (int) dp2px(65);
         }
 
 
@@ -203,10 +203,10 @@ public class WeekSlider extends View {
     private void drawBubbleIndicator(Canvas canvas) {
         indicatorPath.reset();
         paint.setColor(reachedColor);
-        indicatorPath.moveTo(bubbleRect.centerX() - dp2px(2.5f), bubbleRect.bottom);
+        indicatorPath.moveTo(bubbleRect.centerX(), bubbleRect.bottom);
         indicatorPath.rLineTo(dp2px(7), 0);
-        indicatorPath.rLineTo(-dp2px(5f), 0.2f * getHeight());
-        indicatorPath.rLineTo(-dp2px(5f), -0.2f * getHeight());
+        indicatorPath.rLineTo(-dp2px(7f), 0.2f * getHeight());
+        indicatorPath.rLineTo(-dp2px(7f), -0.2f * getHeight());
         indicatorPath.close();
 
         canvas.drawPath(indicatorPath, paint);
@@ -222,33 +222,31 @@ public class WeekSlider extends View {
 
     private void drawBubble(Canvas canvas) {
         paint.setColor(reachedColor);
-        bubbleRect.set(reachedX - 0.13f * getWidth(), 0, reachedX + 0.09f * getWidth(), 0.33f * getHeight());
+        bubbleRect.set(reachedX - 0.13f * getWidth(), 0, reachedX + 0.08f * getWidth(), 0.33f * getHeight());
         canvas.drawRoundRect(bubbleRect, 50, 50, paint);
     }
 
     private void drawReachedCircle(Canvas canvas) {
         paint.setColor(colorSmallCircle);
-        canvas.drawCircle(reachedX - 0.025f * getWidth(), 0.7f * getHeight(), dp2px(2.5f), paint);
+        canvas.drawCircle(reachedX - 0.025f * getWidth(), 0.65f * getHeight(), dp2px(2.5f), paint);
     }
 
     private void drawReachedLine(Canvas canvas) {
         paint.setColor(reachedColor);
-        paint.setStrokeWidth(dp2px(10));
-        reachedRect.set(0.085f * getWidth() + 0.6f * getHeight(), 0.7f * getHeight() - dp2px(5.5f), reachedX
-                , 0.7f * getHeight() + dp2px(5.5f));
+        reachedRect.set(0.075f * getWidth() + 0.7f * getHeight(), 0.65f * getHeight() - dp2px(6f), reachedX
+                , 0.65f * getHeight() + dp2px(6f));
         canvas.drawRoundRect(reachedRect, 50, 50, paint);
     }
 
     private void drawUnreachedLine(Canvas canvas) {
         paint.setColor(unreachedColor);
-        paint.setStrokeWidth(dp2px(8));
-        unreachedRect.set(0.085f * getWidth() + 0.7f * getHeight(), 0.7f * getHeight() - dp2px(4f)
-                , getWidth() - 0.7f * getHeight() - 0.080f * getWidth(), 0.7f * getHeight() + dp2px(4f));
-        canvas.drawRoundRect(unreachedRect, 50, 50, paint);
+        unreachedRect.set(0.085f * getWidth() + 0.7f * getHeight(), 0.65f * getHeight() - dp2px(4f)
+                , getWidth() - 0.7f * getHeight() - 0.080f * getWidth(), 0.65f * getHeight() + dp2px(4f));
+        canvas.drawRoundRect(unreachedRect, 0, 0, paint);
     }
 
     private void drawClouds(Canvas canvas) {
-        paint.setTextSize(sp2px(8));
+        paint.setTextSize(sp2px(10));
         ColorFilter filter = new PorterDuffColorFilter(reachedColor, PorterDuff.Mode.SRC_IN);
         paint.setColorFilter(filter);
         cloudRect.set(0.085f * getWidth(), 0.30f * getHeight()
@@ -262,7 +260,7 @@ public class WeekSlider extends View {
 
 
         cloudRect.set(getWidth() - 0.085f * getWidth() - 0.7f * getHeight(), 0.30f * getHeight()
-                , getWidth() - 0.7f * getHeight(), 0.30f * getHeight() + 0.7f * getHeight());
+                , getWidth() - 0.085f * getWidth(), 0.30f * getHeight() + 0.7f * getHeight());
         if (weekNumber == max) {
             filter = new PorterDuffColorFilter(reachedColor, PorterDuff.Mode.SRC_IN);
         } else {
@@ -319,11 +317,11 @@ public class WeekSlider extends View {
         if (newX - dp2px(8f) >= unreachedRect.left && newX <= unreachedRect.right) {
             return newX;
         }
-        if (newX - dp2px(8f) <= 0.170f * getWidth()) {
+        if (newX - dp2px(8f) <= unreachedRect.left) {
             if (weekNumber == 1) {
                 return -1;
             }
-            return 0.170f * getWidth() + dp2px(8);
+            return unreachedRect.left + dp2px(8);
         }
         if (newX >= unreachedRect.right) {
             if (weekNumber == max) {

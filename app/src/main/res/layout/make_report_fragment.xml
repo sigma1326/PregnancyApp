@@ -51,6 +51,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
+                android:text="@string/make_report_for_doctor"
                 android:textColor="@color/white"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -58,8 +59,7 @@
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:fontFamily="@font/iransans_medium"
-                tools:text="صفحه اصلی" />
+                tools:fontFamily="@font/iransans_medium" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
