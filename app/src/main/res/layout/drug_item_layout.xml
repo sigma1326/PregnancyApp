@@ -9,7 +9,7 @@
     android:layout_marginBottom="4dp"
     android:background="@null"
     android:layerType="hardware"
-
+    android:orientation="vertical"
     tools:background="@color/white">
 
 
@@ -85,10 +85,10 @@
         android:paddingStart="18dp"
         android:paddingEnd="18dp"
         app:expansion_duration="200"
-        tools:expansion_expanded="true">
+        tools:expansion_expanded="false">
 
         <TextView
-            android:id="@+id/et_description"
+            android:id="@+id/tv_description"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_gravity="center"

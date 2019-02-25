@@ -45,7 +45,9 @@
     <string name="had_not">نداشتم</string>
     <string name="use_alcohol">مصرف الکل</string>
     <string name="sleep_time">میزان خواب</string>
-    <string name="hour">(ساعت)</string>
+    <string name="weight">(ساعت)</string>
     <string name="minute">(دقیقه)</string>
     <string name="exercise_time">میزان ورزش</string>
+    <string name="embryo_evolution">تکامل جنین در این هفته</string>
+    <string name="mother_care">مراقبت‌های مادر در این هفته</string>
 </resources>

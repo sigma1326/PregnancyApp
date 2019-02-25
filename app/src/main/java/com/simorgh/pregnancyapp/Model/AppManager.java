@@ -3,16 +3,22 @@ package com.simorgh.pregnancyapp.Model;
 import android.os.Handler;
 import android.os.StrictMode;
 
-import com.simorgh.database.Repository;
+import com.facebook.stetho.Stetho;
 import com.simorgh.pregnancyapp.BuildConfig;
 import com.simorgh.pregnancyapp.R;
+import com.simorgh.pregnancyapp.di.component.DaggerApplicationComponent;
+import com.simorgh.pregnancyapp.di.module.ApplicationModule;
+import com.simorgh.pregnancyapp.di.module.DataBaseModule;
 import com.simorgh.threadutils.ThreadUtils;
 
+import androidx.multidex.MultiDexApplication;
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
 import io.github.inflationx.viewpump.ViewPump;
 
-public class AppManager extends android.app.Application {
+public class AppManager extends MultiDexApplication {
+    private static DaggerApplicationComponent daggerApplicationComponent;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -31,13 +37,19 @@ public class AppManager extends android.app.Application {
                 .penaltyDeath()
                 .build());
 
+        daggerApplicationComponent = (DaggerApplicationComponent) DaggerApplicationComponent
+                .builder()
+                .applicationModule(new ApplicationModule(this))
+                .dataBaseModule(new DataBaseModule())
+                .build();
+
 
         ThreadUtils.execute(() -> {
             ThreadUtils.init(new Handler(getMainLooper()));
-            Repository repository = new Repository(this);
+//            Repository repository = new Repository(this);
 
             if (BuildConfig.DEBUG) {
-//                Stetho.initializeWithDefaults(this);
+                Stetho.initializeWithDefaults(this);
             }
 
 //            if (LeakCanary.isInAnalyzerProcess(this)) {
@@ -49,6 +61,8 @@ public class AppManager extends android.app.Application {
             // Normal app init code...
 
             initTypeFace();
+
+//            Logger.i(DebugDB.getAddressLog());
 
 //            User user = new User();
 //            user.setFontSize(14);
@@ -70,6 +84,11 @@ public class AppManager extends android.app.Application {
                                     .build()))
                     .build());
         });
+    }
+
+
+    public static DaggerApplicationComponent getDaggerApplicationComponent() {
+        return daggerApplicationComponent;
     }
 
     @Override

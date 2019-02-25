@@ -60,6 +60,7 @@ public class WeekSlider extends View {
     private int max = 40;
     private int weekNumber;
     private final String weekLabel = "هفته ";
+    private final long DURATION = 1200;
 
 
     public WeekSlider(Context context) {
@@ -96,13 +97,13 @@ public class WeekSlider extends View {
                 h = (int) dp2px(100);
                 break;
             case Configuration.SCREENLAYOUT_SIZE_NORMAL:
-                h = (int) dp2px(65);
+                h = (int) dp2px(60);
                 break;
             case Configuration.SCREENLAYOUT_SIZE_SMALL:
-                h = (int) dp2px(65);
+                h = (int) dp2px(55);
                 break;
             default:
-                h = (int) dp2px(65);
+                h = (int) dp2px(60);
         }
 
 
@@ -170,6 +171,45 @@ public class WeekSlider extends View {
 
     }
 
+
+    public void setWeekNumber(int weekNumber) {
+        float p = (float) weekNumber / max * 100;
+        p = (float) Math.ceil(p);
+        reachedX = getNewX(p / 100f * (unreachedRect.right - unreachedRect.left) + unreachedRect.left);
+        postInvalidate();
+    }
+
+    public void goToWeekNumber(int weekNumber) {
+        float p = (float) weekNumber / max * 100;
+        p = (float) Math.ceil(p);
+        float duration = ((float) weekNumber / max) * DURATION;
+        float newReachedX = p / 100f * (unreachedRect.right - unreachedRect.left) + unreachedRect.left;
+        ValueAnimator animator = ValueAnimator.ofFloat(reachedX, getNewX(newReachedX));
+        animator.setDuration((long) Math.max(300, Math.abs(duration)));
+        animator.setInterpolator(new FastOutSlowInInterpolator());
+        animator.addUpdateListener(animation -> {
+            reachedX = (float) animation.getAnimatedValue();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                postInvalidateOnAnimation();
+            } else {
+                postInvalidate();
+            }
+        });
+        animator.start();
+    }
+
+    public int getWeekNumber() {
+        return weekNumber;
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        unreachedRect.set(0.095f * getWidth() + 0.7f * getHeight(), 0.65f * getHeight() - dp2px(4f)
+                , getWidth() - 0.7f * getHeight() - 0.080f * getWidth(), 0.65f * getHeight() + dp2px(4f));
+        reachedX = unreachedRect.left + dp2px(8);
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawColor(Color.TRANSPARENT);
@@ -197,7 +237,11 @@ public class WeekSlider extends View {
 
         drawClouds(canvas);
 
-
+        if (stateUpdateListener != null) {
+            stateUpdateListener
+                    .onStateUpdated(((reachedX - unreachedRect.left) / (unreachedRect.right - unreachedRect.left))
+                            , weekNumber);
+        }
     }
 
     private void drawBubbleIndicator(Canvas canvas) {
@@ -240,8 +284,6 @@ public class WeekSlider extends View {
 
     private void drawUnreachedLine(Canvas canvas) {
         paint.setColor(unreachedColor);
-        unreachedRect.set(0.085f * getWidth() + 0.7f * getHeight(), 0.65f * getHeight() - dp2px(4f)
-                , getWidth() - 0.7f * getHeight() - 0.080f * getWidth(), 0.65f * getHeight() + dp2px(4f));
         canvas.drawRoundRect(unreachedRect, 0, 0, paint);
     }
 
@@ -271,7 +313,7 @@ public class WeekSlider extends View {
 
         paint.setColorFilter(null);
         paint.setColor(textColorLabels);
-        canvas.drawText(endTextDay, cloudRect.centerX(), cloudRect.centerY() - dp2px(2), paint);
+        canvas.drawText(endTextDay, cloudRect.centerX(), cloudRect.centerY() - dp2px(4), paint);
         canvas.drawText(endTextMonth, cloudRect.centerX(), cloudRect.centerY() + dp2px(6), paint);
 
     }
@@ -283,7 +325,7 @@ public class WeekSlider extends View {
     public boolean onTouchEvent(MotionEvent event) {
         float newX = getNewX(event.getX());
 //        Logger.d((px2dp(event.getX())) + " : " + px2dp(getWidth() - event.getX()));
-        Logger.d(newX + "");
+//        Logger.d(newX + "");
 
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
@@ -377,17 +419,13 @@ public class WeekSlider extends View {
     };
 
     private void animate(float newX) {
+        float duration = ((Math.abs((newX - reachedX)) - unreachedRect.left) / (unreachedRect.right - unreachedRect.left)) * DURATION;
         ValueAnimator animator = ValueAnimator.ofFloat(reachedX, newX);
-        animator.setDuration(300);
+        animator.setDuration((long) Math.max(300, Math.abs(duration)));
         animator.setInterpolator(new FastOutSlowInInterpolator());
         animator.addUpdateListener(animation -> {
             reachedX = (float) animation.getAnimatedValue();
 
-            if (stateUpdateListener != null) {
-                stateUpdateListener
-                        .onStateUpdated(((reachedX - unreachedRect.left) / (unreachedRect.right - unreachedRect.left))
-                                , weekNumber);
-            }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 postInvalidateOnAnimation();
             } else {

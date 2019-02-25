@@ -1,38 +1,89 @@
 package com.simorgh.pregnancyapp.View.main;
 
-import androidx.lifecycle.ViewModelProviders;
-
-import android.content.Context;
+import android.app.Activity;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.simorgh.database.model.Drug;
 import com.simorgh.logger.Logger;
 import com.simorgh.nicedatepicker.NiceDatePickerSmall;
 import com.simorgh.pregnancyapp.R;
-import com.simorgh.pregnancyapp.View.TitleChangeListener;
-import com.simorgh.pregnancyapp.View.register.RegisterActivity;
 import com.simorgh.pregnancyapp.ViewModel.main.AddLogViewModel;
+import com.simorgh.pregnancyapp.adapter.DrugAdapter;
+import com.simorgh.pregnancyapp.ui.AlcoholView;
+import com.simorgh.pregnancyapp.ui.BaseFragment;
+import com.simorgh.pregnancyapp.ui.BloodPressureView;
+import com.simorgh.pregnancyapp.ui.CigaretteView;
+import com.simorgh.pregnancyapp.ui.DrugInsertView;
+import com.simorgh.pregnancyapp.ui.ExerciseView;
+import com.simorgh.pregnancyapp.ui.FeverView;
+import com.simorgh.pregnancyapp.ui.MotherWeightView;
+import com.simorgh.pregnancyapp.ui.SleepView;
+import com.simorgh.pregnancyapp.utils.Utils;
 import com.simorgh.threadutils.ThreadUtils;
 
 import java.util.Objects;
 
-public class AddLogFragment extends Fragment {
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
+
+public class AddLogFragment extends BaseFragment {
 
     private AddLogViewModel mViewModel;
-    private ImageButton backButton;
-    private NiceDatePickerSmall datePicker;
-    private ViewStub viewStub;
+
+    @BindView(R.id.img_back)
+    ImageButton backButton;
+
+
+    @BindView(R.id.date_picker)
+    NiceDatePickerSmall datePicker;
+
+    @BindView(R.id.drug_insert_view)
+    DrugInsertView drugInsertView;
+
+    @BindView(R.id.rv_drugs)
+    RecyclerView rvDrugs;
+
+    @BindView(R.id.blood_pressure_view)
+    BloodPressureView bloodPressureView;
+
+    @BindView(R.id.mother_weight_view)
+    MotherWeightView motherWeightView;
+
+    @BindView(R.id.fever_view)
+    FeverView feverView;
+
+    @BindView(R.id.cigarette_view)
+    CigaretteView cigaretteView;
+
+    @BindView(R.id.alcohol_view)
+    AlcoholView alcoholView;
+
+    @BindView(R.id.sleep_view)
+    SleepView sleepView;
+
+    @BindView(R.id.exercise_view)
+    ExerciseView exerciseView;
+
+    @BindView(R.id.btn_apply_changes)
+    Button saveLog;
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(AddLogViewModel.class);
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -40,21 +91,8 @@ public class AddLogFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(AddLogViewModel.class);
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        viewStub = view.findViewById(R.id.view_stub_add_log);
-        viewStub.inflate();
-
-
-        backButton = view.findViewById(R.id.img_back);
-        datePicker = view.findViewById(R.id.date_picker);
 
 
         backButton.setOnClickListener(v -> {
@@ -68,13 +106,92 @@ public class AddLogFragment extends Fragment {
         });
 
 
-    }
+        datePicker.setOnDateSelectedListener(date -> {
+            mViewModel.setDate(date);
+        });
 
-    @Override
-    public void onDestroy() {
-        backButton = null;
-        datePicker = null;
-        viewStub = null;
-        super.onDestroy();
+        rvDrugs.setHasFixedSize(false);
+        rvDrugs.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        rvDrugs.setNestedScrollingEnabled(false);
+        rvDrugs.setAdapter(new DrugAdapter(new DrugAdapter.ItemDiffCallBack(), new DrugAdapter.ItemClickListener() {
+            @Override
+            public void removeItem(long itemId) {
+                mViewModel.removeDrug(itemId);
+            }
+
+            @Override
+            public void selectItemToEdit(Drug drug) {
+                mViewModel.setDrug(drug);
+            }
+        }));
+
+
+        mViewModel.getDrug().observe(this, drug -> {
+            drugInsertView.setDrug(drug);
+        });
+
+        drugInsertView.setInsertDrugListener(drug -> {
+            //todo add date to it
+            mViewModel.addDrug(drug, success -> {
+                ThreadUtils.runOnUIThread(() -> {
+                    Toast.makeText(getContext(), success ? "دارو اضافه شد" : "دارو موجود است", Toast.LENGTH_SHORT).show();
+                });
+            });
+        });
+
+        mViewModel.getAlcohol().observe(this, alcohol -> {
+            alcoholView.setAlcohol(alcohol);
+        });
+
+        mViewModel.getCigarette().observe(this, cigarette -> {
+            cigaretteView.setCigarette(cigarette);
+        });
+
+        mViewModel.getBloodPressure().observe(this, bloodPressure -> {
+            bloodPressureView.setBloodPressure(bloodPressure);
+        });
+
+        mViewModel.getDrugs().observe(this, drugs -> {
+            ThreadUtils.runOnUIThread(() -> {
+//                rvDrugs.setMinimumHeight(drugs.size() * 40);
+                ((DrugAdapter) Objects.requireNonNull(rvDrugs.getAdapter())).submitList(drugs);
+                Objects.requireNonNull(rvDrugs.getAdapter()).notifyItemChanged(0, drugs.size());
+            });
+        });
+
+        mViewModel.getMotherWeight().observe(this, weight -> {
+            motherWeightView.setWeight(weight);
+        });
+
+        mViewModel.getExerciseTime().observe(this, exerciseTime -> {
+            exerciseView.setExerciseTime(exerciseTime);
+        });
+
+        mViewModel.getFever().observe(this, fever -> {
+            feverView.setFever(fever);
+        });
+
+        mViewModel.getSleepTime().observe(this, sleepTime -> {
+            sleepView.setSleepTime(sleepTime);
+        });
+
+
+        saveLog.setOnClickListener(v -> {
+            Utils.hideKeyboard((Activity) v.getContext());
+            mViewModel.setCigarette(cigaretteView.getCigarette());
+            mViewModel.setBloodPressure(bloodPressureView.getBloodPressure());
+            mViewModel.setExerciseTime(exerciseView.getExerciseTime());
+            mViewModel.setAlcohol(alcoholView.getAlcohol());
+            mViewModel.setFever(feverView.getFever());
+            mViewModel.setSleepTime(sleepView.getSleepTime());
+            String error = mViewModel.checkErrors();
+            if (error.isEmpty()) {
+                mViewModel.saveLog();
+            } else {
+                ThreadUtils.runOnUIThread(() -> {
+                    Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+                });
+            }
+        });
     }
 }

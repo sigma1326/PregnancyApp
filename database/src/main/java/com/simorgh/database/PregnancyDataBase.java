@@ -2,12 +2,19 @@ package com.simorgh.database;
 
 import android.content.Context;
 
+import com.simorgh.database.dao.ArticleDAO;
+import com.simorgh.database.dao.ParagraphDAO;
 import com.simorgh.database.dao.UserDAO;
+import com.simorgh.database.dao.WeekDAO;
+import com.simorgh.database.model.Alcohol;
 import com.simorgh.database.model.Article;
 import com.simorgh.database.model.BloodPressure;
+import com.simorgh.database.model.Cigarette;
 import com.simorgh.database.model.Drug;
+import com.simorgh.database.model.ExerciseTime;
 import com.simorgh.database.model.Fever;
 import com.simorgh.database.model.Paragraph;
+import com.simorgh.database.model.SleepTime;
 import com.simorgh.database.model.User;
 import com.simorgh.database.model.Week;
 import com.simorgh.database.model.Weight;
@@ -18,6 +25,8 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
+import androidx.room.migration.Migration;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 @Keep
 @TypeConverters(com.simorgh.database.TypeConverters.class)
@@ -32,12 +41,26 @@ public abstract class PregnancyDataBase extends RoomDatabase {
 
     public abstract UserDAO userDAO();
 
+    public abstract ArticleDAO articleDAO();
 
-    static PregnancyDataBase getDatabase(@NonNull final Context context) {
+    public abstract WeekDAO weekDAO();
+
+    public abstract ParagraphDAO paragraphDAO();
+
+
+    public static PregnancyDataBase getDatabase(@NonNull final Context context) {
         if (INSTANCE == null) {
             synchronized (PregnancyDataBase.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), PregnancyDataBase.class, DB_NAME).build();
+                    INSTANCE = Room
+                            .databaseBuilder(context.getApplicationContext(), PregnancyDataBase.class, DB_NAME)
+                            .addMigrations(new Migration(1, 2) {
+                                @Override
+                                public void migrate(@NonNull SupportSQLiteDatabase database) {
+//                                    database.execSQL("");
+                                }
+                            })
+                            .build();
                 }
             }
         }

@@ -15,13 +15,13 @@ import android.widget.TextView;
 import com.simorgh.logger.Logger;
 import com.simorgh.pregnancyapp.R;
 import com.simorgh.pregnancyapp.View.TitleChangeListener;
+import com.simorgh.pregnancyapp.ui.BaseActivity;
 import com.simorgh.threadutils.ThreadUtils;
 import com.transitionseverywhere.ChangeText;
 import com.transitionseverywhere.extra.Scale;
 
 import java.util.Objects;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
@@ -33,7 +33,7 @@ import androidx.transition.TransitionManager;
 import androidx.transition.TransitionSet;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
-public class RegisterActivity extends AppCompatActivity implements TitleChangeListener {
+public class RegisterActivity extends BaseActivity implements TitleChangeListener {
 
     private NavController navController;
     private Button nextButton;

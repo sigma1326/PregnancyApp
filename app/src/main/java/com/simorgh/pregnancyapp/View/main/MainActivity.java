@@ -5,27 +5,26 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
-import com.google.android.material.appbar.AppBarLayout;
 import com.simorgh.bottombar.BottomBar;
+import com.simorgh.database.Repository;
 import com.simorgh.logger.Logger;
 import com.simorgh.pregnancyapp.R;
-import com.simorgh.pregnancyapp.View.TitleChangeListener;
+import com.simorgh.pregnancyapp.ui.BaseActivity;
 
 import java.util.Objects;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.transition.TransitionManager;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
-public class MainActivity extends AppCompatActivity implements BottomBar.OnItemClickListener
+public class MainActivity extends BaseActivity implements BottomBar.OnItemClickListener
         , BottomBar.OnCircleItemClickListener, NavController.OnDestinationChangedListener {
 
     private BottomBar bottomBar;

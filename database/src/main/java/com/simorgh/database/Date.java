@@ -7,9 +7,11 @@ import android.os.Parcelable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 @Keep
 public class Date implements Parcelable {
@@ -185,5 +187,10 @@ public class Date implements Parcelable {
     @NotNull
     public String toString() {
         return String.format("date = {%04d/%02d/%02d - %02d:%02d:%02d}", year, month, day, hour, minute, seconds);
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        return getMilli() == ((Date) Objects.requireNonNull(obj)).getMilli();
     }
 }

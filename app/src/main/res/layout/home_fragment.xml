@@ -30,11 +30,29 @@
     <com.simorgh.weekslider.WeekSlider
         android:id="@+id/week_slider"
         android:layout_width="0dp"
+        android:layerType="hardware"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="@id/img_embryo_back"
         app:layout_constraintStart_toStartOf="@id/img_embryo_back"
         app:layout_constraintTop_toBottomOf="@+id/img_embryo_big" />
+
+
+    <TextSwitcher
+        android:id="@+id/embryo_summary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:inAnimation="@anim/slide_in_top"
+        android:lineSpacingExtra="-7.2sp"
+        android:outAnimation="@anim/slide_out_bottom"
+        android:textColor="#ffffff"
+        android:textSize="13.3sp"
+        app:layout_constraintEnd_toEndOf="@id/week_slider"
+        app:layout_constraintStart_toStartOf="@id/week_slider"
+        app:layout_constraintTop_toBottomOf="@id/week_slider"
+        tools:fontFamily="@font/iransans_medium"
+        tools:text="جنین شما این هفته اندازه یک پرتقال شده" />
 
     <ImageView
         android:id="@+id/img_bubbles"
@@ -92,25 +110,31 @@
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintWidth_percent=".97" />
 
-    <ImageView
+    <ImageSwitcher
         android:id="@+id/img_embryo"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:adjustViewBounds="true"
-        android:src="@drawable/group_8"
+        android:inAnimation="@anim/fade_in"
+        android:outAnimation="@anim/fade_out"
         app:layout_constraintBottom_toBottomOf="@+id/card_embryo"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toStartOf="@+id/card_embryo"
-        app:layout_constraintTop_toTopOf="@+id/card_embryo" />
+        app:layout_constraintTop_toTopOf="@+id/card_embryo"
+        tools:src="@drawable/group_8" />
 
-    <ImageView
+    <ImageSwitcher
         android:id="@+id/img_mother"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:adjustViewBounds="true"
-        android:src="@drawable/layer_2"
+        android:inAnimation="@anim/fade_in"
+        android:outAnimation="@anim/fade_out"
         app:layout_constraintBottom_toBottomOf="@+id/card_mother"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="@+id/card_mother"
-        app:layout_constraintTop_toTopOf="@+id/card_mother" />
+        app:layout_constraintTop_toTopOf="@+id/card_mother"
+        tools:src="@drawable/layer_2" />
 
     <TextView
         android:id="@+id/tv_embryo_title"
@@ -120,7 +144,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:background="@null"
-        android:text="تکامل جنین"
+        android:text="@string/embryo_evolution"
         android:textColor="#b24547"
         android:textSize="12.3sp"
         app:fontFamily="@font/iransans_medium"
@@ -139,7 +163,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:background="@null"
-        android:text="مراقبت‌های مادر"
+        android:text="@string/mother_care"
         android:textColor="#b24547"
         android:textSize="12.3sp"
         app:fontFamily="@font/iransans_medium"
@@ -150,7 +174,7 @@
         app:layout_constraintTop_toTopOf="@+id/card_mother"
         app:layout_constraintVertical_bias="0.0" />
 
-    <TextView
+    <TextSwitcher
         android:id="@+id/tv_embryo_summary"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -159,7 +183,9 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
         android:gravity="start"
+        android:inAnimation="@anim/slide_in_top"
         android:lineSpacingExtra="-3sp"
+        android:outAnimation="@anim/slide_out_bottom"
         android:text="باورتان می‌شود او هر روز مثل ما صبحش را با یک دم و بازدم شروع می‌کند با این کار ریه‌هایش را قوی می‌کند تا کیسه‌های هوا در ریه‌اش شکل بگیرد."
         android:textAlignment="textStart"
         android:textColor="#3d3d3d"
@@ -170,7 +196,7 @@
         app:layout_constraintStart_toEndOf="@+id/img_embryo"
         app:layout_constraintTop_toBottomOf="@+id/tv_embryo_title" />
 
-    <TextView
+    <TextSwitcher
         android:id="@+id/tv_mother_summary"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -179,7 +205,9 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
         android:gravity="start"
+        android:inAnimation="@anim/slide_in_top"
         android:lineSpacingExtra="-3sp"
+        android:outAnimation="@anim/slide_out_bottom"
         android:text=" این هفته ممکن است چند بار غافلگیر شوید. هم وزنتان اضافه می‌شود و هم ممکن است یک یا چند بار دچار گرفتگی بینی شوید"
         android:textAlignment="textStart"
         android:textColor="#3d3d3d"
@@ -203,7 +231,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintWidth_percent=".53" />
+        app:layout_constraintWidth_percent=".51" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guildline"

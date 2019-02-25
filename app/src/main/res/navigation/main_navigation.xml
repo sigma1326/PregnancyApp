@@ -198,7 +198,16 @@
         android:id="@+id/articleDetailFragment"
         android:name="com.simorgh.pregnancyapp.View.main.ArticleDetailFragment"
         android:label="article_detail_fragment"
-        tools:layout="@layout/article_detail_fragment" />
+        tools:layout="@layout/article_detail_fragment_mother" >
+        <argument
+            android:name="article_type"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="week_number"
+            app:argType="integer"
+            android:defaultValue="1" />
+    </fragment>
     <fragment
         android:id="@+id/pregnancyCategoriesDetailFragment"
         android:name="com.simorgh.pregnancyapp.View.main.PregnancyCategoriesDetailFragment"
