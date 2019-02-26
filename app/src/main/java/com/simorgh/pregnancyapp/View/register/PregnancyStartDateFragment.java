@@ -2,12 +2,14 @@ package com.simorgh.pregnancyapp.View.register;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.simorgh.calendarutil.CalendarTool;
 import com.simorgh.calendarutil.persiancalendar.PersianCalendar;
+import com.simorgh.database.Date;
 import com.simorgh.logger.Logger;
 import com.simorgh.nicedatepicker.NiceDatePicker;
 import com.simorgh.pregnancyapp.R;
@@ -53,18 +55,21 @@ public class PregnancyStartDateFragment extends BaseFragment {
         Objects.requireNonNull(titleChangeListener).onTitleChanged(getString(R.string.enter_pregnancy_start_date));
 
 
+        Calendar min = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
+        min.add(Calendar.DAY_OF_MONTH, -280);
+
+        Calendar max = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
+        datePicker.setDateRange(min, max);
+
+        Date value = mViewModel.getPregnancyStartDate().getValue();
+        if (value == null) {
+            Date date = datePicker.getSelectedDate();
+            mViewModel.setPregnancyStartDate(date);
+        } else {
+            datePicker.setSelectedDate(value);
+        }
         datePicker.setOnDateSelectedListener(date -> {
-            ThreadUtils.runOnUIThread(() -> {
-                mViewModel.setPregnancyStartDate(date);
-            });
-        });
-
-        ThreadUtils.execute(() -> {
-            Calendar min = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-            min.add(Calendar.DAY_OF_MONTH, -280);
-
-            Calendar max = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-            datePicker.setDateRange(min, max);
+            mViewModel.setPregnancyStartDate(date);
         });
     }
 

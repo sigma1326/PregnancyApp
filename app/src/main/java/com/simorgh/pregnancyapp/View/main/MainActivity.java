@@ -7,17 +7,16 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.simorgh.bottombar.BottomBar;
-import com.simorgh.database.Repository;
 import com.simorgh.logger.Logger;
 import com.simorgh.pregnancyapp.R;
+import com.simorgh.pregnancyapp.ViewModel.main.UserViewModel;
 import com.simorgh.pregnancyapp.ui.BaseActivity;
 
 import java.util.Objects;
 
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
@@ -34,11 +33,15 @@ public class MainActivity extends BaseActivity implements BottomBar.OnItemClickL
     private Animation animBottomGone;
     private Animation animBottomShow;
 
+    private UserViewModel mUserViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+        mUserViewModel.getUserLiveData(repository);
 
         getWindow().setBackgroundDrawable(null);
 

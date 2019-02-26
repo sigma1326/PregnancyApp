@@ -57,7 +57,7 @@ public class WeekSlider extends View {
 
     private Path indicatorPath = new Path();
 
-    private int max = 40;
+    private float max = 40;
     private int weekNumber;
     private final String weekLabel = "هفته ";
     private final long DURATION = 1200;
@@ -180,10 +180,16 @@ public class WeekSlider extends View {
     }
 
     public void goToWeekNumber(int weekNumber) {
-        float p = (float) weekNumber / max * 100;
+        if (weekNumber < 1 || weekNumber > max) {
+            weekNumber = 1;
+        }
+        float p = (weekNumber / max) * 100f;
         p = (float) Math.ceil(p);
         float duration = ((float) weekNumber / max) * DURATION;
         float newReachedX = p / 100f * (unreachedRect.right - unreachedRect.left) + unreachedRect.left;
+        if (newReachedX < unreachedRect.left + dp2px(8)) {
+            newReachedX = unreachedRect.left + dp2px(8);
+        }
         ValueAnimator animator = ValueAnimator.ofFloat(reachedX, getNewX(newReachedX));
         animator.setDuration((long) Math.max(300, Math.abs(duration)));
         animator.setInterpolator(new FastOutSlowInInterpolator());

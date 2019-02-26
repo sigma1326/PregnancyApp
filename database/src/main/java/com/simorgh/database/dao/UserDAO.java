@@ -25,4 +25,9 @@ public interface UserDAO {
     @Query("select * from users  where id=1")
     LiveData<User> getUserLiveData();
 
+    @Query("update users set font_size=:value where id=1")
+    void updateFontSize(int value);
+
+    @Query("update users set blood_type=:type, is_negative=:isNegative where id=1")
+    void updateBloodType(String type, boolean isNegative);
 }

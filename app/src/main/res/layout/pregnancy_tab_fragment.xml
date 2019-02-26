@@ -147,7 +147,7 @@
         tools:fontFamily="@font/iransans_medium" />
 
     <TextView
-        android:id="@+id/tv_delivaery_date"
+        android:id="@+id/tv_delivery_date"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/tv_bubble_bkg"

@@ -6,54 +6,67 @@ import com.simorgh.database.Repository;
 import com.simorgh.database.model.User;
 import com.simorgh.threadutils.ThreadUtils;
 
-import java.util.Objects;
-
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class RegisterViewModel extends ViewModel {
-    private MutableLiveData<Date> pregnancyStartDate = new MutableLiveData<>();
-    private MutableLiveData<Date> motherBirthDate = new MutableLiveData<>();
-    private MutableLiveData<BloodType> bloodType = new MutableLiveData<>();
+    private MediatorLiveData<Date> pregnancyStartDate = new MediatorLiveData<>();
+    private MediatorLiveData<Date> motherBirthDate = new MediatorLiveData<>();
+    private MediatorLiveData<BloodType> bloodType = new MediatorLiveData<>();
 
 
-    public MutableLiveData<Date> getPregnancyStartDate() {
+    public MediatorLiveData<Date> getPregnancyStartDate() {
         return pregnancyStartDate;
     }
 
-    public MutableLiveData<Date> getMotherBirthDate() {
+    public MediatorLiveData<Date> getMotherBirthDate() {
         return motherBirthDate;
     }
 
-    public MutableLiveData<BloodType> getBloodType() {
+    public MediatorLiveData<BloodType> getBloodType() {
         return bloodType;
     }
 
     public void setPregnancyStartDate(Date pregnancyStartDate) {
-        this.pregnancyStartDate.setValue(pregnancyStartDate);
-    }
-
-    public void setMotherBirthDate(Date motherBirthDate) {
-        this.motherBirthDate.setValue(motherBirthDate);
-    }
-
-    public void setBloodType(BloodType bloodType) {
-        this.bloodType.setValue(bloodType);
-    }
-
-    public void login(Repository repository,onUserUpdatedCallback callback) {
-        ThreadUtils.execute(() -> {
-            User user = new User();
-            user.setPregnancyStartDate(pregnancyStartDate.getValue());
-            user.setBirthDate(motherBirthDate.getValue());
-            user.setBloodType(Objects.requireNonNull(bloodType.getValue()).getBloodType());
-            user.setNegative(Objects.requireNonNull(bloodType.getValue()).isNegative());
-            repository.insertUser(user);
-            callback.onUserUpdated();
+        ThreadUtils.runOnUIThread(() -> {
+            this.pregnancyStartDate.setValue(pregnancyStartDate);
         });
     }
 
-    public interface onUserUpdatedCallback{
+    public void setMotherBirthDate(Date motherBirthDate) {
+        ThreadUtils.runOnUIThread(() -> {
+            this.motherBirthDate.setValue(motherBirthDate);
+        });
+    }
+
+    public void setBloodType(BloodType bloodType) {
+        ThreadUtils.runOnUIThread(() -> {
+            this.bloodType.setValue(bloodType);
+        });
+    }
+
+    public void login(Repository repository, onUserUpdatedCallback callback) {
+        ThreadUtils.runOnUIThread(() -> {
+            User user = new User();
+            BloodType b = bloodType.getValue();
+            ThreadUtils.execute(() -> {
+                if (b != null) {
+                    user.setPregnancyStartDate(pregnancyStartDate.getValue());
+                    user.setBirthDate(motherBirthDate.getValue());
+                    user.setBloodType(b.getBloodType());
+                    user.setNegative(b.isNegative());
+                    repository.insertUser(user);
+                    callback.onUserUpdated();
+                } else {
+                    callback.onFailed();
+                }
+            });
+        });
+    }
+
+    public interface onUserUpdatedCallback {
         public void onUserUpdated();
+
+        public void onFailed();
     }
 }

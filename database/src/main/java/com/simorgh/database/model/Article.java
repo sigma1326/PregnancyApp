@@ -1,6 +1,9 @@
 package com.simorgh.database.model;
 
+import java.util.Objects;
+
 import androidx.annotation.Keep;
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -56,5 +59,14 @@ public class Article {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        Article other = (Article) obj;
+        return getId() == Objects.requireNonNull(other).id
+                && getTitle().equals(other.getTitle())
+                && imageName.equals(other.getImageName())
+                && getType() == other.getType();
     }
 }

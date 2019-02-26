@@ -50,7 +50,11 @@ public class BloodTypeFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         Objects.requireNonNull(titleChangeListener).onTitleChanged(getString(R.string.select_blood_type));
 
-
+        if (mViewModel.getBloodType().getValue() == null) {
+            mViewModel.setBloodType(bloodTypePicker.getBloodType());
+        } else {
+            bloodTypePicker.setBloodType(mViewModel.getBloodType().getValue());
+        }
         bloodTypePicker.setBloodTypePickedListener(bloodType -> {
             mViewModel.setBloodType(bloodType);
         });

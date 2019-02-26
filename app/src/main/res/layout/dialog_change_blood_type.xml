@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="0dp"
+    tools:layout_width="400dp"
+    android:layout_height="0dp"
+    tools:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/white_corners"
+    app:layout_constraintHeight_percent="0.6"
+    app:layout_constraintWidth_percent="0.8">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/view_header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:text="@string/select_blood_type1"
+        android:clickable="false"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        android:focusable="false"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@id/tv_op"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:fontFamily="@font/iransans_medium" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/tv_op"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:paddingTop="4dp"
+        android:text="O+"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@id/tv_on"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_header"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:fontFamily="@font/iransans_medium" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/tv_on"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:paddingTop="4dp"
+        android:text="O-"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@id/tv_ap"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_op"
+        tools:fontFamily="@font/iransans_medium" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/tv_ap"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:paddingTop="4dp"
+        android:text="A+"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@id/tv_an"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_on"
+        tools:fontFamily="@font/iransans_medium" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/tv_an"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:paddingTop="4dp"
+        android:text="A-"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@id/tv_bp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_ap"
+        tools:fontFamily="@font/iransans_medium" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/tv_bp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:paddingTop="4dp"
+        android:text="B+"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@id/tv_bn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_an"
+        tools:fontFamily="@font/iransans_medium" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/tv_bn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:paddingTop="4dp"
+        android:text="B-"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@id/tv_abp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_bp"
+        tools:fontFamily="@font/iransans_medium" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/tv_abp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:paddingTop="4dp"
+        android:text="AB+"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@id/tv_abn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_bn"
+        tools:fontFamily="@font/iransans_medium" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/tv_abn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:paddingTop="4dp"
+        android:text="AB-"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_abp"
+        tools:fontFamily="@font/iransans_medium" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

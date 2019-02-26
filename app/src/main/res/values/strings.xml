@@ -50,4 +50,7 @@
     <string name="exercise_time">میزان ورزش</string>
     <string name="embryo_evolution">تکامل جنین در این هفته</string>
     <string name="mother_care">مراقبت‌های مادر در این هفته</string>
+    <string name="select_font_size">انتخاب اندازه متن</string>
+    <string name="select_blood_type1">انتخاب گروه خونی</string>
+
 </resources>

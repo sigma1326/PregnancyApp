@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 
 import com.simorgh.calendarutil.CalendarTool;
 import com.simorgh.calendarutil.persiancalendar.PersianCalendar;
+import com.simorgh.database.Date;
 import com.simorgh.logger.Logger;
 import com.simorgh.nicedatepicker.NiceDatePicker;
 import com.simorgh.pregnancyapp.R;
@@ -54,20 +55,22 @@ public class MotherBirthDayFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         Objects.requireNonNull(titleChangeListener).onTitleChanged(getString(R.string.enter_birth_date));
 
+        Calendar min = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
+        min.add(Calendar.YEAR, -50);
 
+        Calendar max = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
+        max.add(Calendar.YEAR, -16);
+        datePicker.setDateRange(min, max);
+
+        Date value = mViewModel.getMotherBirthDate().getValue();
+        if (value == null) {
+            Date date = datePicker.getSelectedDate();
+            mViewModel.setMotherBirthDate(date);
+        } else {
+            datePicker.setSelectedDate(value);
+        }
         datePicker.setOnDateSelectedListener(date -> {
-            ThreadUtils.runOnUIThread(() -> {
-                mViewModel.setMotherBirthDate(date);
-            });
-        });
-
-        ThreadUtils.execute(() -> {
-            Calendar min = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-            min.add(Calendar.YEAR, -50);
-
-            Calendar max = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-            max.add(Calendar.YEAR, -16);
-            datePicker.setDateRange(min, max);
+            mViewModel.setMotherBirthDate(date);
         });
     }
 

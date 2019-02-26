@@ -1,12 +1,19 @@
 package com.simorgh.pregnancyapp.ui;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.simorgh.expandablelayout.ExpandableLayout;
 import com.simorgh.pregnancyapp.R;
+
+import java.util.Objects;
 
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
@@ -16,7 +23,7 @@ import androidx.core.view.ViewCompat;
 @Keep
 public class EmbryoWeekInfoView extends ConstraintLayout {
     private ExpandableLayout expandableLayout;
-    private TextView summary;
+    private TextSwitcher summary;
     private TextView readMore;
     private TextView title;
     private OnReadMoreClickedListener clickedListener;
@@ -42,6 +49,15 @@ public class EmbryoWeekInfoView extends ConstraintLayout {
         initView(context, attrs);
     }
 
+    private ViewSwitcher.ViewFactory mFactory = () -> {
+        TextView t = new TextView(getContext());
+        t.setGravity(Gravity.START);
+        t.setTypeface(Typeface.createFromAsset(Objects.requireNonNull(getContext()).getAssets(), "fonts/iransans_medium.ttf"));
+        t.setTextSize(12);
+        t.setTextColor(Color.parseColor("#511011"));
+        return t;
+    };
+
     private void initView(@NonNull final Context context, AttributeSet attrs) {
         View v = View.inflate(context, R.layout.embryo_week_info_layout, this);
         ViewCompat.setLayoutDirection(v, ViewCompat.LAYOUT_DIRECTION_LTR);
@@ -51,6 +67,8 @@ public class EmbryoWeekInfoView extends ConstraintLayout {
         summary = v.findViewById(R.id.tv_summary);
         readMore = v.findViewById(R.id.tv_read_more);
         title = v.findViewById(R.id.tv_title);
+
+        summary.setFactory(mFactory);
 
         title.setOnClickListener(v1 -> {
             expandableLayout.toggle();

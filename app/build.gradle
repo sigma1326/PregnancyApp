@@ -37,7 +37,6 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-
     implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
     Default()
@@ -54,9 +53,7 @@ dependencies {
     //    implementation 'com.google.android:flexbox:1.1.0'
     //    implementation 'com.github.rubensousa:gravitysnaphelper:2.0'
     butterKnife()
-
-//    debugImplementation 'com.amitshekhar.android:debug-db:1.0.5'
-
+    //    debugImplementation 'com.amitshekhar.android:debug-db:1.0.5'
     implementation 'androidx.multidex:multidex:2.0.1'
 }
 

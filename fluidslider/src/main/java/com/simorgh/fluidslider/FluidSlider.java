@@ -189,6 +189,11 @@ public class FluidSlider extends View {
         invalidate();
     }
 
+    public int getPosition() {
+        return (int) (getMax() - (position * (getMax() - 1) + 1) + 1);
+    }
+
+
     public Pair<Integer, Integer> getMinMax() {
         return minMax;
     }
@@ -207,8 +212,8 @@ public class FluidSlider extends View {
     }
 
     public void setCurrentPosition(final int lastViewPosition) {
-        float temp = lastViewPosition != 0 ? 0.96f : 1f;
-        setPosition(temp - ((float) (lastViewPosition) / getMax()), false);
+        float temp = lastViewPosition != 0 ? 0.95f : 1f;
+        setPosition(1 - ((float) (lastViewPosition) / getMax()) - 0.025f, false);
     }
 
     private void init(Context context, final AttributeSet attrs, final int defStyleAttr) {

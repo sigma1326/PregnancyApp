@@ -3,6 +3,7 @@ package com.simorgh.database;
 import android.content.Context;
 
 import com.simorgh.database.dao.ArticleDAO;
+import com.simorgh.database.dao.ArticleWithParagraphDAO;
 import com.simorgh.database.dao.ParagraphDAO;
 import com.simorgh.database.dao.UserDAO;
 import com.simorgh.database.dao.WeekDAO;
@@ -46,6 +47,8 @@ public abstract class PregnancyDataBase extends RoomDatabase {
     public abstract WeekDAO weekDAO();
 
     public abstract ParagraphDAO paragraphDAO();
+
+    public abstract ArticleWithParagraphDAO articleWithParagraphDAO();
 
 
     public static PregnancyDataBase getDatabase(@NonNull final Context context) {

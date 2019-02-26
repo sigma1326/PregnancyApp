@@ -39,4 +39,5 @@ dependencies {
     implementation project(':calendarutil')
     implementation project(':database')
     implementation project(':threadutils')
+    implementation project(':logger')
 }

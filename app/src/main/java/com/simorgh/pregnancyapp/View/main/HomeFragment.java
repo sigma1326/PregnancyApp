@@ -14,13 +14,17 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
+import com.simorgh.calendarutil.CalendarTool;
+import com.simorgh.calendarutil.persiancalendar.PersianCalendar;
 import com.simorgh.logger.Logger;
 import com.simorgh.pregnancyapp.R;
 import com.simorgh.pregnancyapp.ViewModel.main.HomeViewModel;
+import com.simorgh.pregnancyapp.ViewModel.main.UserViewModel;
 import com.simorgh.pregnancyapp.ui.BaseFragment;
 import com.simorgh.threadutils.ThreadUtils;
 import com.simorgh.weekslider.WeekSlider;
 
+import java.util.Calendar;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
@@ -34,7 +38,8 @@ import butterknife.BindView;
 
 public class HomeFragment extends BaseFragment {
 
-    private HomeViewModel mViewModel;
+    private UserViewModel mViewModel;
+    private HomeViewModel mHomeViewModel;
     private MotionLayout motionLayout;
 
 
@@ -68,7 +73,8 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
+        mViewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(UserViewModel.class);
+        mHomeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
     }
 
     @Override
@@ -102,12 +108,49 @@ public class HomeFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (repository != null) {
-            mViewModel.setRepository(repository);
-            ThreadUtils.runOnUIThread(() -> {
-                weekSlider.goToWeekNumber(26);
-            }, 500);
-            mViewModel.loadWeekData(26);
+            mHomeViewModel.setRepository(repository);
         }
+
+        mViewModel.getUser().observe(Objects.requireNonNull(getActivity()), user -> {
+            if (user != null && weekSlider != null) {
+                ThreadUtils.execute(() -> {
+                    Calendar nowC = Calendar.getInstance();
+                    float diffDays = CalendarTool.getDaysFromDiff(nowC, user.getPregnancyStartDate().getCalendar());
+                    int diffWeek = (int) (diffDays / 7) + 1;
+                    ThreadUtils.runOnUIThread(() -> {
+                        if (weekSlider != null) {
+                            weekSlider.goToWeekNumber(diffWeek);
+                        }
+                    }, 500);
+
+                    mHomeViewModel.loadWeekData(diffWeek);
+
+
+                    Calendar s = user.getPregnancyStartDate().getCalendar();
+                    PersianCalendar ps = CalendarTool.GregorianToPersian(s);
+
+                    ThreadUtils.runOnUIThread(() -> {
+                        weekSlider.setStartTextDay(String.valueOf(ps.getPersianDay()));
+                        weekSlider.setStartTextMonth(ps.getPersianMonthName());
+                    });
+
+
+                    Calendar d = user.getPregnancyStartDate().getCalendar();
+                    d.add(Calendar.DAY_OF_MONTH, 40 * 7);
+                    PersianCalendar p = CalendarTool.GregorianToPersian(d);
+
+
+                    ThreadUtils.runOnUIThread(() -> {
+                        weekSlider.setEndTextDay(String.valueOf(p.getPersianDay()));
+                        weekSlider.setEndTextMonth(p.getPersianMonthName());
+                    });
+
+                    if (mHomeViewModel != null) {
+                        mHomeViewModel.loadWeekData(diffWeek);
+                    }
+                });
+            }
+        });
 
         embryoSummary.setFactory(() -> {
             TextView t = new TextView(getContext());
@@ -128,12 +171,6 @@ public class HomeFragment extends BaseFragment {
 
         ThreadUtils.runOnUIThread(() -> motionLayout.transitionToEnd(), 300);
 
-        weekSlider.setStartTextDay("1");
-        weekSlider.setStartTextMonth("شهریور");
-
-        weekSlider.setEndTextDay("26");
-        weekSlider.setEndTextMonth("اردیبهشت");
-
 
         cardEmbryo.setOnClickListener(v -> {
             try {
@@ -141,7 +178,7 @@ public class HomeFragment extends BaseFragment {
                         .findNavController(Objects.requireNonNull(getActivity()), R.id.main_nav_host_fragment)
                         .navigate(HomeFragmentDirections.actionHomeFragmentToArticleDetailFragment()
                                 .setArticleType(1)
-                                .setWeekNumber(mViewModel.getWeekNumber()));
+                                .setWeekNumber(mHomeViewModel.getWeekNumber()));
             } catch (Exception e) {
                 Logger.printStackTrace(e);
             }
@@ -153,7 +190,7 @@ public class HomeFragment extends BaseFragment {
                         .findNavController(Objects.requireNonNull(getActivity()), R.id.main_nav_host_fragment)
                         .navigate(HomeFragmentDirections.actionHomeFragmentToArticleDetailFragment()
                                 .setArticleType(0)
-                                .setWeekNumber(mViewModel.getWeekNumber()));
+                                .setWeekNumber(mHomeViewModel.getWeekNumber()));
             } catch (Exception e) {
                 Logger.printStackTrace(e);
             }
@@ -163,12 +200,12 @@ public class HomeFragment extends BaseFragment {
             if (guideline != null) {
                 guideline.setGuidelinePercent(1 - 0.45f * percent);
             }
-            mViewModel.setWeekNumber(weekNumber);
+            mHomeViewModel.setWeekNumber(weekNumber);
             Logger.i(weekNumber + "");
         });
 
 
-        mViewModel.getWeekLiveData().observe(this, week -> {
+        mHomeViewModel.getWeekLiveData().observe(this, week -> {
             synchronized (this) {
                 if (!((TextView) embryoSummary.getCurrentView()).getText().equals(week.getEmbryoSummary())) {
                     embryoSummary.setText(week.getEmbryoSummary());

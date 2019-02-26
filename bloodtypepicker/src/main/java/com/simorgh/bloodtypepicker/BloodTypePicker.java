@@ -74,6 +74,17 @@ public class BloodTypePicker extends ConstraintLayout {
         return bloodType;
     }
 
+    public void setBloodType(BloodType value) {
+        for (int i = 0; i < bloodTypes.length; i++) {
+            if (value.getBloodType().equals(bloodTypes[i])) {
+                npBloodType.setValue(i + 1);
+                break;
+            }
+        }
+        npNegative.setValue(value.isNegative() ? 1 : 2);
+        updateBubbleText();
+    }
+
     private void initView(@NonNull Context context, AttributeSet attributeSet) {
         View v = View.inflate(context, R.layout.blood_type_picker_layout, this);
 
@@ -99,7 +110,7 @@ public class BloodTypePicker extends ConstraintLayout {
         });
 
         npNegative.setOnValueChangedListener((picker, oldVal, newVal) -> {
-            bloodType.setNegative(newVal == 2);
+            bloodType.setNegative(newVal == 1);
             updateBubbleText();
         });
 
@@ -108,7 +119,6 @@ public class BloodTypePicker extends ConstraintLayout {
     public interface OnBloodTypePickedListener {
         public void onBloodTypePicked(BloodType bloodType);
     }
-
 
 
     private void updateBubbleText() {

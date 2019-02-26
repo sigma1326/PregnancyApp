@@ -5,8 +5,10 @@ import android.app.Application;
 
 import com.huma.room_for_asset.RoomAsset;
 import com.simorgh.database.callback.ArticleCallBack;
+import com.simorgh.database.callback.ArticlesForTypeCallBack;
 import com.simorgh.database.callback.ParagraphsCallBack;
 import com.simorgh.database.callback.WeekCallBack;
+import com.simorgh.database.model.ArticleWithParagraph;
 import com.simorgh.database.model.User;
 import com.simorgh.database.model.Week;
 import com.simorgh.database.util.ArticleSubItemType;
@@ -179,7 +181,10 @@ public final class Repository {
                     }
                 });
     }
-
+    @SuppressLint("CheckResult")
+    public LiveData<Week> getWeekLiveData(int weekNumber) {
+        return dataBase.weekDAO().getWeekLiveData(weekNumber);
+    }
     @SuppressLint("CheckResult")
     public void getWeekLiveData(int weekNumber, WeekCallBack weekCallBack) {
         ThreadUtils.execute(() -> {
@@ -198,5 +203,32 @@ public final class Repository {
 //                weekCallBack.onSuccess(week);
 //            }
 //        });
+    }
+
+    @SuppressLint("CheckResult")
+    public void getArticlesForType(int type, ArticlesForTypeCallBack callBack) {
+        dataBase.articleWithParagraphDAO().getArticlesByType(type)
+                .subscribeOn(Schedulers.single())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((articles, throwable) -> {
+                    if (throwable != null) {
+                        callBack.onFailed("");
+                    } else {
+                        callBack.onSuccess(articles);
+                    }
+                });
+    }
+
+
+    public void updateFontSize(int value) {
+        ThreadUtils.execute(() -> {
+            dataBase.userDAO().updateFontSize(value);
+        });
+    }
+
+    public void updateBloodType(String type, boolean isNegative) {
+        ThreadUtils.execute(() -> {
+            dataBase.userDAO().updateBloodType(type, isNegative);
+        });
     }
 }
