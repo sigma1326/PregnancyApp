@@ -9,6 +9,9 @@ import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class BaseActivity extends AppCompatActivity {
     @Inject

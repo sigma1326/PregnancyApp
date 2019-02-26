@@ -2,8 +2,10 @@ package com.simorgh.nicedatepicker;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.simorgh.calendarutil.CalendarTool;
 import com.simorgh.calendarutil.persiancalendar.PersianCalendar;
@@ -28,23 +30,29 @@ public class NiceDatePicker extends ConstraintLayout {
     private TextView tvDate;
     private Date selectedDate = null;
 
-    private Calendar calendar;
-    private PersianCalendar persianCalendar;
-    private PersianCalendar selectedPersianDate;
+    private volatile Calendar calendar;
+    private volatile PersianCalendar persianCalendar;
+    private volatile PersianCalendar selectedPersianDate;
+    private volatile PersianCalendar tempPersianDate;
+
 
     private volatile OnDateSelectedListener onDateSelectedListener;
 
     private volatile Date date;
 
+    private volatile Calendar minDate;
+    private volatile Calendar maxDate;
+
 
     {
-        ThreadUtils.execute(() -> {
-            calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-            persianCalendar = CalendarTool.GregorianToPersian(calendar);
-            selectedPersianDate = CalendarTool.GregorianToPersian(calendar);
+        calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
+        persianCalendar = CalendarTool.GregorianToPersian(calendar);
+        selectedPersianDate = CalendarTool.GregorianToPersian(calendar);
+        tempPersianDate = CalendarTool.GregorianToPersian(calendar);
 
-            date = new Date(calendar.getTimeInMillis());
-        });
+        date = new Date(calendar.getTimeInMillis());
+        minDate = CalendarTool.GregorianToPersian(calendar);
+        maxDate = CalendarTool.GregorianToPersian(calendar);
 
     }
 
@@ -84,59 +92,92 @@ public class NiceDatePicker extends ConstraintLayout {
         npMonth.setMinValue(1);
         npMonth.setMaxValue(monthNames.length);
         npMonth.setDisplayedValues(monthNames);
-        npMonth.setValue(9);
+//        npMonth.setValue(5);
 
 
         updateView();
 
         npDay.setOnValueChangedListener((picker, oldVal, newVal) -> {
-            selectedPersianDate.setPersianDate(selectedPersianDate.getPersianYear(), selectedPersianDate.getPersianMonth(), newVal);
-            updateBubbleText();
+            int year = selectedPersianDate.getPersianYear();
+            int month = selectedPersianDate.getPersianMonth() + 1;
+            tempPersianDate.setPersianDate(year, month, newVal);
+            boolean invalid = tempPersianDate.before(minDate) || tempPersianDate.after(maxDate);
+
+            if (invalid) {
+                npDay.setValue(oldVal);
+                Toast.makeText(getContext(), getContext().getString(R.string.can_not_be_selected), Toast.LENGTH_SHORT).show();
+            } else {
+                selectedPersianDate.setPersianDate(year, month, newVal);
+                updateBubbleText();
+            }
         });
 
         npMonth.setOnValueChangedListener((picker, oldVal, newVal) -> {
-            selectedPersianDate.setPersianDate(selectedPersianDate.getPersianYear(), newVal - 1, selectedPersianDate.getPersianDay());
+            int year = selectedPersianDate.getPersianYear();
+            int month = newVal;
+            int day = selectedPersianDate.getPersianDay();
+            tempPersianDate.setPersianDate(year, month, day);
 
-            if (newVal <= 6) {
-                npDay.setMaxValue(31);
+            boolean invalid = tempPersianDate.before(minDate) || tempPersianDate.after(maxDate);
+            if (invalid) {
+                npMonth.setValue(oldVal);
+                Toast.makeText(getContext(), getContext().getString(R.string.can_not_be_selected), Toast.LENGTH_SHORT).show();
             } else {
-                if (newVal == 12) {
-                    if (selectedPersianDate.isPersianLeapYear()) {
+                selectedPersianDate.setPersianDate(year, month, day);
+                if (newVal <= 6) {
+                    npDay.setMaxValue(31);
+                } else {
+                    if (newVal == 12) {
+                        if (selectedPersianDate.isPersianLeapYear()) {
+                            if (npDay.getValue() > 30) {
+                                npDay.setValue(30);
+                            }
+                            npDay.setMaxValue(30);
+                        } else {
+                            if (npDay.getValue() > 29) {
+                                npDay.setValue(29);
+                            }
+                            npDay.setMaxValue(29);
+                        }
+                    } else {
+                        npDay.setMaxValue(30);
+                    }
+                }
+                updateBubbleText();
+            }
+
+        });
+
+        npYear.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            int year = newVal;
+            int month = selectedPersianDate.getPersianMonth() + 1;
+            int day = selectedPersianDate.getPersianDay();
+            tempPersianDate.setPersianDate(year, month, day);
+            boolean invalid = tempPersianDate.before(minDate) || tempPersianDate.after(maxDate);
+
+            if (invalid) {
+                npYear.setValue(oldVal);
+                Toast.makeText(getContext(), getContext().getString(R.string.can_not_be_selected), Toast.LENGTH_SHORT).show();
+            } else {
+                selectedPersianDate.setPersianDate(year, month, day);
+                if (selectedPersianDate.isPersianLeapYear()) {
+                    if (npMonth.getValue() == 12) {
                         if (npDay.getValue() > 30) {
                             npDay.setValue(30);
                         }
                         npDay.setMaxValue(30);
-                    } else {
+                    }
+                } else {
+                    if (npMonth.getValue() == 12) {
                         if (npDay.getValue() > 29) {
                             npDay.setValue(29);
                         }
                         npDay.setMaxValue(29);
                     }
-                } else {
-                    npDay.setMaxValue(30);
                 }
+                updateBubbleText();
             }
-            updateBubbleText();
-        });
 
-        npYear.setOnValueChangedListener((picker, oldVal, newVal) -> {
-            selectedPersianDate.setPersianDate(newVal, selectedPersianDate.getPersianMonth(), selectedPersianDate.getPersianDay());
-            if (selectedPersianDate.isPersianLeapYear()) {
-                if (npMonth.getValue() == 12) {
-                    if (npDay.getValue() > 30) {
-                        npDay.setValue(30);
-                    }
-                    npDay.setMaxValue(30);
-                }
-            } else {
-                if (npMonth.getValue() == 12) {
-                    if (npDay.getValue() > 29) {
-                        npDay.setValue(29);
-                    }
-                    npDay.setMaxValue(29);
-                }
-            }
-            updateBubbleText();
         });
 
         updateBubbleText();
@@ -144,11 +185,11 @@ public class NiceDatePicker extends ConstraintLayout {
 
     private void updateView() {
         if (selectedPersianDate != null && persianCalendar != null && persianCalendar.getPersianYear() >= 1397) {
-            npYear.setMinValue(selectedPersianDate.getPersianYear() - 50);
-            npYear.setMaxValue(selectedPersianDate.getPersianYear());
-            npYear.setValue(selectedPersianDate.getPersianYear());
+            npYear.setMinValue(CalendarTool.GregorianToPersian(minDate).getPersianYear());
+            npYear.setMaxValue(CalendarTool.GregorianToPersian(maxDate).getPersianYear());
+            npYear.setValue(CalendarTool.GregorianToPersian(maxDate).getPersianYear());
 
-            npMonth.setValue(selectedPersianDate.getPersianMonth());
+            npMonth.setValue(CalendarTool.GregorianToPersian(maxDate).getPersianMonth() + 1);
 
             npDay.setValue(selectedPersianDate.getPersianDay());
 
@@ -172,8 +213,11 @@ public class NiceDatePicker extends ConstraintLayout {
             }
             ThreadUtils.execute(() -> {
                 if (onDateSelectedListener != null) {
-                    date.setMillis(CalendarTool.PersianToGregorian(selectedPersianDate).getTimeInMillis());
-                    onDateSelectedListener.OnDateSelected(date);
+                    if (date != null) {
+                        date.setCalendar(CalendarTool.PersianToGregorian(selectedPersianDate));
+                        date.clearHourMinuteSeconds();
+                        onDateSelectedListener.OnDateSelected(date);
+                    }
                 }
             });
         }
@@ -191,6 +235,31 @@ public class NiceDatePicker extends ConstraintLayout {
         calendar.setTimeInMillis(selectedDate.getMilli());
         selectedPersianDate = CalendarTool.GregorianToPersian(calendar);
         updateView();
+    }
+
+    public void setMinDate(@NonNull Calendar minDate) {
+        this.minDate = minDate;
+        ThreadUtils.runOnUIThread(() -> {
+            updateView();
+            updateBubbleText();
+        });
+    }
+
+    public void setMaxDate(@NonNull Calendar maxDate) {
+        this.maxDate = maxDate;
+        ThreadUtils.runOnUIThread(() -> {
+            updateView();
+            updateBubbleText();
+        });
+    }
+
+    public void setDateRange(@NonNull Calendar minDate, @NonNull Calendar maxDate) {
+        this.minDate = minDate;
+        this.maxDate = maxDate;
+        ThreadUtils.runOnUIThread(() -> {
+            updateView();
+            updateBubbleText();
+        });
     }
 
     public OnDateSelectedListener getOnDateSelectedListener() {

@@ -22,6 +22,9 @@ public class BloodTypePicker extends ConstraintLayout {
     private static final String[] bloodTypes = {"A", "B", "AB", "O"};
     private static final String[] negative = {"منفی", "مثبت"};
 
+    private OnBloodTypePickedListener bloodTypePickedListener;
+    private final BloodType bloodType = new BloodType("O", true);
+
 
     public BloodTypePicker(Context context) {
         super(context);
@@ -43,11 +46,19 @@ public class BloodTypePicker extends ConstraintLayout {
         initView(context, attrs);
     }
 
-    public String getBloodType() {
+    public String getBloodTypeString() {
         if (npBloodType == null) {
             return null;
         }
         return bloodTypes[npBloodType.getValue() - 1];
+    }
+
+    public OnBloodTypePickedListener getBloodTypePickedListener() {
+        return bloodTypePickedListener;
+    }
+
+    public void setBloodTypePickedListener(OnBloodTypePickedListener bloodTypePickedListener) {
+        this.bloodTypePickedListener = bloodTypePickedListener;
     }
 
     public Boolean isNegative() {
@@ -55,6 +66,12 @@ public class BloodTypePicker extends ConstraintLayout {
             return null;
         }
         return npNegative.getValue() == 1;
+    }
+
+    public BloodType getBloodType() {
+        bloodType.setBloodType(bloodTypes[npBloodType.getValue() - 1]);
+        bloodType.setNegative(npNegative.getValue() == 2);
+        return bloodType;
     }
 
     private void initView(@NonNull Context context, AttributeSet attributeSet) {
@@ -67,7 +84,7 @@ public class BloodTypePicker extends ConstraintLayout {
         npBloodType.setMinValue(1);
         npBloodType.setMaxValue(bloodTypes.length);
         npBloodType.setDisplayedValues(bloodTypes);
-        npBloodType.setValue(2);
+        npBloodType.setValue(4);
 
         npNegative.setMinValue(1);
         npNegative.setMaxValue(negative.length);
@@ -77,14 +94,21 @@ public class BloodTypePicker extends ConstraintLayout {
         updateBubbleText();
 
         npBloodType.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            bloodType.setBloodType(bloodTypes[newVal - 1]);
             updateBubbleText();
         });
 
         npNegative.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            bloodType.setNegative(newVal == 2);
             updateBubbleText();
         });
 
     }
+
+    public interface OnBloodTypePickedListener {
+        public void onBloodTypePicked(BloodType bloodType);
+    }
+
 
 
     private void updateBubbleText() {
@@ -104,6 +128,10 @@ public class BloodTypePicker extends ConstraintLayout {
             }
 
             bloodTypeTextView.setText(Html.fromHtml(String.valueOf(sb)));
+
+            if (bloodTypePickedListener != null) {
+                bloodTypePickedListener.onBloodTypePicked(bloodType);
+            }
         }
     }
 }

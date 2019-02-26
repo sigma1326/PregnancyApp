@@ -19,8 +19,10 @@ import java.util.List;
 
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -38,8 +40,8 @@ public final class Repository {
     private void init(@NonNull final Application application) {
         ThreadUtils.execute(() -> {
             PregnancyDataBase importDataBase = RoomAsset.databaseBuilder(application, PregnancyDataBase.class, "pregnancy-db").build();
-            Logger.d(importDataBase.userDAO().getUserOld().getBloodType());
-            dataBase.userDAO().insert((importDataBase.userDAO().getUserOld()));
+//            Logger.d(importDataBase.userDAO().getUserOld().getBloodType());
+//            dataBase.userDAO().insert((importDataBase.userDAO().getUserOld()));
             importDataBase.close();
         });
     }
@@ -52,6 +54,10 @@ public final class Repository {
 
     public LiveData<User> getUser() {
         return dataBase.userDAO().getUserLiveData();
+    }
+
+    public Single<User> getUserSingle() {
+        return dataBase.userDAO().getUser().subscribeOn(Schedulers.single()).observeOn(AndroidSchedulers.mainThread());
     }
 
     @SuppressLint("CheckResult")

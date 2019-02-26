@@ -9,7 +9,7 @@
 
 
     <com.simorgh.bloodtypepicker.BloodTypePicker
-        android:id="@+id/niceDatePicker"
+        android:id="@+id/blood_type_picker"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

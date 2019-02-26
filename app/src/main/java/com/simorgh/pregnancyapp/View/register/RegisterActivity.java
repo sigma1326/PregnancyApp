@@ -2,6 +2,7 @@ package com.simorgh.pregnancyapp.View.register;
 
 import android.animation.LayoutTransition;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -11,12 +12,16 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.simorgh.logger.Logger;
 import com.simorgh.pregnancyapp.R;
 import com.simorgh.pregnancyapp.View.TitleChangeListener;
+import com.simorgh.pregnancyapp.View.main.MainActivity;
+import com.simorgh.pregnancyapp.ViewModel.register.RegisterViewModel;
 import com.simorgh.pregnancyapp.ui.BaseActivity;
 import com.simorgh.threadutils.ThreadUtils;
+import com.squareup.haha.perflib.Main;
 import com.transitionseverywhere.ChangeText;
 import com.transitionseverywhere.extra.Scale;
 
@@ -25,34 +30,53 @@ import java.util.Objects;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.transition.Fade;
 import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
 import androidx.transition.TransitionSet;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 public class RegisterActivity extends BaseActivity implements TitleChangeListener {
 
     private NavController navController;
-    private Button nextButton;
-    private ImageButton backButton;
-    private TextView title;
 
+    @BindView(R.id.btn_next)
+    Button nextButton;
+
+    @BindView(R.id.img_back)
+    ImageButton backButton;
+
+    @BindView(R.id.tv_app_title)
+    TextView title;
+
+    private RegisterViewModel mViewModel;
+
+    Unbinder unbinder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         setContentView(R.layout.activity_register);
+
+        unbinder = ButterKnife.bind(this);
+
 
         getWindow().setBackgroundDrawable(null);
 
         // this is a generic way of getting your root view element
         View rootView = findViewById(android.R.id.content);
         rootView.setBackgroundDrawable(getResources().getDrawable(R.drawable.login_bkg));
+
+        mViewModel = ViewModelProviders.of(this).get(RegisterViewModel.class);
 
 
         ConstraintLayout parentLayout = findViewById(R.id.transition_container);
@@ -72,9 +96,6 @@ public class RegisterActivity extends BaseActivity implements TitleChangeListene
 
 
         navController = Navigation.findNavController(RegisterActivity.this, R.id.register_nav_host_fragment);
-        nextButton = findViewById(R.id.btn_next);
-        backButton = findViewById(R.id.img_back);
-        title = findViewById(R.id.tv_app_title);
 
         backButton.setOnClickListener(v -> {
             try {
@@ -96,7 +117,10 @@ public class RegisterActivity extends BaseActivity implements TitleChangeListene
                     case R.id.motherBirthDayFragment:
                         ThreadUtils.runOnUIThread(() -> {
                             navController.navigate(R.id.action_motherBirthDayFragment_to_mainActivity);
-                            RegisterActivity.this.finish();
+                            Toast.makeText(this, Objects.requireNonNull(mViewModel.getBloodType().getValue()).getBloodType(), Toast.LENGTH_SHORT).show();
+                            mViewModel.login(repository, () -> {
+                                ThreadUtils.runOnUIThread(RegisterActivity.this::finish);
+                            });
                         });
                         break;
                 }
@@ -138,6 +162,11 @@ public class RegisterActivity extends BaseActivity implements TitleChangeListene
                     break;
             }
         });
+
+    }
+
+    private void initRegisterView() {
+
     }
 
 
@@ -153,6 +182,7 @@ public class RegisterActivity extends BaseActivity implements TitleChangeListene
         nextButton = null;
         backButton = null;
         title = null;
+        unbinder.unbind();
     }
 
     @Override

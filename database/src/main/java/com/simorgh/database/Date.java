@@ -80,6 +80,14 @@ public class Date implements Parcelable {
         seconds = 0;
     }
 
+    public void setCalendar(Calendar calendar) {
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        hour = calendar.get(Calendar.HOUR_OF_DAY);
+        minute = calendar.get(Calendar.MINUTE);
+        seconds = calendar.get(Calendar.SECOND);
+    }
     public Date(final Calendar calendar) {
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH);

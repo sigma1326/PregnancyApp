@@ -135,7 +135,8 @@ public class NiceDatePickerSmall extends ConstraintLayout {
                 selectedPersianDate.setPersianDate(year, month, npDay.getValue());
                 ThreadUtils.execute(() -> {
                     if (onDateSelectedListener != null) {
-                        date.setMillis(CalendarTool.PersianToGregorian(selectedPersianDate).getTimeInMillis());
+                        date.setCalendar(CalendarTool.PersianToGregorian(selectedPersianDate));
+                        date.clearHourMinuteSeconds();
                         onDateSelectedListener.OnDateSelected(date);
                     }
                 });
