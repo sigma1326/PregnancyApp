@@ -31,10 +31,6 @@ public class HomeViewModel extends ViewModel {
         return weekLiveData;
     }
 
-    public void setWeekLiveData(MutableLiveData<Week> weekLiveData) {
-        this.weekLiveData = weekLiveData;
-    }
-
     public Repository getRepository() {
         return repository;
     }

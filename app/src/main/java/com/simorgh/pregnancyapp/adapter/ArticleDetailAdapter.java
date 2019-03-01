@@ -18,14 +18,23 @@ import androidx.recyclerview.widget.AsyncDifferConfig;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
+import io.reactivex.Observable;
+import io.reactivex.android.plugins.RxAndroidPlugins;
 
 public class ArticleDetailAdapter extends ListAdapter<ArticleViewSubItem, ArticleDetailAdapter.ArticleSubItemViewHolder> {
+    private int fontSize = 14;
+
     public ArticleDetailAdapter(@NonNull DiffUtil.ItemCallback<ArticleViewSubItem> diffCallback) {
         super(diffCallback);
     }
 
     protected ArticleDetailAdapter(@NonNull AsyncDifferConfig<ArticleViewSubItem> config) {
         super(config);
+    }
+
+    public void setFontSize(int size) {
+        fontSize = size;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -57,6 +66,7 @@ public class ArticleDetailAdapter extends ListAdapter<ArticleViewSubItem, Articl
                 case title:
                     TextView title = holder.itemView.findViewById(R.id.content);
                     title.setText(item.getContent());
+                    title.setTextSize(fontSize + 1.7f);
                     break;
                 case image:
                     ImageView imageView = holder.itemView.findViewById(R.id.content);
@@ -70,6 +80,7 @@ public class ArticleDetailAdapter extends ListAdapter<ArticleViewSubItem, Articl
                 case paragraph:
                     title = holder.itemView.findViewById(R.id.content);
                     title.setText(item.getContent());
+                    title.setTextSize(fontSize);
                     break;
             }
         }

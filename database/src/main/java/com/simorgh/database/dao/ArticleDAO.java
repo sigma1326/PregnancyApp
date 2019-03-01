@@ -5,6 +5,7 @@ import com.simorgh.database.model.Article;
 import java.util.List;
 
 import androidx.annotation.Keep;
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -29,7 +30,12 @@ public interface ArticleDAO {
     @Query("select * from articles  where id in (select mother_article_id from weeks where week_number=:weekNumber limit 1) limit 1")
     Single<Article> getMotherWeekArticle(int weekNumber);
 
+    @Query("select * from articles  where id in (select mother_article_id from weeks where week_number=:weekNumber limit 1) limit 1")
+    LiveData<Article> getMotherWeekArticleLiveData(int weekNumber);
+
     @Query("select * from articles order by id ASC")
     Single<List<Article>> getArticles();
 
+    @Query("select * from articles  where id in (select embryo_article_id from weeks where week_number=:weekNumber limit 1) limit 1")
+    LiveData<Article> getEmbryoWeekArticleLiveData(int weekNumber);
 }

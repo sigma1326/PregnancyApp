@@ -5,6 +5,7 @@ import com.simorgh.database.model.Paragraph;
 import java.util.List;
 
 import androidx.annotation.Keep;
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -28,5 +29,8 @@ public interface ParagraphDAO {
 
     @Query("select * from paragraphs where article_id=:articleID order by id ASC")
     Single<List<Paragraph>> getParagraphs(long articleID);
+
+    @Query("select * from paragraphs where article_id=:articleID order by id ASC")
+    LiveData<List<Paragraph>> getParagraphsLiveData(long articleID);
 
 }

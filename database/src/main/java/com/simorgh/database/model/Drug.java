@@ -3,6 +3,7 @@ package com.simorgh.database.model;
 import com.simorgh.database.Date;
 
 import java.util.Objects;
+import java.util.Random;
 
 import androidx.annotation.Keep;
 import androidx.annotation.Nullable;
@@ -71,7 +72,11 @@ public class Drug {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        return ((Drug) Objects.requireNonNull(obj)).getId() == getId();
+        if (obj == null) {
+            return false;//todo fix this
+        }
+        return ((Drug) obj).getId() == getId();
+//        return ((Drug) obj).getDrugName().equals(getDrugName()) && ((Drug) obj).getInfo().equals(getInfo()) && ((Drug) obj).getDate().equals(getDate());
     }
 
     public boolean isSameContent(@Nullable Drug drug) {

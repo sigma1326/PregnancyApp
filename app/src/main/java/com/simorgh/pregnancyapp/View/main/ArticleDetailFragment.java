@@ -8,21 +8,13 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.simorgh.database.callback.ArticleCallBack;
-import com.simorgh.database.callback.ParagraphsCallBack;
-import com.simorgh.database.model.Article;
-import com.simorgh.database.model.Paragraph;
 import com.simorgh.logger.Logger;
-import com.simorgh.pregnancyapp.Model.AppManager;
 import com.simorgh.pregnancyapp.R;
 import com.simorgh.pregnancyapp.ViewModel.main.ArticleDetailViewModel;
+import com.simorgh.pregnancyapp.ViewModel.main.UserViewModel;
 import com.simorgh.pregnancyapp.adapter.ArticleDetailAdapter;
-import com.simorgh.database.util.ArticleSubItemType;
-import com.simorgh.database.util.ArticleViewSubItem;
 import com.simorgh.pregnancyapp.ui.BaseFragment;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
@@ -36,6 +28,7 @@ import butterknife.BindView;
 public class ArticleDetailFragment extends BaseFragment {
 
     private ArticleDetailViewModel mViewModel;
+    private UserViewModel mUserViewModel;
 
     @BindView(R.id.tv_app_title)
     TextView title;
@@ -52,11 +45,14 @@ public class ArticleDetailFragment extends BaseFragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        AppManager.getDaggerApplicationComponent().inject(this);
         super.onCreate(savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(ArticleDetailViewModel.class);
+        mUserViewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(UserViewModel.class);
         if (getArguments() != null) {
             articleType = ArticleDetailFragmentArgs.fromBundle(getArguments()).getArticleType();
             weekNumber = ArticleDetailFragmentArgs.fromBundle(getArguments()).getWeekNumber();
+            mViewModel.setArticleType(articleType);
+            mViewModel.setWeekNumber(repository, weekNumber);
         }
     }
 
@@ -67,12 +63,6 @@ public class ArticleDetailFragment extends BaseFragment {
         } else {
             return inflater.inflate(R.layout.article_detail_fragment_embryo, container, false);
         }
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(ArticleDetailViewModel.class);
     }
 
     @SuppressLint("DefaultLocale")
@@ -101,46 +91,15 @@ public class ArticleDetailFragment extends BaseFragment {
         rvArticleDetail.setHasFixedSize(true);
         rvArticleDetail.setNestedScrollingEnabled(false);
 
-        if (repository != null) {
+//        repository.getWeekArticleItems(1,true);
 
-//            repository.getArticleDetailItems(1);
+        mViewModel.getItems().observe(this, articleViewSubItems -> {
+            ((ArticleDetailAdapter) Objects.requireNonNull(rvArticleDetail.getAdapter())).submitList(articleViewSubItems);
+        });
 
-            repository.getWeekArticle(weekNumber, articleType == 0,new ArticleCallBack() {
-                @Override
-                public void onSuccess(Article article) {
-                    ArrayList<ArticleViewSubItem> arrayList = new ArrayList<>();
-                    ArticleViewSubItem title = new ArticleViewSubItem((int) article.getId(), ArticleSubItemType.title, article.getTitle());
-                    ArticleViewSubItem image = new ArticleViewSubItem((int) article.getId(), ArticleSubItemType.image, article.getImageName());
-                    arrayList.add(title);
-
-
-                    repository.getParagraphs(article.getId(), new ParagraphsCallBack() {
-                        @Override
-                        public void onSuccess(List<Paragraph> paragraphs) {
-                            for (int i = 0; i < paragraphs.size(); i++) {
-                                ArticleViewSubItem p = new ArticleViewSubItem((int) article.getId()
-                                        , ArticleSubItemType.paragraph, paragraphs.get(i).getContent());
-                                arrayList.add(p);
-                                if (i == 0) {
-                                    arrayList.add(image);
-                                }
-                            }
-                            ((ArticleDetailAdapter) Objects.requireNonNull(rvArticleDetail.getAdapter())).submitList(arrayList);
-                        }
-
-                        @Override
-                        public void onFailed(String error) {
-                            ((ArticleDetailAdapter) Objects.requireNonNull(rvArticleDetail.getAdapter())).submitList(arrayList);
-                        }
-                    });
-                }
-
-                @Override
-                public void onFailed(String error) {
-
-                }
-            });
-        }
+        mUserViewModel.getFontSize().observe(this, s -> {
+            ((ArticleDetailAdapter) Objects.requireNonNull(rvArticleDetail.getAdapter())).setFontSize(Integer.parseInt(s));
+        });
     }
 
 

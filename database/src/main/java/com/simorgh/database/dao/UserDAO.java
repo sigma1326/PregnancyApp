@@ -1,5 +1,6 @@
 package com.simorgh.database.dao;
 
+import com.simorgh.database.Date;
 import com.simorgh.database.model.User;
 
 import androidx.annotation.Keep;
@@ -30,4 +31,11 @@ public interface UserDAO {
 
     @Query("update users set blood_type=:type, is_negative=:isNegative where id=1")
     void updateBloodType(String type, boolean isNegative);
+
+
+    @Query("update users set pregnancy_start_date=:date where id=1")
+    void updatePregnancyStartDate(Date date);
+
+    @Query("update users set birth_date=:date where id=1")
+    void updateBirthDate(Date date);
 }

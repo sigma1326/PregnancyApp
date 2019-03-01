@@ -2,9 +2,11 @@ package com.simorgh.pregnancyapp.View.main;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 import com.simorgh.bottombar.BottomBar;
 import com.simorgh.logger.Logger;

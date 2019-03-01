@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class CategoryAdapter extends ListAdapter<ArticleWithParagraph, CategoryAdapter.ArticleViewHolder> {
     private ItemClickListener itemClickListener;
+    private int fontSize = 14;
 
 
     public CategoryAdapter(@NonNull DiffUtil.ItemCallback<ArticleWithParagraph> diffCallback, ItemClickListener itemClickListener) {
@@ -56,12 +57,18 @@ public class CategoryAdapter extends ListAdapter<ArticleWithParagraph, CategoryA
                 sb.append("\n");
             }
             content.setText(sb);
+            content.setTextSize(fontSize);
+            title.setTextSize(fontSize);
             if (selectedIndex != -1) {
                 if (position != selectedIndex) {
                     if (expand.isExpanded()) {
                         expand.toggle(true);
                     }
                 }
+            }
+            if (selectedIndex == -1 && position == 0) {
+                expand.setExpanded(true,true);
+                selectedIndex = 0;
             }
 
             title.setOnClickListener(v -> {
@@ -79,6 +86,11 @@ public class CategoryAdapter extends ListAdapter<ArticleWithParagraph, CategoryA
         AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
         anim.setDuration(1000);
         view.startAnimation(anim);
+    }
+
+    public void setFontSize(int size) {
+        fontSize = size;
+        notifyDataSetChanged();
     }
 
     public interface ItemClickListener {

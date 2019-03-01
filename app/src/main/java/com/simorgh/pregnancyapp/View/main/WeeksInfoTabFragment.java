@@ -177,7 +177,6 @@ public class WeeksInfoTabFragment extends BaseFragment {
         fluidSlider.setFluidSliderListener(new FluidSlider.FluidSliderListener() {
             @Override
             public void invokePosition(int position, boolean fromUser) {
-                Logger.i(position + " : " + fromUser);
                 if (fromUser) {
                     last = position - 1;
                 }

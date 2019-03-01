@@ -114,35 +114,9 @@ public class PregnancyTabFragment extends BaseFragment {
                 Logger.printStackTrace(e);
             }
         });
-
-        mViewModel.getUser().observe(Objects.requireNonNull(getActivity()), user -> {
-            if (user != null && mFaqBtn != null) {
-                Calendar nowC = Calendar.getInstance();
-                float diffDays = CalendarTool.getDaysFromDiff(nowC, user.getPregnancyStartDate().getCalendar());
-                int diffWeek = (int) (diffDays / 7) + 1;
-
-                mCurrentWeek.setText(String.format(" هفته %2d", diffWeek));
-
-                StringBuilder sb = new StringBuilder();
-                sb.append(40 * 7 - ((int) diffDays));
-                sb.append(" روز");
-                sb.append("\n");
-                sb.append("باقی‌مانده");
-                mRemainingDays.setText(sb);
-
-                Calendar d = user.getPregnancyStartDate().getCalendar();
-                d.add(Calendar.DAY_OF_MONTH, 40 * 7);
-                PersianCalendar p = CalendarTool.GregorianToPersian(d);
-
-                StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.append(p.getPersianDay());
-                stringBuilder.append(" ");
-                stringBuilder.append(p.getPersianMonthName());
-                stringBuilder.append("\n");
-                stringBuilder.append("روز زایمان");
-                mDeliveryDate.setText(stringBuilder);
-            }
-        });
+        mViewModel.getRemainingDays().observe(this, s -> mRemainingDays.setText(s));
+        mViewModel.getCurrentWeek().observe(this, s -> mCurrentWeek.setText(s));
+        mViewModel.getDaysToDelivery().observe(this, s -> mDeliveryDate.setText(s));
 
     }
 }

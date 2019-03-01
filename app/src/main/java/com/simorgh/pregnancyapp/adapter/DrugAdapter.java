@@ -51,6 +51,9 @@ public class DrugAdapter extends ListAdapter<Drug, DrugAdapter.DrugViewHolder> {
             ImageView remove = holder.itemView.findViewById(R.id.img_delete);
             ExpansionLayout expandableLayout = holder.itemView.findViewById(R.id.expandable_layout);
 
+            expand.setAlpha(1f);
+            expand.setEnabled(true);
+
             name.setText(item.getDrugName());
             if (item.getInfo() != null && !item.getInfo().isEmpty()) {
                 description.setText(item.getInfo());
@@ -60,19 +63,22 @@ public class DrugAdapter extends ListAdapter<Drug, DrugAdapter.DrugViewHolder> {
                 expand.setAlpha(1f);
                 expand.setEnabled(true);
             } else {
+                if (expandableLayout.isExpanded()) {
+                    expandableLayout.collapse(true);
+                }
                 expand.setAlpha(0.5f);
                 expand.setEnabled(false);
             }
 
             name.setOnClickListener(v -> {
                 if (itemClickListener != null) {
-                    itemClickListener.selectItemToEdit(item);
+                    itemClickListener.selectItemToEdit(item, position);
                 }
             });
 
             remove.setOnClickListener(v -> {
                 if (itemClickListener != null) {
-                    itemClickListener.removeItem(item.getId());
+                    itemClickListener.removeItem(item.getId(), position);
                 }
             });
         }
@@ -86,9 +92,9 @@ public class DrugAdapter extends ListAdapter<Drug, DrugAdapter.DrugViewHolder> {
     }
 
     public interface ItemClickListener {
-        public void removeItem(long itemId);
+        public void removeItem(long itemId, int position);
 
-        public void selectItemToEdit(Drug drug);
+        public void selectItemToEdit(Drug drug, int position);
     }
 
 

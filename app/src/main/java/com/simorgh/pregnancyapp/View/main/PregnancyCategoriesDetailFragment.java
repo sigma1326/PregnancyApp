@@ -23,6 +23,7 @@ import com.simorgh.logger.Logger;
 import com.simorgh.pregnancyapp.R;
 import com.simorgh.pregnancyapp.View.TitleChangeListener;
 import com.simorgh.pregnancyapp.ViewModel.main.PregnancyCategoriesDetailViewModel;
+import com.simorgh.pregnancyapp.ViewModel.main.UserViewModel;
 import com.simorgh.pregnancyapp.adapter.CategoryAdapter;
 import com.simorgh.pregnancyapp.ui.BaseFragment;
 
@@ -31,6 +32,7 @@ import java.util.Objects;
 public class PregnancyCategoriesDetailFragment extends BaseFragment {
 
     private PregnancyCategoriesDetailViewModel mViewModel;
+    private UserViewModel mUserViewModel;
 
     @BindView(R.id.tv_app_title)
     TextView title;
@@ -50,6 +52,7 @@ public class PregnancyCategoriesDetailFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(PregnancyCategoriesDetailViewModel.class);
+        mUserViewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(UserViewModel.class);
         if (getArguments() != null) {
             mViewModel.setTitleText(PregnancyCategoriesDetailFragmentArgs.fromBundle(getArguments()).getTitle());
             mViewModel.setType(PregnancyCategoriesDetailFragmentArgs.fromBundle(getArguments()).getCategoryType());
@@ -90,6 +93,10 @@ public class PregnancyCategoriesDetailFragment extends BaseFragment {
 
         mViewModel.getArticles().observe(this, articles -> {
             ((CategoryAdapter) Objects.requireNonNull(categories.getAdapter())).submitList(articles);
+        });
+
+        mUserViewModel.getFontSize().observe(this,s -> {
+            ((CategoryAdapter) Objects.requireNonNull(categories.getAdapter())).setFontSize(Integer.parseInt(s));
         });
     }
 

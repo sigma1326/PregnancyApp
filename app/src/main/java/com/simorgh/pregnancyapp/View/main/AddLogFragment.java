@@ -29,6 +29,8 @@ import com.simorgh.threadutils.ThreadUtils;
 
 import java.util.Objects;
 
+import javax.xml.transform.Transformer;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
@@ -36,6 +38,9 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class AddLogFragment extends BaseFragment {
 
@@ -115,12 +120,14 @@ public class AddLogFragment extends BaseFragment {
         rvDrugs.setNestedScrollingEnabled(false);
         rvDrugs.setAdapter(new DrugAdapter(new DrugAdapter.ItemDiffCallBack(), new DrugAdapter.ItemClickListener() {
             @Override
-            public void removeItem(long itemId) {
+            public void removeItem(long itemId, int position) {
+                mViewModel.setEditingPosition(position);
                 mViewModel.removeDrug(itemId);
             }
 
             @Override
-            public void selectItemToEdit(Drug drug) {
+            public void selectItemToEdit(Drug drug, int position) {
+                mViewModel.setEditingPosition(position);
                 mViewModel.setDrug(drug);
             }
         }));
@@ -153,9 +160,10 @@ public class AddLogFragment extends BaseFragment {
 
         mViewModel.getDrugs().observe(this, drugs -> {
             ThreadUtils.runOnUIThread(() -> {
-//                rvDrugs.setMinimumHeight(drugs.size() * 40);
+//                rvDrugs.setMinimumHeight(drugs.size() * 45);
                 ((DrugAdapter) Objects.requireNonNull(rvDrugs.getAdapter())).submitList(drugs);
-                Objects.requireNonNull(rvDrugs.getAdapter()).notifyItemChanged(0, drugs.size());
+                ((DrugAdapter) Objects.requireNonNull(rvDrugs.getAdapter())).notifyDataSetChanged();
+//                Objects.requireNonNull(rvDrugs.getAdapter()).notifyItemChanged(0, drugs.size());
             });
         });
 

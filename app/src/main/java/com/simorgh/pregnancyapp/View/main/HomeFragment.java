@@ -15,7 +15,6 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.simorgh.calendarutil.CalendarTool;
-import com.simorgh.calendarutil.persiancalendar.PersianCalendar;
 import com.simorgh.logger.Logger;
 import com.simorgh.pregnancyapp.R;
 import com.simorgh.pregnancyapp.ViewModel.main.HomeViewModel;
@@ -87,7 +86,7 @@ public class HomeFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
     }
 
-    private ViewSwitcher.ViewFactory mFactory = () -> {
+    private final ViewSwitcher.ViewFactory mFactory = () -> {
         TextView t = new TextView(getContext());
         t.setGravity(Gravity.START);
         t.setTypeface(Typeface.createFromAsset(Objects.requireNonNull(getActivity()).getAssets(), "fonts/iransans_medium.ttf"));
@@ -96,8 +95,7 @@ public class HomeFragment extends BaseFragment {
         return t;
     };
 
-    private ViewSwitcher.ViewFactory mImageFactory = () -> {
-
+    private final ViewSwitcher.ViewFactory mImageFactory = () -> {
         ImageView t = new ImageView(getContext());
         t.setScaleType(ImageView.ScaleType.CENTER_CROP);
         t.setAdjustViewBounds(true);
@@ -111,61 +109,29 @@ public class HomeFragment extends BaseFragment {
             mHomeViewModel.setRepository(repository);
         }
 
-        mViewModel.getUser().observe(Objects.requireNonNull(getActivity()), user -> {
-            if (user != null && weekSlider != null) {
-                ThreadUtils.execute(() -> {
-                    Calendar nowC = Calendar.getInstance();
-                    float diffDays = CalendarTool.getDaysFromDiff(nowC, user.getPregnancyStartDate().getCalendar());
-                    int diffWeek = (int) (diffDays / 7) + 1;
-                    ThreadUtils.runOnUIThread(() -> {
-                        if (weekSlider != null) {
-                            weekSlider.goToWeekNumber(diffWeek);
-                        }
-                    }, 500);
+        mViewModel.getStartWeekLabels().observe(this, pair -> {
+            weekSlider.setStartTextDay(pair.first);
+            weekSlider.setStartTextMonth(pair.second);
+        });
 
-                    mHomeViewModel.loadWeekData(diffWeek);
+        mViewModel.getEndWeekLabels().observe(this, pair -> {
+            weekSlider.setEndTextDay(pair.first);
+            weekSlider.setEndTextMonth(pair.second);
+        });
 
+        mViewModel.getCurrentWeekNumber().observe(this,integer -> {
+            if (weekSlider != null) {
+                ThreadUtils.runOnUIThread(() -> {
+                    weekSlider.goToWeekNumber(integer);
+                }, 500);
 
-                    Calendar s = user.getPregnancyStartDate().getCalendar();
-                    PersianCalendar ps = CalendarTool.GregorianToPersian(s);
-
-                    ThreadUtils.runOnUIThread(() -> {
-                        weekSlider.setStartTextDay(String.valueOf(ps.getPersianDay()));
-                        weekSlider.setStartTextMonth(ps.getPersianMonthName());
-                    });
-
-
-                    Calendar d = user.getPregnancyStartDate().getCalendar();
-                    d.add(Calendar.DAY_OF_MONTH, 40 * 7);
-                    PersianCalendar p = CalendarTool.GregorianToPersian(d);
-
-
-                    ThreadUtils.runOnUIThread(() -> {
-                        weekSlider.setEndTextDay(String.valueOf(p.getPersianDay()));
-                        weekSlider.setEndTextMonth(p.getPersianMonthName());
-                    });
-
-                    if (mHomeViewModel != null) {
-                        mHomeViewModel.loadWeekData(diffWeek);
-                    }
-                });
+                if (mHomeViewModel != null) {
+                    mHomeViewModel.loadWeekData(integer);
+                }
             }
         });
 
-        embryoSummary.setFactory(() -> {
-            TextView t = new TextView(getContext());
-            t.setGravity(Gravity.START);
-            t.setTypeface(Typeface.createFromAsset(Objects.requireNonNull(getActivity()).getAssets(), "fonts/iransans_medium.ttf"));
-            t.setTextSize(13.3f);
-            t.setTextColor(Color.parseColor("#ffffff"));
-            return t;
-        });
-        embryoInfo.setFactory(mFactory);
-        motherInfo.setFactory(mFactory);
-
-        embryoImage.setFactory(mImageFactory);
-        motherImage.setFactory(mImageFactory);
-
+        initFactory();
 
         motionLayout = (MotionLayout) view;
 
@@ -201,7 +167,6 @@ public class HomeFragment extends BaseFragment {
                 guideline.setGuidelinePercent(1 - 0.45f * percent);
             }
             mHomeViewModel.setWeekNumber(weekNumber);
-            Logger.i(weekNumber + "");
         });
 
 
@@ -240,6 +205,22 @@ public class HomeFragment extends BaseFragment {
                 }
             }
         });
+    }
+
+    private void initFactory() {
+        embryoSummary.setFactory(() -> {
+            TextView t = new TextView(getContext());
+            t.setGravity(Gravity.START);
+            t.setTypeface(Typeface.createFromAsset(Objects.requireNonNull(getActivity()).getAssets(), "fonts/iransans_medium.ttf"));
+            t.setTextSize(13.3f);
+            t.setTextColor(Color.parseColor("#ffffff"));
+            return t;
+        });
+        embryoInfo.setFactory(mFactory);
+        motherInfo.setFactory(mFactory);
+
+        embryoImage.setFactory(mImageFactory);
+        motherImage.setFactory(mImageFactory);
     }
 
     @Override

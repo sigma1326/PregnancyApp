@@ -199,6 +199,9 @@ public class Date implements Parcelable {
 
     @Override
     public boolean equals(@Nullable Object obj) {
+        if (obj == null) {
+            return false;
+        }
         return getMilli() == ((Date) Objects.requireNonNull(obj)).getMilli();
     }
 }

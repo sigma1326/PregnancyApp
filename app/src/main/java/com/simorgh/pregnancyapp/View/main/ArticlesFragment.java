@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import com.google.android.material.tabs.TabLayout;
 import com.simorgh.pregnancyapp.R;
 import com.simorgh.pregnancyapp.ViewModel.main.ArticlesViewModel;
-import com.simorgh.pregnancyapp.ViewModel.main.PregnancyCategoriesDetailViewModel;
+import com.simorgh.pregnancyapp.ui.BaseFragment;
 import com.simorgh.threadutils.ThreadUtils;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
-public class ArticlesFragment extends Fragment {
+public class ArticlesFragment extends BaseFragment {
 
     private ArticlesViewModel mViewModel;
     private TabLayout tabLayout;
@@ -58,15 +58,14 @@ public class ArticlesFragment extends Fragment {
             adapter.clear();
 
             PregnancyTabFragment pregnancyTabFragment = new PregnancyTabFragment();
-            adapter.addFragment(pregnancyTabFragment,"بارداری");
+            adapter.addFragment(pregnancyTabFragment, "بارداری");
 
 
             WeeksInfoTabFragment weeksInfoTabFragment = new WeeksInfoTabFragment();
-            adapter.addFragment(weeksInfoTabFragment,"هفتگی");
+            adapter.addFragment(weeksInfoTabFragment, "هفتگی");
 
 
             mViewPager.setAdapter(adapter);
-
 
 
             tabLayout.setupWithViewPager(mViewPager);

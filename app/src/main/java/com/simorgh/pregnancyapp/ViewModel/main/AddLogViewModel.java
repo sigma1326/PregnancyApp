@@ -31,6 +31,7 @@ public class AddLogViewModel extends ViewModel {
     private MutableLiveData<Alcohol> alcohol = new MutableLiveData<>();
     private MutableLiveData<SleepTime> sleepTime = new MutableLiveData<>();
     private MutableLiveData<ExerciseTime> exerciseTime = new MutableLiveData<>();
+    private int editingPosition = -1;
 
     public AddLogViewModel() {
         ThreadUtils.execute(() -> {
@@ -146,7 +147,8 @@ public class AddLogViewModel extends ViewModel {
     public void removeDrug(long itemId) {
         List<Drug> temp = new ArrayList<>(Objects.requireNonNull(drugs.getValue()));
         for (int i = 0; i < Objects.requireNonNull(drugs.getValue()).size(); i++) {
-            if (Objects.requireNonNull(temp).get(i).getId() == itemId) {
+            if (Objects.requireNonNull(temp).get(i).getId() == itemId && editingPosition != -1 && editingPosition == i) {
+                editingPosition = -1;
                 temp.remove(i);
                 break;
             }
@@ -168,7 +170,22 @@ public class AddLogViewModel extends ViewModel {
                     itemAddedListener.itemAdded(true);
                 });
             } else {
-                if (!Objects.requireNonNull(temp).contains(drug)) {
+                boolean contains = false;
+//                boolean modified = false;
+                for (int i = 0; i < temp.size(); i++) {
+                    if (temp.get(i).getId() == drug.getId()) {
+                        if (editingPosition != -1) {
+                            if (i == editingPosition) {
+                                contains = true;
+                                editingPosition = -1;
+                                temp.get(i).setDrugName(drug.getDrugName());
+                                temp.get(i).setInfo(drug.getInfo());
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (!contains) {
                     Objects.requireNonNull(temp).add(drug);
                     List<Drug> finalTemp = temp;
                     ThreadUtils.runOnUIThread(() -> {
@@ -176,25 +193,32 @@ public class AddLogViewModel extends ViewModel {
                         itemAddedListener.itemAdded(true);
                     });
                 } else {
-                    boolean modified = false;
-                    for (Drug d : temp) {
-                        if (d.equals(drug)) {
-                            if (!d.isSameContent(drug)) {
-                                modified = true;
-                                d.setInfo(drug.getInfo());
-                                d.setDrugName(drug.getDrugName());
-                            }
-                            break;
-                        }
-                    }
-                    if (modified) {
-                        List<Drug> finalTemp1 = temp;
-                        ThreadUtils.runOnUIThread(() -> {
-                            drugs.setValue(finalTemp1);
-                        });
-                    }
-                    itemAddedListener.itemAdded(modified);
+                    List<Drug> finalTemp = temp;
+                    ThreadUtils.runOnUIThread(() -> {
+                       drugs.setValue(finalTemp);
+                       itemAddedListener.itemAdded(true);
+                   });
                 }
+//                else {
+//                    boolean modified = false;
+//                    for (Drug d : temp) {
+//                        if (d.equals(drug)) {
+//                            if (!d.isSameContent(drug)) {
+//                                modified = true;
+//                                d.setInfo(drug.getInfo());
+//                                d.setDrugName(drug.getDrugName());
+//                            }
+//                            break;
+//                        }
+//                    }
+//                    if (modified) {
+//                        List<Drug> finalTemp1 = temp;
+//                        ThreadUtils.runOnUIThread(() -> {
+//                            drugs.setValue(finalTemp1);
+//                        });
+//                    }
+//                    itemAddedListener.itemAdded(modified);
+//                }
             }
 
         });
@@ -214,7 +238,15 @@ public class AddLogViewModel extends ViewModel {
         if (Objects.requireNonNull(bloodPressure.getValue()).getMinPressure() > bloodPressure.getValue().getMaxPressure()) {
             return "فشار خون صحیح نیست";
         }
-        return "";
+        return null;
+    }
+
+    public void setEditingPosition(int position) {
+        editingPosition = position;
+    }
+
+    public int getEditingPosition() {
+        return editingPosition;
     }
 
     public interface itemAddedListener {

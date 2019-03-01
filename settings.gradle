@@ -1,4 +1,4 @@
-include ':app', ':weekslider',
+include ':app', ':weekslider', ':persianmaterialdatepicker',
         ':database',
         ':threadutils',
         ':logger',

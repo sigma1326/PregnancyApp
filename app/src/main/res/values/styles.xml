@@ -12,6 +12,7 @@
         <item name="android:backgroundDimEnabled">false</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
+        <!--<item name="android:textViewStyle">@style/tab_text</item>-->
     </style>
 
     <style name="AppTheme.NoActionBar">
