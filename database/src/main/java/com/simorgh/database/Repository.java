@@ -8,22 +8,26 @@ import com.simorgh.database.callback.ArticleCallBack;
 import com.simorgh.database.callback.ArticlesForTypeCallBack;
 import com.simorgh.database.callback.ParagraphsCallBack;
 import com.simorgh.database.callback.WeekCallBack;
+import com.simorgh.database.model.Alcohol;
 import com.simorgh.database.model.Article;
+import com.simorgh.database.model.BloodPressure;
+import com.simorgh.database.model.Cigarette;
+import com.simorgh.database.model.Drug;
+import com.simorgh.database.model.ExerciseTime;
+import com.simorgh.database.model.Fever;
 import com.simorgh.database.model.Paragraph;
+import com.simorgh.database.model.SleepTime;
 import com.simorgh.database.model.User;
 import com.simorgh.database.model.Week;
-import com.simorgh.database.util.ArticleSubItemType;
-import com.simorgh.database.util.ArticleViewSubItem;
-import com.simorgh.logger.Logger;
+import com.simorgh.database.model.Weight;
 import com.simorgh.threadutils.ThreadUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-import io.reactivex.Observable;
+import androidx.lifecycle.MutableLiveData;
 import io.reactivex.Single;
 import io.reactivex.SingleTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -43,8 +47,6 @@ public final class Repository {
     private void init(@NonNull final Application application) {
         ThreadUtils.execute(() -> {
             PregnancyDataBase importDataBase = RoomAsset.databaseBuilder(application, PregnancyDataBase.class, "pregnancy-db").build();
-//            Logger.d(importDataBase.userDAO().getUserOld().getBloodType());
-//            dataBase.userDAO().insert((importDataBase.userDAO().getUserOld()));
             importDataBase.close();
         });
     }
@@ -263,6 +265,92 @@ public final class Repository {
     public void updateBirthDate(@NonNull Date date) {
         ThreadUtils.execute(() -> {
             dataBase.userDAO().updateBirthDate(date);
+        });
+    }
+
+    public void insertDrugs(List<Drug> drugList) {
+        ThreadUtils.execute(() -> {
+            dataBase.drugDAO().insertAll(drugList);
+        });
+    }
+
+    public void insertBloodPressure(BloodPressure b) {
+        ThreadUtils.execute(() -> {
+            dataBase.bloodPressureDAO().insert(b);
+        });
+    }
+
+    public void insertWeight(Weight weight) {
+        ThreadUtils.execute(() -> {
+            dataBase.weightlDAO().insert(weight);
+        });
+    }
+
+    public void insertFever(Fever f) {
+        ThreadUtils.execute(() -> {
+            dataBase.feverDAO().insert(f);
+        });
+    }
+
+    public void insertCigarette(Cigarette cigarette) {
+        ThreadUtils.execute(() -> {
+            dataBase.cigaretteDAO().insert(cigarette);
+        });
+    }
+
+    public void insertAlcohol(Alcohol alcohol) {
+        ThreadUtils.execute(() -> {
+            dataBase.alcoholDAO().insert(alcohol);
+        });
+    }
+
+    public void insertSleepTime(SleepTime st) {
+        ThreadUtils.execute(() -> {
+            dataBase.sleepTimeDAO().insert(st);
+        });
+    }
+
+    public void insertExerciseTime(ExerciseTime exerciseTime) {
+        ThreadUtils.execute(() -> {
+            dataBase.exerciseTimeDAO().insert(exerciseTime);
+        });
+    }
+
+    public List<Drug> getDrugs(Date date) {
+        return dataBase.drugDAO().getDrugs(date);
+    }
+
+    public BloodPressure getBloodPressure(Date date) {
+        return dataBase.bloodPressureDAO().getBloodPressure(date);
+    }
+
+    public Weight getWeight(Date date) {
+        return dataBase.weightlDAO().getWeight(date);
+    }
+
+    public Fever getFever(Date date) {
+        return dataBase.feverDAO().getFever(date);
+    }
+
+    public Cigarette getCigarette(Date date) {
+        return dataBase.cigaretteDAO().getCigarette(date);
+    }
+
+    public Alcohol getAlcohol(Date date) {
+        return dataBase.alcoholDAO().getAlcohol(date);
+    }
+
+    public SleepTime getSleepTime(Date date) {
+        return dataBase.sleepTimeDAO().getSleepTime(date);
+    }
+
+    public ExerciseTime getExerciseTime(Date date) {
+        return dataBase.exerciseTimeDAO().getExerciseTime(date);
+    }
+
+    public void removeDrugs(List<Drug> deleteList) {
+        ThreadUtils.execute(() -> {
+            dataBase.drugDAO().removeList(deleteList);
         });
     }
 }

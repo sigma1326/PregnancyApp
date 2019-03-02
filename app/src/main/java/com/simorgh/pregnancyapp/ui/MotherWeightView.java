@@ -138,11 +138,23 @@ public class MotherWeightView extends ExpansionsViewGroupLinearLayout {
         }
     }
 
-    public void setWeight(@NonNull Weight value) {
-        if (weightView != null && description != null) {
-            weight.setId(value.getId());
+    public void setWeight(Weight value) {
+        if (value == null) {
+            weightView.setText(null);
+            description.setText(null);
+            weight.setEvaluate(false);
+            weight.setDate(null);
+            if (expandableLayout.isExpanded()) {
+                expandableLayout.collapse(true);
+            }
+        }
+        if (weightView != null && description != null && value != null) {
             weight.setDate(value.getDate());
-            weightView.setText(String.valueOf(value.getWeight()));
+            if (value.getWeight() > 0) {
+                weightView.setText(String.valueOf(value.getWeight()));
+            } else {
+                weightView.setText(null);
+            }
             description.setText(value.getInfo());
         }
     }
@@ -152,8 +164,10 @@ public class MotherWeightView extends ExpansionsViewGroupLinearLayout {
             try {
                 weight.setInfo(description.getText().toString());
                 weight.setWeight(Float.parseFloat(weightView.getText().toString()));
+                weight.setEvaluate(true);
             } catch (NumberFormatException e) {
                 Logger.printStackTrace(e);
+                weight.setEvaluate(false);
             }
         }
         return weight;
@@ -163,7 +177,7 @@ public class MotherWeightView extends ExpansionsViewGroupLinearLayout {
     @Override
     protected Parcelable onSaveInstanceState() {
         getWeight();
-        return new SleepView.State(Objects.requireNonNull(super.onSaveInstanceState()), weight.getId(), weight.getWeight(), weight.getInfo(), weight.getDate());
+        return new State(Objects.requireNonNull(super.onSaveInstanceState()), weight.getWeight(), weight.getInfo(), weight.getDate());
     }
 
     @Override
@@ -172,46 +186,37 @@ public class MotherWeightView extends ExpansionsViewGroupLinearLayout {
         if (state instanceof State) {
             weight.setWeight(((State) state).getWeight());
             setDescription(((State) state).getDescription());
-            weight.setId(((State) state).getId());
             weight.setDate(((State) state).getDate());
             setWeight(weight);
         }
     }
 
     public static final class State extends BaseSavedState {
-        private final long id;
         private final float weight;
         private final String description;
         private final Date date;
 
 
-        public State(Parcel source, long id, float weight, String description, Date date) {
+        public State(Parcel source, float weight, String description, Date date) {
             super(source);
-            this.id = id;
             this.weight = weight;
             this.description = description;
             this.date = date;
         }
 
         @TargetApi(Build.VERSION_CODES.N)
-        public State(Parcel source, ClassLoader loader, long id, float weight, String description, Date date) {
+        public State(Parcel source, ClassLoader loader, float weight, String description, Date date) {
             super(source, loader);
-            this.id = id;
             this.weight = weight;
             this.description = description;
             this.date = date;
         }
 
-        public State(Parcelable superState, long id, float weight, String description, Date date) {
+        public State(Parcelable superState, float weight, String description, Date date) {
             super(superState);
-            this.id = id;
             this.weight = weight;
             this.description = description;
             this.date = date;
-        }
-
-        public long getId() {
-            return id;
         }
 
         public float getWeight() {

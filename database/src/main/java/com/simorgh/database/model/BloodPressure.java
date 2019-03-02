@@ -5,16 +5,14 @@ import com.simorgh.database.Date;
 import androidx.annotation.Keep;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Keep
 @Entity(tableName = "blood_pressure")
 public class BloodPressure {
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
-    private long id;
-
     @ColumnInfo(name = "date")
+    @PrimaryKey()
     private Date date;
 
     @ColumnInfo(name = "min_pressure")
@@ -32,14 +30,6 @@ public class BloodPressure {
 
     public void setInfo(String info) {
         this.info = info;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public Date getDate() {
@@ -65,4 +55,15 @@ public class BloodPressure {
     public void setMaxPressure(float maxPressure) {
         this.maxPressure = maxPressure;
     }
+
+    public void setEvaluate(boolean b) {
+        evaluate = b;
+    }
+
+    public boolean evaluate() {
+        return evaluate;
+    }
+
+    @Ignore
+    private boolean evaluate = false;
 }

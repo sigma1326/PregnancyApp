@@ -29,8 +29,6 @@ import com.simorgh.threadutils.ThreadUtils;
 
 import java.util.Objects;
 
-import javax.xml.transform.Transformer;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
@@ -38,9 +36,6 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 public class AddLogFragment extends BaseFragment {
 
@@ -88,6 +83,7 @@ public class AddLogFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(AddLogViewModel.class);
+        mViewModel.setRepository(repository);
     }
 
     @Override
@@ -110,6 +106,8 @@ public class AddLogFragment extends BaseFragment {
 
         });
 
+
+        ThreadUtils.runOnUIThread(() -> mViewModel.setDate(datePicker.getSelectedDate()), 200);
 
         datePicker.setOnDateSelectedListener(date -> {
             mViewModel.setDate(date);
@@ -162,8 +160,7 @@ public class AddLogFragment extends BaseFragment {
             ThreadUtils.runOnUIThread(() -> {
 //                rvDrugs.setMinimumHeight(drugs.size() * 45);
                 ((DrugAdapter) Objects.requireNonNull(rvDrugs.getAdapter())).submitList(drugs);
-                ((DrugAdapter) Objects.requireNonNull(rvDrugs.getAdapter())).notifyDataSetChanged();
-//                Objects.requireNonNull(rvDrugs.getAdapter()).notifyItemChanged(0, drugs.size());
+                Objects.requireNonNull(rvDrugs.getAdapter()).notifyDataSetChanged();
             });
         });
 
@@ -186,15 +183,19 @@ public class AddLogFragment extends BaseFragment {
 
         saveLog.setOnClickListener(v -> {
             Utils.hideKeyboard((Activity) v.getContext());
-            mViewModel.setCigarette(cigaretteView.getCigarette());
             mViewModel.setBloodPressure(bloodPressureView.getBloodPressure());
-            mViewModel.setExerciseTime(exerciseView.getExerciseTime());
-            mViewModel.setAlcohol(alcoholView.getAlcohol());
+            mViewModel.setMotherWeight(motherWeightView.getWeight());
             mViewModel.setFever(feverView.getFever());
+            mViewModel.setCigarette(cigaretteView.getCigarette());
+            mViewModel.setAlcohol(alcoholView.getAlcohol());
             mViewModel.setSleepTime(sleepView.getSleepTime());
+            mViewModel.setExerciseTime(exerciseView.getExerciseTime());
             String error = mViewModel.checkErrors();
-            if (error.isEmpty()) {
-                mViewModel.saveLog();
+            if (error == null) {
+                mViewModel.saveLog(repository);
+                ThreadUtils.runOnUIThread(() -> {
+                    Toast.makeText(getContext(), getString(R.string.data_saved), Toast.LENGTH_SHORT).show();
+                });
             } else {
                 ThreadUtils.runOnUIThread(() -> {
                     Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();

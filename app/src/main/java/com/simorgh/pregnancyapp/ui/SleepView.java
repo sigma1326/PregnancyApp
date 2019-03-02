@@ -133,10 +133,18 @@ public class SleepView extends ExpansionsViewGroupLinearLayout {
         }
     }
 
-    public void setSleepTime(@NonNull SleepTime value) {
-        if (time != null && description != null) {
+    public void setSleepTime(SleepTime value) {
+        if (value == null) {
+            time.setText(null);
+            description.setText(null);
+            sleepTime.setEvaluate(false);
+            sleepTime.setDate(null);
+            if (expandableLayout.isExpanded()) {
+                expandableLayout.collapse(true);
+            }
+        }
+        if (time != null && description != null && value != null) {
             sleepTime.setDate(value.getDate());
-            sleepTime.setId(value.getId());
             if (value.getHour() > 0) {
                 time.setText(String.valueOf(value.getHour()));
             }
@@ -145,23 +153,24 @@ public class SleepView extends ExpansionsViewGroupLinearLayout {
     }
 
     public SleepTime getSleepTime() {
-        SleepTime value = new SleepTime();
         if (time != null && description != null) {
             try {
-                value.setHour(Float.parseFloat(time.getText().toString()));
-                value.setInfo(description.getText().toString());
+                sleepTime.setHour(Float.parseFloat(time.getText().toString()));
+                sleepTime.setInfo(description.getText().toString());
+                sleepTime.setEvaluate(true);
             } catch (NumberFormatException e) {
                 Logger.printStackTrace(e);
+                sleepTime.setEvaluate(false);
             }
         }
-        return value;
+        return sleepTime;
     }
 
     @Nullable
     @Override
     protected Parcelable onSaveInstanceState() {
         getSleepTime();
-        return new State(Objects.requireNonNull(super.onSaveInstanceState()), sleepTime.getId(), sleepTime.getHour(), sleepTime.getInfo(), sleepTime.getDate());
+        return new State(Objects.requireNonNull(super.onSaveInstanceState()), sleepTime.getHour(), sleepTime.getInfo(), sleepTime.getDate());
     }
 
     @Override
@@ -170,45 +179,36 @@ public class SleepView extends ExpansionsViewGroupLinearLayout {
         if (state instanceof State) {
             sleepTime.setHour(((State) state).getHour());
             setDescription(((State) state).getDescription());
-            sleepTime.setId(((State) state).getId());
             sleepTime.setDate(((State) state).getDate());
         }
     }
 
     public static final class State extends BaseSavedState {
-        private final long id;
         private final float hour;
         private final String description;
         private final Date date;
 
 
-        public State(Parcel source, long id, float hour, String description, Date date) {
+        public State(Parcel source, float hour, String description, Date date) {
             super(source);
-            this.id = id;
             this.hour = hour;
             this.description = description;
             this.date = date;
         }
 
         @TargetApi(Build.VERSION_CODES.N)
-        public State(Parcel source, ClassLoader loader, long id, float hour, String description, Date date) {
+        public State(Parcel source, ClassLoader loader, float hour, String description, Date date) {
             super(source, loader);
-            this.id = id;
             this.hour = hour;
             this.description = description;
             this.date = date;
         }
 
-        public State(Parcelable superState, long id, float hour, String description, Date date) {
+        public State(Parcelable superState, float hour, String description, Date date) {
             super(superState);
-            this.id = id;
             this.hour = hour;
             this.description = description;
             this.date = date;
-        }
-
-        public long getId() {
-            return id;
         }
 
         public float getHour() {

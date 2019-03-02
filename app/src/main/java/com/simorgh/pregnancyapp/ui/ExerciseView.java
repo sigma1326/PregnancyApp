@@ -12,7 +12,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.simorgh.database.Date;
 import com.simorgh.database.model.ExerciseTime;
@@ -52,12 +51,6 @@ public class ExerciseView extends ExpansionsViewGroupLinearLayout {
         super(context, attrs, defStyleAttr);
         initView(context, attrs);
     }
-
-//    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-//    public MotherWeightView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-//        super(context, attrs, defStyleAttr, defStyleRes);
-//        initView(context, attrs);
-//    }
 
     private void initView(@NonNull final Context context, AttributeSet attrs) {
         View v = View.inflate(context, R.layout.exercise_layout, this);
@@ -136,12 +129,22 @@ public class ExerciseView extends ExpansionsViewGroupLinearLayout {
     }
 
     public void setExerciseTime(ExerciseTime value) {
-        if (time != null && description != null) {
-            if (value.getHour() > 0) {
-                time.setText(String.valueOf(value.getHour()));
+        if (value == null) {
+            time.setText(null);
+            description.setText(null);
+            exerciseTime.setEvaluate(false);
+            exerciseTime.setDate(null);
+            if (expandableLayout.isExpanded()) {
+                expandableLayout.collapse(true);
+            }
+        }
+        if (time != null && description != null && value!=null) {
+            if (value.getMinute() > 0) {
+                time.setText(String.valueOf(value.getMinute()));
+            } else {
+                time.setText(null);
             }
             exerciseTime.setDate(value.getDate());
-            exerciseTime.setId(value.getId());
             setDescription(value.getInfo());
         }
     }
@@ -149,10 +152,12 @@ public class ExerciseView extends ExpansionsViewGroupLinearLayout {
     public ExerciseTime getExerciseTime() {
         if (time != null && description != null) {
             try {
-                exerciseTime.setHour(Float.parseFloat(time.getText().toString()));
+                exerciseTime.setMinute(Float.parseFloat(time.getText().toString()));
                 exerciseTime.setInfo(description.getText().toString());
+                exerciseTime.setEvaluate(true);
             } catch (NumberFormatException e) {
                 Logger.printStackTrace(e);
+                exerciseTime.setEvaluate(false);
             }
         }
         return exerciseTime;
@@ -163,54 +168,45 @@ public class ExerciseView extends ExpansionsViewGroupLinearLayout {
     @Override
     protected Parcelable onSaveInstanceState() {
         getExerciseTime();
-        return new State(Objects.requireNonNull(super.onSaveInstanceState()), exerciseTime.getId(), exerciseTime.getHour(), exerciseTime.getInfo(), exerciseTime.getDate());
+        return new State(Objects.requireNonNull(super.onSaveInstanceState()), exerciseTime.getMinute(), exerciseTime.getInfo(), exerciseTime.getDate());
     }
 
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
         super.onRestoreInstanceState(state);
         if (state instanceof State) {
-            exerciseTime.setHour(((State) state).getHour());
+            exerciseTime.setMinute(((State) state).getHour());
             setDescription(((State) state).getDescription());
-            exerciseTime.setId(((State) state).getId());
             exerciseTime.setDate(((State) state).getDate());
         }
     }
 
     public static final class State extends BaseSavedState {
-        private final long id;
         private final float hour;
         private final String description;
         private final Date date;
 
 
-        public State(Parcel source, long id, float hour, String description, Date date) {
+        public State(Parcel source, float hour, String description, Date date) {
             super(source);
-            this.id = id;
             this.hour = hour;
             this.description = description;
             this.date = date;
         }
 
         @TargetApi(Build.VERSION_CODES.N)
-        public State(Parcel source, ClassLoader loader, long id, float hour, String description, Date date) {
+        public State(Parcel source, ClassLoader loader, float hour, String description, Date date) {
             super(source, loader);
-            this.id = id;
             this.hour = hour;
             this.description = description;
             this.date = date;
         }
 
-        public State(Parcelable superState, long id, float hour, String description, Date date) {
+        public State(Parcelable superState, float hour, String description, Date date) {
             super(superState);
-            this.id = id;
             this.hour = hour;
             this.description = description;
             this.date = date;
-        }
-
-        public long getId() {
-            return id;
         }
 
         public float getHour() {

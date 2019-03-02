@@ -53,5 +53,6 @@
     <string name="select_font_size">انتخاب اندازه متن</string>
     <string name="select_blood_type1">انتخاب گروه خونی</string>
     <string name="wrong_selected_date">تاریخ انتخابی صحیح نیست</string>
+    <string name="data_saved">اطلاعات ذخیره شد</string>
 
 </resources>

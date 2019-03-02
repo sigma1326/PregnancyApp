@@ -36,6 +36,7 @@ public class AlcoholView extends ExpansionsViewGroupLinearLayout {
     private Button haveNot;
     private ImageView imgDescription;
     private final Alcohol alcohol = new Alcohol();
+    private boolean selected = false;
 
 
     public AlcoholView(Context context) {
@@ -53,12 +54,6 @@ public class AlcoholView extends ExpansionsViewGroupLinearLayout {
         initView(context, attrs);
     }
 
-//    public FeverView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-//        super(context, attrs, defStyleAttr, defStyleRes);
-//        initView(context, attrs);
-//    }
-
-    private boolean selected = false;
 
     @Override
     public boolean isSelected() {
@@ -70,9 +65,9 @@ public class AlcoholView extends ExpansionsViewGroupLinearLayout {
         this.selected = selected;
         alcohol.setUseAlcohol(selected);
         if (selected) {
-            selectHave(haveNot, have);
+            selectHave(haveNot, have, false);
         } else {
-            selectHave(have, haveNot);
+            selectHave(have, haveNot, false);
         }
     }
 
@@ -95,21 +90,21 @@ public class AlcoholView extends ExpansionsViewGroupLinearLayout {
 
         have.setOnClickListener(v1 -> {
             if (!selected) {
-                selectHave(have, haveNot);
+                selectHave(have, haveNot, true);
                 selected = true;
             }
         });
 
         haveNot.setOnClickListener(v1 -> {
             if (selected) {
-                selectHave(haveNot, have);
+                selectHave(haveNot, have, true);
                 selected = false;
             }
         });
 
     }
 
-    private void selectHave(Button have, Button haveNot) {
+    private void selectHave(Button have, Button haveNot, boolean fromUser) {
         int color = have.getCurrentTextColor();
         Drawable drawable = have.getBackground();
         have.setTextColor(haveNot.getCurrentTextColor());
@@ -117,6 +112,9 @@ public class AlcoholView extends ExpansionsViewGroupLinearLayout {
 
         haveNot.setTextColor(color);
         haveNot.setBackground(drawable);
+        if (fromUser) {
+            alcohol.setEvaluate(true);
+        }
     }
 
 
@@ -127,9 +125,19 @@ public class AlcoholView extends ExpansionsViewGroupLinearLayout {
         }
     }
 
-    public void setAlcohol(@NonNull Alcohol value) {
-        if (haveNot != null && have != null) {
-            alcohol.setId(value.getId());
+    public void setAlcohol(Alcohol value) {
+        if (value == null) {
+            if (selected) {
+                setSelected(false);
+            }
+            alcohol.setEvaluate(false);
+            description.setText(null);
+            alcohol.setDate(null);
+            if (expandableLayout.isExpanded()) {
+                expandableLayout.collapse(true);
+            }
+        }
+        if (haveNot != null && have != null && value!=null) {
             alcohol.setDate(value.getDate());
             if (selected != value.isUseAlcohol()) {
                 setSelected(value.isUseAlcohol());
@@ -161,7 +169,7 @@ public class AlcoholView extends ExpansionsViewGroupLinearLayout {
     @Override
     protected Parcelable onSaveInstanceState() {
         alcohol.setInfo(description.getText().toString());
-        return new State(Objects.requireNonNull(super.onSaveInstanceState()), alcohol.getId(), alcohol.isUseAlcohol(), alcohol.getInfo(), alcohol.getDate());
+        return new State(Objects.requireNonNull(super.onSaveInstanceState()), alcohol.isUseAlcohol(), alcohol.getInfo(), alcohol.getDate());
     }
 
     @Override
@@ -170,46 +178,37 @@ public class AlcoholView extends ExpansionsViewGroupLinearLayout {
         if (state instanceof State) {
             setSelected(((State) state).isSelected());
             setDescription(((State) state).getDescription());
-            alcohol.setId(((State) state).getId());
             alcohol.setDate(((State) state).getDate());
             setAlcohol(alcohol);
         }
     }
 
     public static final class State extends BaseSavedState {
-        private final long id;
         private final boolean selected;
         private final String description;
         private final Date date;
 
 
-        public State(Parcel source, long id, boolean selected, String description, Date date) {
+        public State(Parcel source, boolean selected, String description, Date date) {
             super(source);
-            this.id = id;
             this.selected = selected;
             this.description = description;
             this.date = date;
         }
 
         @TargetApi(Build.VERSION_CODES.N)
-        public State(Parcel source, ClassLoader loader, long id, boolean selected, String description, Date date) {
+        public State(Parcel source, ClassLoader loader, boolean selected, String description, Date date) {
             super(source, loader);
-            this.id = id;
             this.selected = selected;
             this.description = description;
             this.date = date;
         }
 
-        public State(Parcelable superState, long id, boolean selected, String description, Date date) {
+        public State(Parcelable superState, boolean selected, String description, Date date) {
             super(superState);
-            this.id = id;
             this.selected = selected;
             this.description = description;
             this.date = date;
-        }
-
-        public long getId() {
-            return id;
         }
 
         public boolean isSelected() {

@@ -5,21 +5,19 @@ import com.simorgh.database.Date;
 import androidx.annotation.Keep;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Keep
 @Entity(tableName = "exercise_time")
 public class ExerciseTime {
-    @ColumnInfo(name = "id")
-    @PrimaryKey(autoGenerate = true)
-    private long id;
-
-    @ColumnInfo(name = "hour")
-    private float hour;
+    @ColumnInfo(name = "minute")
+    private float minute;
 
     @ColumnInfo(name = "info")
     private String info;
 
+    @PrimaryKey
     @ColumnInfo(name = "date")
     private Date date;
 
@@ -31,20 +29,12 @@ public class ExerciseTime {
         this.date = date;
     }
 
-    public long getId() {
-        return id;
+    public float getMinute() {
+        return minute;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public float getHour() {
-        return hour;
-    }
-
-    public void setHour(float hour) {
-        this.hour = hour;
+    public void setMinute(float minute) {
+        this.minute = minute;
     }
 
     public String getInfo() {
@@ -54,4 +44,15 @@ public class ExerciseTime {
     public void setInfo(String info) {
         this.info = info;
     }
+
+    public void setEvaluate(boolean b) {
+        evaluate = b;
+    }
+
+    public boolean evaluate() {
+        return evaluate;
+    }
+
+    @Ignore
+    private boolean evaluate = false;
 }

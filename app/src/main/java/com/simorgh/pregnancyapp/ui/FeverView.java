@@ -53,10 +53,6 @@ public class FeverView extends ExpansionsViewGroupLinearLayout {
         initView(context, attrs);
     }
 
-//    public FeverView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-//        super(context, attrs, defStyleAttr, defStyleRes);
-//        initView(context, attrs);
-//    }
 
     private void initView(@NonNull final Context context, AttributeSet attrs) {
         View v = View.inflate(context, R.layout.fever_layout, this);
@@ -75,7 +71,7 @@ public class FeverView extends ExpansionsViewGroupLinearLayout {
 
         have.setOnClickListener(v1 -> {
             if (!selected) {
-                selectHave(have, haveNot);
+                selectHave(have, haveNot, true);
                 selected = true;
                 fever.setHasFever(true);
             }
@@ -84,7 +80,7 @@ public class FeverView extends ExpansionsViewGroupLinearLayout {
 
         haveNot.setOnClickListener(v1 -> {
             if (selected) {
-                selectHave(haveNot, have);
+                selectHave(haveNot, have, true);
                 selected = false;
                 fever.setHasFever(false);
             }
@@ -93,7 +89,7 @@ public class FeverView extends ExpansionsViewGroupLinearLayout {
 
     }
 
-    private void selectHave(Button have, Button haveNot) {
+    private void selectHave(Button have, Button haveNot, boolean fromUser) {
         int color = have.getCurrentTextColor();
         Drawable drawable = have.getBackground();
         have.setTextColor(haveNot.getCurrentTextColor());
@@ -101,6 +97,9 @@ public class FeverView extends ExpansionsViewGroupLinearLayout {
 
         haveNot.setTextColor(color);
         haveNot.setBackground(drawable);
+        if (fromUser) {
+            fever.setEvaluate(true);
+        }
     }
 
     @Override
@@ -125,9 +124,9 @@ public class FeverView extends ExpansionsViewGroupLinearLayout {
         this.selected = selected;
         fever.setHasFever(selected);
         if (selected) {
-            selectHave(haveNot, have);
+            selectHave(haveNot, have, false);
         } else {
-            selectHave(have, haveNot);
+            selectHave(have, haveNot, false);
         }
     }
 
@@ -138,9 +137,19 @@ public class FeverView extends ExpansionsViewGroupLinearLayout {
         }
     }
 
-    public void setFever(@NonNull Fever value) {
-        if (have != null && haveNot != null) {
-            fever.setId(value.getId());
+    public void setFever(Fever value) {
+        if (value == null) {
+            if (selected) {
+                setSelected(false);
+            }
+            description.setText(null);
+            fever.setDate(null);
+            fever.setEvaluate(false);
+            if (expandableLayout.isExpanded()) {
+                expandableLayout.collapse(true);
+            }
+        }
+        if (have != null && haveNot != null && value!=null) {
             fever.setDate(value.getDate());
             if (selected != value.isHasFever()) {
                 setSelected(value.isHasFever());
@@ -161,7 +170,7 @@ public class FeverView extends ExpansionsViewGroupLinearLayout {
     @Override
     protected Parcelable onSaveInstanceState() {
         getFever();
-        return new State(Objects.requireNonNull(super.onSaveInstanceState()), fever.getId(), fever.isHasFever(), fever.getInfo(), fever.getDate());
+        return new State(Objects.requireNonNull(super.onSaveInstanceState()), fever.isHasFever(), fever.getInfo(), fever.getDate());
     }
 
     @Override
@@ -170,46 +179,36 @@ public class FeverView extends ExpansionsViewGroupLinearLayout {
         if (state instanceof State) {
             setSelected(((State) state).isSelected());
             setDescription(((State) state).getDescription());
-            fever.setId(((State) state).getId());
             fever.setDate(((State) state).getDate());
         }
     }
 
     public static final class State extends BaseSavedState {
-        private final long id;
         private final boolean selected;
         private final String description;
         private final Date date;
 
 
-
-        public State(Parcel source, long id, boolean selected, String description, Date date) {
+        public State(Parcel source, boolean selected, String description, Date date) {
             super(source);
-            this.id = id;
             this.selected = selected;
             this.description = description;
             this.date = date;
         }
 
         @TargetApi(Build.VERSION_CODES.N)
-        public State(Parcel source, ClassLoader loader, long id, boolean selected, String description, Date date) {
+        public State(Parcel source, ClassLoader loader, boolean selected, String description, Date date) {
             super(source, loader);
-            this.id = id;
             this.selected = selected;
             this.description = description;
             this.date = date;
         }
 
-        public State(Parcelable superState, long id, boolean selected, String description, Date date) {
+        public State(Parcelable superState, boolean selected, String description, Date date) {
             super(superState);
-            this.id = id;
             this.selected = selected;
             this.description = description;
             this.date = date;
-        }
-
-        public long getId() {
-            return id;
         }
 
         public boolean isSelected() {

@@ -100,7 +100,7 @@ public class WeeksInfoTabFragment extends BaseFragment {
             repository.getParagraphs(week.getEmbryoArticleID(), new ParagraphsCallBack() {
                 @Override
                 public void onSuccess(List<Paragraph> paragraphs) {
-                    if (!paragraphs.isEmpty()) {
+                    if (!paragraphs.isEmpty() && embryoWeekInfoView!=null) {
                         embryoWeekInfoView.setSummary(paragraphs.get(0).getContent());
                     }
                 }

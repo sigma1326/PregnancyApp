@@ -2,11 +2,19 @@ package com.simorgh.database;
 
 import android.content.Context;
 
+import com.simorgh.database.dao.AlcoholDAO;
 import com.simorgh.database.dao.ArticleDAO;
 import com.simorgh.database.dao.ArticleWithParagraphDAO;
+import com.simorgh.database.dao.BloodPressureDAO;
+import com.simorgh.database.dao.CigaretteDAO;
+import com.simorgh.database.dao.DrugDAO;
+import com.simorgh.database.dao.ExerciseTimeDAO;
+import com.simorgh.database.dao.FeverDAO;
 import com.simorgh.database.dao.ParagraphDAO;
+import com.simorgh.database.dao.SleepTimeDAO;
 import com.simorgh.database.dao.UserDAO;
 import com.simorgh.database.dao.WeekDAO;
+import com.simorgh.database.dao.WeightlDAO;
 import com.simorgh.database.model.Alcohol;
 import com.simorgh.database.model.Article;
 import com.simorgh.database.model.BloodPressure;
@@ -33,7 +41,8 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 @TypeConverters(com.simorgh.database.TypeConverters.class)
 @Database(entities = {Paragraph.class, Article.class,
         User.class, Week.class, Drug.class, Weight.class,
-        BloodPressure.class, Fever.class},
+        BloodPressure.class, Fever.class, Alcohol.class,
+        Cigarette.class, ExerciseTime.class, SleepTime.class},
         version = 1, exportSchema = false)
 public abstract class PregnancyDataBase extends RoomDatabase {
     private static final String DB_NAME = "pregnancy-db";
@@ -46,6 +55,22 @@ public abstract class PregnancyDataBase extends RoomDatabase {
 
     public abstract WeekDAO weekDAO();
 
+    public abstract DrugDAO drugDAO();
+
+    public abstract AlcoholDAO alcoholDAO();
+
+    public abstract CigaretteDAO cigaretteDAO();
+
+    public abstract ExerciseTimeDAO exerciseTimeDAO();
+
+    public abstract BloodPressureDAO bloodPressureDAO();
+
+    public abstract WeightlDAO weightlDAO();
+
+    public abstract FeverDAO feverDAO();
+
+    public abstract SleepTimeDAO sleepTimeDAO();
+
     public abstract ParagraphDAO paragraphDAO();
 
     public abstract ArticleWithParagraphDAO articleWithParagraphDAO();
@@ -57,12 +82,13 @@ public abstract class PregnancyDataBase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room
                             .databaseBuilder(context.getApplicationContext(), PregnancyDataBase.class, DB_NAME)
-                            .addMigrations(new Migration(1, 2) {
-                                @Override
-                                public void migrate(@NonNull SupportSQLiteDatabase database) {
-//                                    database.execSQL("");
-                                }
-                            })
+                            .fallbackToDestructiveMigration()
+//                            .addMigrations(new Migration(1, 2) {
+//                                @Override
+//                                public void migrate(@NonNull SupportSQLiteDatabase database) {
+////                                    database.execSQL("");
+//                                }
+//                            })
                             .build();
                 }
             }

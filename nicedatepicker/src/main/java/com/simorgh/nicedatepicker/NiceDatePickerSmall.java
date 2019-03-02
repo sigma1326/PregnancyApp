@@ -199,7 +199,8 @@ public class NiceDatePickerSmall extends ConstraintLayout {
 
     public Date getSelectedDate() {
         Calendar calendar = CalendarTool.PersianToGregorian(selectedPersianDate);
-        selectedDate = new Date(calendar.getTimeInMillis());
+        selectedDate = new Date(calendar);
+        selectedDate.clearHourMinuteSeconds();
         return selectedDate;
     }
 

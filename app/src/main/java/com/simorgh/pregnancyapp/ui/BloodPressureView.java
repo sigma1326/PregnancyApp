@@ -27,7 +27,6 @@ import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
-import butterknife.OnTextChanged;
 
 @Keep
 public class BloodPressureView extends ExpansionsViewGroupLinearLayout {
@@ -93,7 +92,7 @@ public class BloodPressureView extends ExpansionsViewGroupLinearLayout {
                     float value = Float.parseFloat(s.toString());
                     if (s.length() >= 2) {
                         if (value < 7 || value > 19) {
-                            min.setText("");
+                            min.setText(null);
                         }
                     }
                 } catch (NumberFormatException e) {
@@ -123,7 +122,7 @@ public class BloodPressureView extends ExpansionsViewGroupLinearLayout {
                     float value = Float.parseFloat(s.toString());
                     if (s.length() >= 2) {
                         if (value < 7 || value > 19) {
-                            max.setText("");
+                            max.setText(null);
                         }
                     }
                 } catch (NumberFormatException e) {
@@ -178,23 +177,39 @@ public class BloodPressureView extends ExpansionsViewGroupLinearLayout {
         }
     }
 
-    public void setBloodPressure(BloodPressure bloodPressure) {
-        if (max != null && min != null) {
-            max.setText(String.valueOf(bloodPressure.getMaxPressure()));
-            min.setText(String.valueOf(bloodPressure.getMinPressure()));
-            description.setText(bloodPressure.getInfo());
+    public void setBloodPressure(BloodPressure value) {
+        if (value == null) {
+            min.setText(null);
+            max.setText(null);
+            description.setText(null);
+            bloodPressure.setEvaluate(false);
+            bloodPressure.setDate(null);
+            bloodPressure.setMaxPressure(0);
+            bloodPressure.setMinPressure(0);
+            if (expandableLayout.isExpanded()) {
+                expandableLayout.collapse(true);
+            }
+        }
+        if (max != null && min != null && value != null) {
+            min.setText(String.valueOf(value.getMinPressure()));
+            max.setText(String.valueOf(value.getMaxPressure()));
+            bloodPressure.setDate(value.getDate());
+            bloodPressure.setMinPressure(value.getMinPressure());
+            bloodPressure.setMaxPressure(value.getMaxPressure());
+            description.setText(value.getInfo());
         }
     }
 
     public BloodPressure getBloodPressure() {
-        BloodPressure bloodPressure = new BloodPressure();
         if (max != null && min != null && description != null) {
             try {
-                bloodPressure.setMaxPressure(Float.parseFloat(max.getText().toString()));
                 bloodPressure.setMinPressure(Float.parseFloat(min.getText().toString()));
+                bloodPressure.setMaxPressure(Float.parseFloat(max.getText().toString()));
                 bloodPressure.setInfo(description.getText().toString());
+                bloodPressure.setEvaluate(true);
             } catch (NumberFormatException e) {
                 Logger.printStackTrace(e);
+                bloodPressure.setEvaluate(false);
             }
         }
         return bloodPressure;
@@ -204,7 +219,7 @@ public class BloodPressureView extends ExpansionsViewGroupLinearLayout {
     @Override
     protected Parcelable onSaveInstanceState() {
         getBloodPressure();
-        return new State(Objects.requireNonNull(super.onSaveInstanceState()), bloodPressure.getId(), bloodPressure.getInfo(), bloodPressure.getDate(), bloodPressure.getMinPressure(), bloodPressure.getMaxPressure());
+        return new State(Objects.requireNonNull(super.onSaveInstanceState()), bloodPressure.getInfo(), bloodPressure.getDate(), bloodPressure.getMinPressure(), bloodPressure.getMaxPressure());
     }
 
     @Override
@@ -212,7 +227,6 @@ public class BloodPressureView extends ExpansionsViewGroupLinearLayout {
         super.onRestoreInstanceState(state);
         if (state instanceof State) {
             setDescription(((State) state).getDescription());
-            bloodPressure.setId(((State) state).getId());
             bloodPressure.setDate(((State) state).getDate());
             bloodPressure.setMinPressure(((State) state).getMin());
             bloodPressure.setMaxPressure(((State) state).getMax());
@@ -221,16 +235,14 @@ public class BloodPressureView extends ExpansionsViewGroupLinearLayout {
     }
 
     public static final class State extends BaseSavedState {
-        private final long id;
         private final String description;
         private final Date date;
         private final float min;
         private final float max;
 
 
-        public State(Parcel source, long id, String description, Date date, float min, float max) {
+        public State(Parcel source, String description, Date date, float min, float max) {
             super(source);
-            this.id = id;
             this.description = description;
             this.date = date;
             this.min = min;
@@ -238,26 +250,20 @@ public class BloodPressureView extends ExpansionsViewGroupLinearLayout {
         }
 
         @TargetApi(Build.VERSION_CODES.N)
-        public State(Parcel source, ClassLoader loader, long id, String description, Date date, float min, float max) {
+        public State(Parcel source, ClassLoader loader, String description, Date date, float min, float max) {
             super(source, loader);
-            this.id = id;
             this.description = description;
             this.date = date;
             this.min = min;
             this.max = max;
         }
 
-        public State(Parcelable superState, long id, String description, Date date, float min, float max) {
+        public State(Parcelable superState, String description, Date date, float min, float max) {
             super(superState);
-            this.id = id;
             this.description = description;
             this.date = date;
             this.min = min;
             this.max = max;
-        }
-
-        public long getId() {
-            return id;
         }
 
         public String getDescription() {

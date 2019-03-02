@@ -5,21 +5,19 @@ import com.simorgh.database.Date;
 import androidx.annotation.Keep;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Keep
 @Entity(tableName = "alcohol")
 public class Alcohol {
-    @ColumnInfo(name = "id")
-    @PrimaryKey(autoGenerate = true)
-    private long id;
-
     @ColumnInfo(name = "use_alcohol")
     private boolean useAlcohol;
 
     @ColumnInfo(name = "info")
     private String info;
 
+    @PrimaryKey
     @ColumnInfo(name = "date")
     private Date date;
 
@@ -39,14 +37,6 @@ public class Alcohol {
         this.useAlcohol = useAlcohol;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getInfo() {
         return info;
     }
@@ -54,4 +44,15 @@ public class Alcohol {
     public void setInfo(String info) {
         this.info = info;
     }
+
+    public void setEvaluate(boolean b) {
+        evaluate = b;
+    }
+
+    public boolean evaluate() {
+        return evaluate;
+    }
+
+    @Ignore
+    private boolean evaluate = false;
 }

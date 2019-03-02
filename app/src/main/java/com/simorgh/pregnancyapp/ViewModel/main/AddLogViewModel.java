@@ -1,6 +1,7 @@
 package com.simorgh.pregnancyapp.ViewModel.main;
 
 import com.simorgh.database.Date;
+import com.simorgh.database.Repository;
 import com.simorgh.database.model.Alcohol;
 import com.simorgh.database.model.BloodPressure;
 import com.simorgh.database.model.Cigarette;
@@ -20,6 +21,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class AddLogViewModel extends ViewModel {
+    private Repository repository;
     private boolean isEditMode = false;
     private MutableLiveData<Date> date = new MutableLiveData<>();
     private MutableLiveData<List<Drug>> drugs = new MutableLiveData<>();
@@ -32,6 +34,7 @@ public class AddLogViewModel extends ViewModel {
     private MutableLiveData<SleepTime> sleepTime = new MutableLiveData<>();
     private MutableLiveData<ExerciseTime> exerciseTime = new MutableLiveData<>();
     private int editingPosition = -1;
+    private final List<Drug> deleteList = new ArrayList<>();
 
     public AddLogViewModel() {
         ThreadUtils.execute(() -> {
@@ -53,6 +56,10 @@ public class AddLogViewModel extends ViewModel {
         });
     }
 
+    public void setRepository(Repository repository) {
+        this.repository = repository;
+    }
+
     public boolean isEditMode() {
         return isEditMode;
     }
@@ -69,7 +76,34 @@ public class AddLogViewModel extends ViewModel {
         ThreadUtils.runOnUIThread(() -> {
             this.date.setValue(date);
         });
-        //todo retrieve new data
+        loadData(date);
+    }
+
+    private void loadData(Date date) {
+        deleteList.clear();
+        if (repository != null) {
+            ThreadUtils.execute(() -> {
+                List<Drug> drugs = repository.getDrugs(date);
+                Fever fever = repository.getFever(date);
+                BloodPressure bloodPressure = repository.getBloodPressure(date);
+                Weight weight = repository.getWeight(date);
+                Cigarette cigarette = repository.getCigarette(date);
+                Alcohol alcohol = repository.getAlcohol(date);
+                SleepTime sleepTime = repository.getSleepTime(date);
+                ExerciseTime exerciseTime = repository.getExerciseTime(date);
+
+                ThreadUtils.runOnUIThread(() -> {
+                    this.drugs.setValue(drugs);
+                    this.fever.setValue(fever);
+                    this.bloodPressure.setValue(bloodPressure);
+                    this.motherWeight.setValue(weight);
+                    this.cigarette.setValue(cigarette);
+                    this.alcohol.setValue(alcohol);
+                    this.sleepTime.setValue(sleepTime);
+                    this.exerciseTime.setValue(exerciseTime);
+                });
+            });
+        }
     }
 
     public MutableLiveData<List<Drug>> getDrugs() {
@@ -149,6 +183,7 @@ public class AddLogViewModel extends ViewModel {
         for (int i = 0; i < Objects.requireNonNull(drugs.getValue()).size(); i++) {
             if (Objects.requireNonNull(temp).get(i).getId() == itemId && editingPosition != -1 && editingPosition == i) {
                 editingPosition = -1;
+                deleteList.add(Objects.requireNonNull(temp).get(i));
                 temp.remove(i);
                 break;
             }
@@ -158,8 +193,82 @@ public class AddLogViewModel extends ViewModel {
         }
     }
 
+    public void saveLog(@NonNull Repository repository) {
+        ThreadUtils.execute(() -> {
+            List<Drug> drugList = drugs.getValue();
+            if (drugList != null && !drugList.isEmpty()) {
+                if (drugList.get(0).getDate() == null) {
+                    for (Drug d : drugList) {
+                        d.setDate(date.getValue());
+                    }
+                }
+                repository.insertDrugs(drugList);
+            }
+
+            BloodPressure b = bloodPressure.getValue();
+            if (b != null && b.evaluate()) {
+                if (b.getDate() == null) {
+                    b.setDate(date.getValue());
+                }
+                repository.insertBloodPressure(b);
+            }
+
+            Weight weight = motherWeight.getValue();
+            if (weight != null && weight.evaluate()) {
+                if (weight.getDate() == null) {
+                    weight.setDate(date.getValue());
+                }
+                repository.insertWeight(weight);
+            }
+
+            Fever f = fever.getValue();
+            if (f != null && f.evaluate()) {
+                if (f.getDate() == null) {
+                    f.setDate(date.getValue());
+                }
+                repository.insertFever(f);
+            }
+
+            Cigarette c = cigarette.getValue();
+            if (c != null && c.evaluate()) {
+                if (c.getDate() == null) {
+                    c.setDate(date.getValue());
+                }
+                repository.insertCigarette(c);
+            }
+
+            Alcohol al = alcohol.getValue();
+            if (al != null && al.evaluate()) {
+                if (al.getDate() == null) {
+                    al.setDate(date.getValue());
+                }
+                repository.insertAlcohol(al);
+            }
+
+            SleepTime st = sleepTime.getValue();
+            if (st != null && st.evaluate()) {
+                if (st.getDate() == null) {
+                    st.setDate(date.getValue());
+                }
+                repository.insertSleepTime(st);
+            }
+
+
+            ExerciseTime et = exerciseTime.getValue();
+            if (et != null && et.evaluate()) {
+                if (et.getDate() == null) {
+                    et.setDate(date.getValue());
+                }
+                repository.insertExerciseTime(et);
+            }
+
+            repository.removeDrugs(deleteList);
+        });
+    }
+
     public void addDrug(@NonNull Drug drug, itemAddedListener itemAddedListener) {
         ThreadUtils.execute(() -> {
+            drug.setDate(date.getValue());
             List<Drug> temp = drugs.getValue();
             if (temp == null || Objects.requireNonNull(temp).isEmpty()) {
                 temp = new ArrayList<>();
@@ -195,49 +304,42 @@ public class AddLogViewModel extends ViewModel {
                 } else {
                     List<Drug> finalTemp = temp;
                     ThreadUtils.runOnUIThread(() -> {
-                       drugs.setValue(finalTemp);
-                       itemAddedListener.itemAdded(true);
-                   });
+                        drugs.setValue(finalTemp);
+                        itemAddedListener.itemAdded(true);
+                    });
                 }
-//                else {
-//                    boolean modified = false;
-//                    for (Drug d : temp) {
-//                        if (d.equals(drug)) {
-//                            if (!d.isSameContent(drug)) {
-//                                modified = true;
-//                                d.setInfo(drug.getInfo());
-//                                d.setDrugName(drug.getDrugName());
-//                            }
-//                            break;
-//                        }
-//                    }
-//                    if (modified) {
-//                        List<Drug> finalTemp1 = temp;
-//                        ThreadUtils.runOnUIThread(() -> {
-//                            drugs.setValue(finalTemp1);
-//                        });
-//                    }
-//                    itemAddedListener.itemAdded(modified);
-//                }
             }
-
         });
     }
 
-    public void saveLog() {
-
-    }
-
     public String checkErrors() {
-        if (Objects.requireNonNull(bloodPressure.getValue()).getMinPressure() < 7 || Objects.requireNonNull(bloodPressure.getValue()).getMinPressure() > 19) {
-            return "فشار خون صحیح نیست";
+        if (Objects.requireNonNull(bloodPressure.getValue()).evaluate()) {
+            if (Objects.requireNonNull(bloodPressure.getValue()).getMaxPressure() < 7 || Objects.requireNonNull(bloodPressure.getValue()).getMaxPressure() > 19) {
+                return "فشار خون صحیح نیست";
+            }
+            if (Objects.requireNonNull(bloodPressure.getValue()).getMinPressure() > bloodPressure.getValue().getMaxPressure()) {
+                return "فشار خون صحیح نیست";
+            }
         }
-        if (Objects.requireNonNull(bloodPressure.getValue()).getMaxPressure() < 7 || Objects.requireNonNull(bloodPressure.getValue()).getMaxPressure() > 19) {
-            return "فشار خون صحیح نیست";
+
+        if (Objects.requireNonNull(motherWeight.getValue()).evaluate()) {
+            if (Objects.requireNonNull(motherWeight.getValue()).getWeight() <= 0) {
+                return "وزن مادر صحیح نیست";
+            }
         }
-        if (Objects.requireNonNull(bloodPressure.getValue()).getMinPressure() > bloodPressure.getValue().getMaxPressure()) {
-            return "فشار خون صحیح نیست";
+
+        if (Objects.requireNonNull(sleepTime.getValue()).evaluate()) {
+            if (Objects.requireNonNull(sleepTime.getValue()).getHour() <= 0) {
+                return "میزان خواب صحیح نیست";
+            }
         }
+
+        if (Objects.requireNonNull(exerciseTime.getValue()).evaluate()) {
+            if (Objects.requireNonNull(exerciseTime.getValue()).getMinute() <= 0) {
+                return "میزان زمان ورزش صحیح نیست";
+            }
+        }
+
         return null;
     }
 

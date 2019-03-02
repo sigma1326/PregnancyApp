@@ -72,7 +72,7 @@ public class CigaretteView extends ExpansionsViewGroupLinearLayout {
         have.setOnClickListener(v1 -> {
             Utils.hideKeyboard((Activity) v1.getContext());
             if (!selected) {
-                selectHave(have, haveNot);
+                selectHave(have, haveNot,true);
                 selected = true;
             }
         });
@@ -80,14 +80,14 @@ public class CigaretteView extends ExpansionsViewGroupLinearLayout {
         haveNot.setOnClickListener(v1 -> {
             Utils.hideKeyboard((Activity) v1.getContext());
             if (selected) {
-                selectHave(haveNot, have);
+                selectHave(haveNot, have, true);
                 selected = false;
             }
         });
 
     }
 
-    private void selectHave(Button have, Button haveNot) {
+    private void selectHave(Button have, Button haveNot, boolean fromUser) {
         int color = have.getCurrentTextColor();
         Drawable drawable = have.getBackground();
         have.setTextColor(haveNot.getCurrentTextColor());
@@ -95,6 +95,9 @@ public class CigaretteView extends ExpansionsViewGroupLinearLayout {
 
         haveNot.setTextColor(color);
         haveNot.setBackground(drawable);
+        if (fromUser) {
+            cigarette.setEvaluate(true);
+        }
     }
 
 
@@ -108,9 +111,9 @@ public class CigaretteView extends ExpansionsViewGroupLinearLayout {
         this.selected = selected;
         cigarette.setUseCigarette(selected);
         if (selected) {
-            selectHave(haveNot, have);
+            selectHave(haveNot, have, false);
         } else {
-            selectHave(have, haveNot);
+            selectHave(have, haveNot, false);
         }
     }
 
@@ -130,9 +133,19 @@ public class CigaretteView extends ExpansionsViewGroupLinearLayout {
         }
     }
 
-    public void setCigarette(@NonNull Cigarette value) {
-        if (have != null && haveNot != null) {
-            cigarette.setId(value.getId());
+    public void setCigarette(Cigarette value) {
+        if (value == null) {
+            if (selected) {
+                setSelected(false);
+            }
+            cigarette.setEvaluate(false);
+            description.setText(null);
+            cigarette.setDate(null);
+            if (expandableLayout.isExpanded()) {
+                expandableLayout.collapse(true);
+            }
+        }
+        if (have != null && haveNot != null && value!=null) {
             cigarette.setDate(value.getDate());
             if (selected != value.isUseCigarette()) {
                 setSelected(value.isUseCigarette());
@@ -157,7 +170,7 @@ public class CigaretteView extends ExpansionsViewGroupLinearLayout {
     @Override
     protected Parcelable onSaveInstanceState() {
         getCigarette();
-        return new State(Objects.requireNonNull(super.onSaveInstanceState()), cigarette.getId(), cigarette.isUseCigarette(), cigarette.getInfo(), cigarette.getDate());
+        return new State(Objects.requireNonNull(super.onSaveInstanceState()), cigarette.isUseCigarette(), cigarette.getInfo(), cigarette.getDate());
     }
 
     @Override
@@ -166,46 +179,38 @@ public class CigaretteView extends ExpansionsViewGroupLinearLayout {
         if (state instanceof State) {
             setSelected(((State) state).isSelected());
             setDescription(((State) state).getDescription());
-            cigarette.setId(((State) state).getId());
             cigarette.setDate(((State) state).getDate());
         }
     }
 
     public static final class State extends BaseSavedState {
-        private final long id;
         private final boolean selected;
         private final String description;
         private final Date date;
 
 
-        public State(Parcel source, long id, boolean selected, String description, Date date) {
+        public State(Parcel source, boolean selected, String description, Date date) {
             super(source);
-            this.id = id;
             this.selected = selected;
             this.description = description;
             this.date = date;
         }
 
         @TargetApi(Build.VERSION_CODES.N)
-        public State(Parcel source, ClassLoader loader, long id, boolean selected, String description, Date date) {
+        public State(Parcel source, ClassLoader loader, boolean selected, String description, Date date) {
             super(source, loader);
-            this.id = id;
             this.selected = selected;
             this.description = description;
             this.date = date;
         }
 
-        public State(Parcelable superState, long id, boolean selected, String description, Date date) {
+        public State(Parcelable superState, boolean selected, String description, Date date) {
             super(superState);
-            this.id = id;
             this.selected = selected;
             this.description = description;
             this.date = date;
         }
 
-        public long getId() {
-            return id;
-        }
 
         public boolean isSelected() {
             return selected;
