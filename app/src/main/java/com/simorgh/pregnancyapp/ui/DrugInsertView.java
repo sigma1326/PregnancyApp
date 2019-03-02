@@ -18,7 +18,6 @@ import com.simorgh.database.Date;
 import com.simorgh.database.model.Drug;
 import com.simorgh.expandablelayout.ExpansionLayout;
 import com.simorgh.expandablelayout.viewgroup.ExpansionsViewGroupLinearLayout;
-import com.simorgh.logger.Logger;
 import com.simorgh.pregnancyapp.R;
 import com.simorgh.pregnancyapp.utils.Utils;
 import com.simorgh.threadutils.ThreadUtils;
@@ -175,8 +174,15 @@ public class DrugInsertView extends ExpansionsViewGroupLinearLayout {
     }
 
 
-    public void setDrug(@NonNull Drug value) {
-        if (name != null && description != null) {
+    public void setDrug(Drug value) {
+        if (value == null) {
+            drug.setDate(null);
+            drug.setDrugName(null);
+            name.setText(null);
+            description.setText(null);
+            drug.setInfo(null);
+        }
+        if (name != null && description != null && value != null) {
             drug.setId(value.getId());
             drug.setDate(value.getDate());
             setName(value.getDrugName());

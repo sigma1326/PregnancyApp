@@ -10,6 +10,7 @@ import com.simorgh.database.model.ExerciseTime;
 import com.simorgh.database.model.Fever;
 import com.simorgh.database.model.SleepTime;
 import com.simorgh.database.model.Weight;
+import com.simorgh.logger.Logger;
 import com.simorgh.threadutils.ThreadUtils;
 
 import java.util.ArrayList;
@@ -81,6 +82,17 @@ public class AddLogViewModel extends ViewModel {
 
     private void loadData(Date date) {
         deleteList.clear();
+        ThreadUtils.runOnUIThread(() -> {
+            drugs.setValue(null);
+            drug.setValue(null);
+            bloodPressure.setValue(null);
+            motherWeight.setValue(null);
+            fever.setValue(null);
+            cigarette.setValue(null);
+            alcohol.setValue(null);
+            sleepTime.setValue(null);
+            exerciseTime.setValue(null);
+        });
         if (repository != null) {
             ThreadUtils.execute(() -> {
                 List<Drug> drugs = repository.getDrugs(date);
@@ -198,8 +210,16 @@ public class AddLogViewModel extends ViewModel {
             List<Drug> drugList = drugs.getValue();
             if (drugList != null && !drugList.isEmpty()) {
                 if (drugList.get(0).getDate() == null) {
-                    for (Drug d : drugList) {
+                    for (int i = 0; i < drugList.size(); i++) {
+                        Drug d = drugList.get(i);
                         d.setDate(date.getValue());
+                        try {
+                            String ids = i + "" + d.getDate();
+                            long id = Long.parseLong(ids);
+                            d.setId(id);
+                        } catch (NumberFormatException e) {
+                            Logger.printStackTrace(e);
+                        }
                     }
                 }
                 repository.insertDrugs(drugList);
