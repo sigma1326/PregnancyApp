@@ -1,8 +1,10 @@
 package com.simorgh.pregnancyapp.View.main;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,16 +16,15 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
-import com.simorgh.calendarutil.CalendarTool;
 import com.simorgh.logger.Logger;
 import com.simorgh.pregnancyapp.R;
 import com.simorgh.pregnancyapp.ViewModel.main.HomeViewModel;
 import com.simorgh.pregnancyapp.ViewModel.main.UserViewModel;
+import com.simorgh.pregnancyapp.adapter.LogItem;
 import com.simorgh.pregnancyapp.ui.BaseFragment;
 import com.simorgh.threadutils.ThreadUtils;
 import com.simorgh.weekslider.WeekSlider;
 
-import java.util.Calendar;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
@@ -33,6 +34,10 @@ import androidx.constraintlayout.widget.Guideline;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import butterknife.BindView;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class HomeFragment extends BaseFragment {
@@ -102,6 +107,7 @@ public class HomeFragment extends BaseFragment {
         return t;
     };
 
+    @SuppressLint("CheckResult")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -119,7 +125,27 @@ public class HomeFragment extends BaseFragment {
             weekSlider.setEndTextMonth(pair.second);
         });
 
-        mViewModel.getCurrentWeekNumber().observe(this,integer -> {
+        repository
+                .getLoggedDates()
+                .observeOn(Schedulers.io())
+                .flatMap(Observable::fromIterable)
+                .flatMap(date -> {
+                    LogItem l = new LogItem(date, Objects.requireNonNull(mViewModel.getUser().getValue()).getPregnancyStartDate());
+//                    Logger.i(l.toString());
+                    return Observable.just(l);
+                }).toList().toObservable()
+                .doOnComplete(() -> {
+                    Logger.i("aha");
+                })
+                .doOnNext(logItems -> {
+                    Logger.i(logItems.toString() + "");
+                })
+                .subscribe(logItems -> {
+                    int a = 0;
+                    Logger.i(logItems.toString() + "");
+                }, Logger::printStackTrace);
+
+        mViewModel.getCurrentWeekNumber().observe(this, integer -> {
             if (weekSlider != null) {
                 ThreadUtils.runOnUIThread(() -> {
                     weekSlider.goToWeekNumber(integer);

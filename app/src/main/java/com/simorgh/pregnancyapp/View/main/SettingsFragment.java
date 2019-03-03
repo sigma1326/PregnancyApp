@@ -19,6 +19,7 @@ import com.simorgh.pregnancyapp.ViewModel.main.SettingsViewModel;
 import com.simorgh.pregnancyapp.ViewModel.main.UserViewModel;
 import com.simorgh.pregnancyapp.ui.BaseFragment;
 import com.simorgh.pregnancyapp.utils.DialogMaker;
+import com.simorgh.threadutils.ThreadUtils;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -39,6 +40,12 @@ public class SettingsFragment extends BaseFragment implements DatePickerDialog.O
     private TextView makeReport;
     private NavController navController;
 
+
+    private volatile PersianCalendar tempPersianDate = CalendarTool.GregorianToPersian(Calendar.getInstance());
+    private Calendar min = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
+    private Calendar max = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
+    private Calendar temp = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
+    private Calendar now = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
 
     @BindView(R.id.tv_pregnancy_start_date)
     TextView mPregnancyStartDate;
@@ -172,41 +179,62 @@ public class SettingsFragment extends BaseFragment implements DatePickerDialog.O
         super.onDestroy();
     }
 
-    private volatile PersianCalendar tempPersianDate = CalendarTool.GregorianToPersian(Calendar.getInstance());
-    private Calendar min = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-    private Calendar max = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-    private Calendar temp = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-    private Calendar now = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
+    private void clearHourMinuteSecond(Calendar calendar) {
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+    }
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        if (mSettingsViewModel != null) {
-            min.setTimeInMillis(now.getTimeInMillis());
-            max.setTimeInMillis(now.getTimeInMillis());
-            tempPersianDate.setPersianDate(year, monthOfYear + 1, dayOfMonth);
-            temp = CalendarTool.PersianToGregorian(tempPersianDate);
+        ThreadUtils.execute(() -> {
+            if (mSettingsViewModel != null) {
+                mViewModel.loadFirstLog(repository);
+                min.setTimeInMillis(now.getTimeInMillis());
+                max.setTimeInMillis(now.getTimeInMillis());
+                tempPersianDate.setPersianDate(year, monthOfYear + 1, dayOfMonth);
+                temp = CalendarTool.PersianToGregorian(tempPersianDate);
 
-            if (mSettingsViewModel.getDateType() == 1) {
-                min.add(Calendar.DAY_OF_MONTH, -280);
-                boolean invalid = temp.getTimeInMillis() < min.getTimeInMillis()
-                        || temp.getTimeInMillis() > max.getTimeInMillis();
-                if (invalid) {
-                    Toast.makeText(getContext(), getString(R.string.wrong_selected_date), Toast.LENGTH_SHORT).show();
-                } else {
-                    mViewModel.updatePregnancyStartDate(repository, new Date(temp));
-                }
-            } else if (mSettingsViewModel.getDateType() == 2) {
-                min.add(Calendar.YEAR, -50);
-                max.add(Calendar.YEAR, -16);
+                if (mSettingsViewModel.getDateType() == 1) {
+                    min.add(Calendar.DAY_OF_MONTH, -280);
+                    Date date = repository.getFirstLoggedDate();
+                    if (date == null) {
+                        max.setTimeInMillis(now.getTimeInMillis());
+                    } else {
+                        max.setTimeInMillis(date.getCalendar().getTimeInMillis());
+                    }
+                    clearHourMinuteSecond(min);
+                    clearHourMinuteSecond(max);
+                    clearHourMinuteSecond(temp);
 
-                boolean invalid = temp.getTimeInMillis() < min.getTimeInMillis()
-                        || temp.getTimeInMillis() > max.getTimeInMillis();
-                if (invalid) {
-                    Toast.makeText(getContext(), getString(R.string.wrong_selected_date), Toast.LENGTH_SHORT).show();
-                } else {
-                    mViewModel.updateBirthDate(repository, new Date(temp));
+                    boolean invalid = temp.getTimeInMillis() < min.getTimeInMillis()
+                            || temp.getTimeInMillis() > max.getTimeInMillis();
+                    if (invalid) {
+                        ThreadUtils.runOnUIThread(() -> {
+                            Toast.makeText(getContext(), getString(R.string.wrong_selected_date), Toast.LENGTH_SHORT).show();
+                        });
+                    } else {
+                        mViewModel.updatePregnancyStartDate(repository, new Date(temp));
+                    }
+                } else if (mSettingsViewModel.getDateType() == 2) {
+                    min.add(Calendar.YEAR, -50);
+                    max.add(Calendar.YEAR, -16);
+
+                    clearHourMinuteSecond(min);
+                    clearHourMinuteSecond(max);
+                    clearHourMinuteSecond(temp);
+
+                    boolean invalid = temp.getTimeInMillis() < min.getTimeInMillis()
+                            || temp.getTimeInMillis() > max.getTimeInMillis();
+                    if (invalid) {
+                        ThreadUtils.runOnUIThread(() -> {
+                            Toast.makeText(getContext(), getString(R.string.wrong_selected_date), Toast.LENGTH_SHORT).show();
+                        });
+                    } else {
+                        mViewModel.updateBirthDate(repository, new Date(temp));
+                    }
                 }
             }
-        }
+        });
     }
 }

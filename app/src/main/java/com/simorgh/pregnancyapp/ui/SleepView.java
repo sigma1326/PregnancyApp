@@ -89,7 +89,6 @@ public class SleepView extends ExpansionsViewGroupLinearLayout {
             @Override
             public void afterTextChanged(Editable s) {
                 enableExpand(!s.toString().isEmpty());
-                imgDescription.animate().alpha(!s.toString().isEmpty() ? 1f : 0.5f);
                 try {
                     float value = Float.parseFloat(s.toString());
                     if (s.length() >= 2) {
@@ -110,6 +109,7 @@ public class SleepView extends ExpansionsViewGroupLinearLayout {
 
     public void enableExpand(boolean enabled) {
         imgDescription.setEnabled(enabled);
+        imgDescription.animate().alpha(enabled ? 1f : 0.5f);
         if (!enabled && expandableLayout.isExpanded()) {
             expandableLayout.collapse(true);
         }
@@ -120,6 +120,7 @@ public class SleepView extends ExpansionsViewGroupLinearLayout {
         super.setEnabled(enabled);
         imgDescription.setEnabled(enabled);
         imgDescription.animate().alpha(enabled ? 1f : 0.5f);
+        description.setEnabled(enabled);
         time.setEnabled(enabled);
         if (!enabled && expandableLayout.isExpanded()) {
             expandableLayout.collapse(true);
@@ -127,10 +128,17 @@ public class SleepView extends ExpansionsViewGroupLinearLayout {
     }
 
 
-    public void setDescription(@NonNull String summaryText) {
-        if (description != null) {
+    public void setDescription(String summaryText) {
+        boolean enabled = summaryText != null && !summaryText.isEmpty();
+        if (enabled) {
+            sleepTime.setInfo(summaryText);
             description.setText(summaryText);
+        } else {
+            sleepTime.setInfo(null);
+            description.setText(null);
         }
+        imgDescription.setEnabled(enabled);
+        imgDescription.animate().alpha(enabled ? 1f : 0.5f);
     }
 
     public void setSleepTime(SleepTime value) {
@@ -148,7 +156,7 @@ public class SleepView extends ExpansionsViewGroupLinearLayout {
             if (value.getHour() > 0) {
                 time.setText(String.valueOf(value.getHour()));
             }
-            description.setText(value.getInfo());
+            setDescription(value.getInfo());
         }
     }
 

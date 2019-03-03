@@ -53,11 +53,6 @@ public class BloodPressureView extends ExpansionsViewGroupLinearLayout {
         initView(context, attrs);
     }
 
-//    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-//    public BloodPressureView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-//        super(context, attrs, defStyleAttr, defStyleRes);
-//        initView(context, attrs);
-//    }
 
     private void initView(@NonNull final Context context, AttributeSet attrs) {
         View v = View.inflate(context, R.layout.blood_pressure_layout, this);
@@ -115,7 +110,6 @@ public class BloodPressureView extends ExpansionsViewGroupLinearLayout {
             @Override
             public void afterTextChanged(Editable s) {
                 if (min.getText().toString().isEmpty()) {
-                    imgDescription.animate().alpha(s.length() > 0 ? 1f : 0.5f);
                     enableExpand(s.length() > 0);
                 }
                 try {
@@ -142,6 +136,7 @@ public class BloodPressureView extends ExpansionsViewGroupLinearLayout {
 
     public void enableExpand(boolean enabled) {
         imgDescription.setEnabled(enabled);
+        imgDescription.animate().alpha(enabled ? 1f : 0.5f);
         if (!enabled && expandableLayout.isExpanded()) {
             expandableLayout.collapse(true);
         }
@@ -152,6 +147,7 @@ public class BloodPressureView extends ExpansionsViewGroupLinearLayout {
         super.setEnabled(enabled);
         imgDescription.setEnabled(enabled);
         imgDescription.animate().alpha(enabled ? 1f : 0.5f);
+        description.setEnabled(enabled);
         min.setEnabled(enabled);
         max.setEnabled(enabled);
         if (!enabled && expandableLayout.isExpanded()) {
@@ -159,9 +155,18 @@ public class BloodPressureView extends ExpansionsViewGroupLinearLayout {
         }
     }
 
-    public void setDescription(@NonNull String summaryText) {
-        if (description != null) {
+    public void setDescription(String summaryText) {
+        boolean enabled = summaryText != null && !summaryText.isEmpty();
+        if (enabled) {
+            bloodPressure.setInfo(summaryText);
             description.setText(summaryText);
+        } else {
+            bloodPressure.setInfo(null);
+            description.setText(null);
+        }
+        if (isEnabled()) {
+            imgDescription.setEnabled(enabled);
+            imgDescription.animate().alpha(enabled ? 1f : 0.5f);
         }
     }
 

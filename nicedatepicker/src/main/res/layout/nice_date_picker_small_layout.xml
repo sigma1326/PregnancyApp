@@ -40,6 +40,21 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_date" />
 
 
+    <View
+        android:id="@+id/view_day"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_top"
+        android:layout_marginBottom="2sp"
+        android:background="@drawable/tv_bubble_bkg"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_date"
+        app:layout_constraintWidth_percent=".14" />
+
     <com.simorgh.numberpicker.NumberPicker
         android:id="@+id/np_day"
         android:layout_width="match_parent"
@@ -58,21 +73,5 @@
         app:np_textAlign="textAlignCenter"
         app:np_textSize="@dimen/text_size"
         app:np_value="5" />
-
-    <View
-        android:id="@+id/view_day"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/margin_top"
-        android:layout_marginBottom="2sp"
-        android:background="@drawable/tv_bubble_bkg"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_date"
-        app:layout_constraintWidth_percent=".14" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

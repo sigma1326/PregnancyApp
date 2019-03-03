@@ -8,6 +8,7 @@ import com.simorgh.calendarutil.persiancalendar.PersianCalendar;
 import com.simorgh.database.Date;
 import com.simorgh.database.Repository;
 import com.simorgh.database.model.User;
+import com.simorgh.threadutils.ThreadUtils;
 
 import java.util.Calendar;
 import java.util.Objects;
@@ -20,6 +21,7 @@ import androidx.lifecycle.ViewModel;
 
 @SuppressLint("DefaultLocale")
 public class UserViewModel extends ViewModel {
+    private MutableLiveData<Date> firstLoggedDate = new MutableLiveData<>();
     private final Calendar nowC = Calendar.getInstance();
     private LiveData<String> pregnancyStartDate;
     private LiveData<String> motherBirthDate = new MutableLiveData<>();
@@ -137,7 +139,18 @@ public class UserViewModel extends ViewModel {
                 float diffDays = CalendarTool.getDaysFromDiff(nowC, input.getPregnancyStartDate().getCalendar());
                 return (int) (diffDays / 7) + 1;
             });
+
+            loadFirstLog(repository);
         }
+    }
+
+    public void loadFirstLog(Repository repository) {
+        ThreadUtils.execute(() -> {
+            Date dd = repository.getFirstLoggedDate();
+            ThreadUtils.runOnUIThread(() -> {
+                firstLoggedDate.setValue(dd);
+            });
+        });
     }
 
     public LiveData<Pair<String, String>> getStartWeekLabels() {
@@ -150,6 +163,10 @@ public class UserViewModel extends ViewModel {
 
     public void updateFontSize(Repository repository, int value) {
         repository.updateFontSize(value);
+    }
+
+    public LiveData<Date> getFirstLoggedDate() {
+        return firstLoggedDate;
     }
 
     public void updateBloodType(@NonNull Repository repository, @NonNull String type, boolean isNegative) {

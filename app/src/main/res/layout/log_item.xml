@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="110dp"
+    android:layout_height="120dp"
    >
 
     <com.simorgh.timelineview.TimeLineView
-        android:id="@+id/timeLineView"
+        android:id="@+id/time_line_view"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginEnd="8dp"
@@ -28,7 +28,7 @@
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="w,1:1"
-        app:layout_constraintEnd_toStartOf="@+id/timeLineView"
+        app:layout_constraintEnd_toStartOf="@+id/time_line_view"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent=".15"
         app:srcCompat="@drawable/ic_baby" />
@@ -36,7 +36,7 @@
     <TextView
         android:id="@+id/tv_day_number"
         android:layout_width="wrap_content"
-        android:layout_height="16dp"
+        android:layout_height="wrap_content"
         android:fontFamily="@font/iransans_medium"
         android:gravity="center_horizontal"
         android:textColor="#e6f4f4f4"
@@ -68,5 +68,5 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_day_number"
-        tools:text="اطلاعات ثبت شده" />
+        android:text="@string/saved_data" />
 </androidx.constraintlayout.widget.ConstraintLayout>

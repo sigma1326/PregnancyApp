@@ -40,6 +40,20 @@
         app:layout_constraintStart_toStartOf="@+id/tv_blood_type"
         app:layout_constraintTop_toBottomOf="@+id/tv_blood_type" />
 
+    <View
+        android:id="@+id/view_blood_type"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_top"
+        android:background="@drawable/tv_bubble_rectangle_bkg"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@id/view_negative"
+        app:layout_constraintDimensionRatio="2.5:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_blood_type"
+        app:layout_constraintWidth_percent=".24" />
+
     <com.simorgh.numberpicker.NumberPicker
         android:id="@+id/np_blood_type"
         android:layout_width="match_parent"
@@ -57,20 +71,6 @@
         app:np_textSize="@dimen/text_size" />
 
     <View
-        android:id="@+id/view_blood_type"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/margin_top"
-        android:background="@drawable/tv_bubble_rectangle_bkg"
-        android:gravity="center"
-        app:layout_constraintBottom_toTopOf="@id/view_negative"
-        app:layout_constraintDimensionRatio="2.5:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_blood_type"
-        app:layout_constraintWidth_percent=".24" />
-
-    <View
         android:id="@+id/view3"
         android:layout_width="2dp"
         android:layout_height="0dp"
@@ -80,6 +80,21 @@
         app:layout_constraintStart_toStartOf="@+id/tv_blood_type"
         app:layout_constraintTop_toBottomOf="@+id/view_blood_type" />
 
+
+    <View
+        android:id="@+id/view_negative"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_top"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/tv_bubble_rectangle_bkg"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="2.5:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_blood_type"
+        app:layout_constraintWidth_percent=".24" />
 
     <com.simorgh.numberpicker.NumberPicker
         android:id="@+id/np_negative"
@@ -98,18 +113,4 @@
         app:np_textAlign="textAlignCenter"
         app:np_textSize="@dimen/text_size" />
 
-    <View
-        android:id="@+id/view_negative"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/margin_top"
-        android:layout_marginBottom="32dp"
-        android:background="@drawable/tv_bubble_rectangle_bkg"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="2.5:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view_blood_type"
-        app:layout_constraintWidth_percent=".24" />
 </androidx.constraintlayout.widget.ConstraintLayout>

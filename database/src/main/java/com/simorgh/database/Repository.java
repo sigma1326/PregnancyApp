@@ -2,6 +2,7 @@ package com.simorgh.database;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
+import android.util.Log;
 
 import com.huma.room_for_asset.RoomAsset;
 import com.simorgh.database.callback.ArticleCallBack;
@@ -20,14 +21,19 @@ import com.simorgh.database.model.SleepTime;
 import com.simorgh.database.model.User;
 import com.simorgh.database.model.Week;
 import com.simorgh.database.model.Weight;
+import com.simorgh.logger.Logger;
 import com.simorgh.threadutils.ThreadUtils;
 
 import java.util.List;
+import java.util.concurrent.Future;
 
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.SingleTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -352,5 +358,17 @@ public final class Repository {
         ThreadUtils.execute(() -> {
             dataBase.drugDAO().removeList(deleteList);
         });
+    }
+
+    public Observable<List<Date>> getLoggedDates() {
+        return dataBase
+                .dateDAO()
+                .getLoggedDates()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Date getFirstLoggedDate() {
+        return dataBase.dateDAO().getFirstLoggedDate();
     }
 }

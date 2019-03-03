@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#ffffff"
     android:fillViewport="true"
     android:layerType="hardware"
@@ -14,6 +14,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <com.simorgh.pregnancyapp.ui.DrugInsertView
             android:id="@+id/drug_insert_view"
             android:layout_width="0dp"
@@ -181,6 +182,7 @@
             app:layout_constraintEnd_toEndOf="@id/drug_insert_view"
             app:layout_constraintStart_toStartOf="@id/drug_insert_view"
             app:layout_constraintTop_toBottomOf="@id/divider7" />
+
         <View
             android:id="@+id/divider8"
             android:layout_width="0dp"
@@ -292,10 +294,4 @@
             app:layout_constraintTop_toBottomOf="@+id/img_back" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <!--<ViewStub-->
-        <!--android:id="@+id/view_stub_add_log"-->
-        <!--android:layout="@layout/add_log_layout"-->
-        <!--android:layerType="hardware"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content" />-->
 </ScrollView>

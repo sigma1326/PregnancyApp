@@ -47,4 +47,9 @@ public class Logger {
         if (!BuildConfig.DEBUG) return;
         e.printStackTrace();
     }
+
+    public static void printStackTrace(@NonNull Throwable throwable) {
+        if (!BuildConfig.DEBUG) return;
+        throwable.printStackTrace();
+    }
 }

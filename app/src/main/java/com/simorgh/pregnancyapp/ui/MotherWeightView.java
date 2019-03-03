@@ -113,11 +113,17 @@ public class MotherWeightView extends ExpansionsViewGroupLinearLayout {
     }
 
 
-    public void setDescription(@NonNull String summaryText) {
-        if (description != null) {
-            description.setText(summaryText);
+    public void setDescription(String summaryText) {
+        boolean enabled = summaryText != null && !summaryText.isEmpty();
+        if (enabled) {
             weight.setInfo(summaryText);
+            description.setText(summaryText);
+        } else {
+            weight.setInfo(null);
+            description.setText(null);
         }
+        imgDescription.setEnabled(enabled);
+        imgDescription.animate().alpha(enabled ? 1f : 0.5f);
     }
 
     @Override
@@ -125,6 +131,7 @@ public class MotherWeightView extends ExpansionsViewGroupLinearLayout {
         super.setEnabled(enabled);
         imgDescription.setEnabled(enabled);
         imgDescription.animate().alpha(enabled ? 1f : 0.5f);
+        description.setEnabled(enabled);
         weightView.setEnabled(enabled);
         if (!enabled && expandableLayout.isExpanded()) {
             expandableLayout.collapse(true);
@@ -155,7 +162,7 @@ public class MotherWeightView extends ExpansionsViewGroupLinearLayout {
             } else {
                 weightView.setText(null);
             }
-            description.setText(value.getInfo());
+            setDescription(value.getInfo());
         }
     }
 

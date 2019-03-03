@@ -32,46 +32,58 @@ public class Date implements Parcelable {
         this.seconds = seconds;
     }
 
-    public Date(long milli) {
-        int length = String.valueOf(milli).length();
+    public Date(long dateLong) {
+        int length = String.valueOf(dateLong).length();
         if (length < 14) {
             if (length == 13) {
-                milli *= 10;
+                dateLong *= 10;
             } else if (length == 12) {
-                milli *= 100;
+                dateLong *= 100;
             } else if (length == 11) {
-                milli *= 1000;
+                dateLong *= 1000;
             } else if (length == 10) {
-                milli *= 10000;
+                dateLong *= 10000;
             }
         }
-        year = Integer.parseInt(String.valueOf(milli).substring(0, 4));
-        month = Integer.parseInt(String.valueOf(milli).substring(4, 6));
-        day = Integer.parseInt(String.valueOf(milli).substring(6, 8));
-        hour = Integer.parseInt(String.valueOf(milli).substring(8, 10));
-        minute = Integer.parseInt(String.valueOf(milli).substring(10, 12));
-        seconds = Integer.parseInt(String.valueOf(milli).substring(12, 14));
+        year = Integer.parseInt(String.valueOf(dateLong).substring(0, 4));
+        month = Integer.parseInt(String.valueOf(dateLong).substring(4, 6));
+        day = Integer.parseInt(String.valueOf(dateLong).substring(6, 8));
+        hour = Integer.parseInt(String.valueOf(dateLong).substring(8, 10));
+        minute = Integer.parseInt(String.valueOf(dateLong).substring(10, 12));
+        seconds = Integer.parseInt(String.valueOf(dateLong).substring(12, 14));
     }
 
-    public void setMillis(long milli) {
-        int length = String.valueOf(milli).length();
+    public Date(Calendar calendar, boolean clearHourMinuteSecond) {
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        hour = calendar.get(Calendar.HOUR_OF_DAY);
+        minute = calendar.get(Calendar.MINUTE);
+        seconds = calendar.get(Calendar.SECOND);
+        if (clearHourMinuteSecond) {
+            clearHourMinuteSeconds();
+        }
+    }
+
+    public void setDateLong(long dateLong) {
+        int length = String.valueOf(dateLong).length();
         if (length < 14) {
             if (length == 13) {
-                milli *= 10;
+                dateLong *= 10;
             } else if (length == 12) {
-                milli *= 100;
+                dateLong *= 100;
             } else if (length == 11) {
-                milli *= 1000;
+                dateLong *= 1000;
             } else if (length == 10) {
-                milli *= 10000;
+                dateLong *= 10000;
             }
         }
-        year = Integer.parseInt(String.valueOf(milli).substring(0, 4));
-        month = Integer.parseInt(String.valueOf(milli).substring(4, 6));
-        day = Integer.parseInt(String.valueOf(milli).substring(6, 8));
-        hour = Integer.parseInt(String.valueOf(milli).substring(8, 10));
-        minute = Integer.parseInt(String.valueOf(milli).substring(10, 12));
-        seconds = Integer.parseInt(String.valueOf(milli).substring(12, 14));
+        year = Integer.parseInt(String.valueOf(dateLong).substring(0, 4));
+        month = Integer.parseInt(String.valueOf(dateLong).substring(4, 6));
+        day = Integer.parseInt(String.valueOf(dateLong).substring(6, 8));
+        hour = Integer.parseInt(String.valueOf(dateLong).substring(8, 10));
+        minute = Integer.parseInt(String.valueOf(dateLong).substring(10, 12));
+        seconds = Integer.parseInt(String.valueOf(dateLong).substring(12, 14));
     }
 
     public void clearHourMinuteSeconds() {
@@ -88,13 +100,16 @@ public class Date implements Parcelable {
         minute = calendar.get(Calendar.MINUTE);
         seconds = calendar.get(Calendar.SECOND);
     }
+
     public Date(final Calendar calendar) {
-        year = calendar.get(Calendar.YEAR);
-        month = calendar.get(Calendar.MONTH);
-        day = calendar.get(Calendar.DAY_OF_MONTH);
-        hour = calendar.get(Calendar.HOUR_OF_DAY);
-        minute = calendar.get(Calendar.MINUTE);
-        seconds = calendar.get(Calendar.SECOND);
+        if (calendar != null) {
+            year = calendar.get(Calendar.YEAR);
+            month = calendar.get(Calendar.MONTH);
+            day = calendar.get(Calendar.DAY_OF_MONTH);
+            hour = calendar.get(Calendar.HOUR_OF_DAY);
+            minute = calendar.get(Calendar.MINUTE);
+            seconds = calendar.get(Calendar.SECOND);
+        }
     }
 
     public static final Creator<Date> CREATOR = new Creator<Date>() {
@@ -174,7 +189,7 @@ public class Date implements Parcelable {
         this.minute = minute;
     }
 
-    public long getMilli() {
+    public long getDateLong() {
         long ret;
         ret = year;
         ret = ret * 100 + month;
@@ -202,6 +217,15 @@ public class Date implements Parcelable {
         if (obj == null) {
             return false;
         }
-        return getMilli() == ((Date) Objects.requireNonNull(obj)).getMilli();
+        return getDateLong() == ((Date) Objects.requireNonNull(obj)).getDateLong();
+    }
+
+    public void setYearMonthDay(int y, int m, int d) {
+        year = y;
+        month = m;
+        day = d;
+        hour = 0;
+        minute = 0;
+        seconds = 0;
     }
 }

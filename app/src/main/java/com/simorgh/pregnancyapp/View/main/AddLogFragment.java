@@ -9,11 +9,13 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.simorgh.database.Date;
 import com.simorgh.database.model.Drug;
 import com.simorgh.logger.Logger;
 import com.simorgh.nicedatepicker.NiceDatePickerSmall;
 import com.simorgh.pregnancyapp.R;
 import com.simorgh.pregnancyapp.ViewModel.main.AddLogViewModel;
+import com.simorgh.pregnancyapp.ViewModel.main.UserViewModel;
 import com.simorgh.pregnancyapp.adapter.DrugAdapter;
 import com.simorgh.pregnancyapp.ui.AlcoholView;
 import com.simorgh.pregnancyapp.ui.BaseFragment;
@@ -27,7 +29,10 @@ import com.simorgh.pregnancyapp.ui.SleepView;
 import com.simorgh.pregnancyapp.utils.Utils;
 import com.simorgh.threadutils.ThreadUtils;
 
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.TimeZone;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,6 +45,7 @@ import butterknife.BindView;
 public class AddLogFragment extends BaseFragment {
 
     private AddLogViewModel mViewModel;
+    private UserViewModel mUserViewModel;
 
     @BindView(R.id.img_back)
     ImageButton backButton;
@@ -79,10 +85,17 @@ public class AddLogFragment extends BaseFragment {
     Button saveLog;
 
 
+    private final Date now = new Date(Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault()));
+
+    {
+        now.clearHourMinuteSeconds();
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(AddLogViewModel.class);
+        mUserViewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(UserViewModel.class);
         mViewModel.setRepository(repository);
     }
 
@@ -107,10 +120,34 @@ public class AddLogFragment extends BaseFragment {
         });
 
 
-        ThreadUtils.runOnUIThread(() -> mViewModel.setDate(datePicker.getSelectedDate()), 200);
+        ThreadUtils.runOnUIThread(() -> {
+            datePicker.setDateRange(Objects.requireNonNull(mUserViewModel.getUser().getValue()).getPregnancyStartDate().getCalendar(), now.getCalendar());
+            if (getArguments() != null) {
+                datePicker.setSelectedDate(AddLogFragmentArgs.fromBundle(getArguments()).getSelectedDate());
+                mViewModel.setDate(AddLogFragmentArgs.fromBundle(getArguments()).getSelectedDate());
+            } else {
+                datePicker.setSelectedDate(now);
+                mViewModel.setDate(now);
+            }
+        }, 200);
 
         datePicker.setOnDateSelectedListener(date -> {
             mViewModel.setDate(date);
+            mViewModel.setEditing(date.getDateLong() >= now.getDateLong());
+        });
+
+
+        mViewModel.getEditing().observe(this, enabled -> {
+//            drugInsertView.setEnabled(enabled);
+//            bloodPressureView.setEnabled(enabled);
+//            motherWeightView.setEnabled(enabled);
+//            feverView.setEnabled(enabled);
+//            cigaretteView.setEnabled(enabled);
+//            alcoholView.setEnabled(enabled);
+//            sleepView.setEnabled(enabled);
+//            exerciseView.setEnabled(enabled);
+//            saveLog.setEnabled(enabled);
+//            saveLog.animate().alpha(enabled ? 1f : 0.5f);
         });
 
         rvDrugs.setHasFixedSize(false);
@@ -136,7 +173,6 @@ public class AddLogFragment extends BaseFragment {
         });
 
         drugInsertView.setInsertDrugListener(drug -> {
-            //todo add date to it
             mViewModel.addDrug(drug, success -> {
                 ThreadUtils.runOnUIThread(() -> {
                     Toast.makeText(getContext(), success ? "دارو اضافه شد" : "دارو موجود است", Toast.LENGTH_SHORT).show();

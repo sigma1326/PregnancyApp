@@ -112,6 +112,7 @@ public class FeverView extends ExpansionsViewGroupLinearLayout {
         super.setEnabled(enabled);
         imgDescription.setEnabled(enabled);
         imgDescription.animate().alpha(enabled ? 1f : 0.5f);
+        description.setEnabled(enabled);
         have.setEnabled(enabled);
         haveNot.setEnabled(enabled);
         if (!enabled && expandableLayout.isExpanded()) {
@@ -130,11 +131,17 @@ public class FeverView extends ExpansionsViewGroupLinearLayout {
         }
     }
 
-    public void setDescription(@NonNull String summaryText) {
-        if (description != null) {
+    public void setDescription(String summaryText) {
+        boolean enabled = summaryText != null && !summaryText.isEmpty();
+        if (enabled) {
             fever.setInfo(summaryText);
             description.setText(summaryText);
+        } else {
+            fever.setInfo(null);
+            description.setText(null);
         }
+        imgDescription.setEnabled(enabled);
+        imgDescription.animate().alpha(enabled ? 1f : 0.5f);
     }
 
     public void setFever(Fever value) {

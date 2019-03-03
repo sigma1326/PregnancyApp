@@ -115,17 +115,24 @@ public class ExerciseView extends ExpansionsViewGroupLinearLayout {
         super.setEnabled(enabled);
         imgDescription.setEnabled(enabled);
         imgDescription.animate().alpha(enabled ? 1f : 0.5f);
+        description.setEnabled(enabled);
         time.setEnabled(enabled);
         if (!enabled && expandableLayout.isExpanded()) {
             expandableLayout.collapse(true);
         }
     }
 
-    public void setDescription(@NonNull String summaryText) {
-        if (description != null) {
-            description.setText(summaryText);
+    public void setDescription(String summaryText) {
+        boolean enabled = summaryText != null && !summaryText.isEmpty();
+        if (enabled) {
             exerciseTime.setInfo(summaryText);
+            description.setText(summaryText);
+        } else {
+            exerciseTime.setInfo(null);
+            description.setText(null);
         }
+        imgDescription.setEnabled(enabled);
+        imgDescription.animate().alpha(enabled ? 1f : 0.5f);
     }
 
     public void setExerciseTime(ExerciseTime value) {

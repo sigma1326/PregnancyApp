@@ -226,5 +226,9 @@
         android:id="@+id/addLogFragment"
         android:name="com.simorgh.pregnancyapp.View.main.AddLogFragment"
         android:label="add_log_fragment"
-        tools:layout="@layout/add_log_fragment" />
+        tools:layout="@layout/add_log_fragment" >
+        <argument
+            android:name="selectedDate"
+            app:argType="com.simorgh.database.Date" />
+    </fragment>
 </navigation>

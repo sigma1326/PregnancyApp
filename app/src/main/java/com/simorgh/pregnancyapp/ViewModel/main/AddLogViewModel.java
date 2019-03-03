@@ -34,6 +34,7 @@ public class AddLogViewModel extends ViewModel {
     private MutableLiveData<Alcohol> alcohol = new MutableLiveData<>();
     private MutableLiveData<SleepTime> sleepTime = new MutableLiveData<>();
     private MutableLiveData<ExerciseTime> exerciseTime = new MutableLiveData<>();
+    private MutableLiveData<Boolean> editing = new MutableLiveData<>(true);
     private int editingPosition = -1;
     private final List<Drug> deleteList = new ArrayList<>();
 
@@ -76,6 +77,7 @@ public class AddLogViewModel extends ViewModel {
     public void setDate(Date date) {
         ThreadUtils.runOnUIThread(() -> {
             this.date.setValue(date);
+            Logger.i(date.toString());
         });
         loadData(date);
     }
@@ -369,6 +371,16 @@ public class AddLogViewModel extends ViewModel {
 
     public int getEditingPosition() {
         return editingPosition;
+    }
+
+    public void setEditing(boolean b) {
+        ThreadUtils.runOnUIThread(() -> {
+            editing.setValue(b);
+        });
+    }
+
+    public MutableLiveData<Boolean> getEditing() {
+        return editing;
     }
 
     public interface itemAddedListener {

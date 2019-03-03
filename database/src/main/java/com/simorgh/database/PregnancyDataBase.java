@@ -7,6 +7,7 @@ import com.simorgh.database.dao.ArticleDAO;
 import com.simorgh.database.dao.ArticleWithParagraphDAO;
 import com.simorgh.database.dao.BloodPressureDAO;
 import com.simorgh.database.dao.CigaretteDAO;
+import com.simorgh.database.dao.DateDAO;
 import com.simorgh.database.dao.DrugDAO;
 import com.simorgh.database.dao.ExerciseTimeDAO;
 import com.simorgh.database.dao.FeverDAO;
@@ -72,6 +73,8 @@ public abstract class PregnancyDataBase extends RoomDatabase {
     public abstract SleepTimeDAO sleepTimeDAO();
 
     public abstract ParagraphDAO paragraphDAO();
+
+    public abstract DateDAO dateDAO();
 
     public abstract ArticleWithParagraphDAO articleWithParagraphDAO();
 

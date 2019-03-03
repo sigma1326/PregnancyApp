@@ -72,7 +72,7 @@ public class CigaretteView extends ExpansionsViewGroupLinearLayout {
         have.setOnClickListener(v1 -> {
             Utils.hideKeyboard((Activity) v1.getContext());
             if (!selected) {
-                selectHave(have, haveNot,true);
+                selectHave(have, haveNot, true);
                 selected = true;
             }
         });
@@ -126,11 +126,17 @@ public class CigaretteView extends ExpansionsViewGroupLinearLayout {
     }
 
 
-    public void setDescription(@NonNull String summaryText) {
-        if (description != null) {
-            description.setText(summaryText);
+    public void setDescription(String summaryText) {
+        boolean enabled = summaryText != null && !summaryText.isEmpty();
+        if (enabled) {
             cigarette.setInfo(summaryText);
+            description.setText(summaryText);
+        } else {
+            cigarette.setInfo(null);
+            description.setText(null);
         }
+        imgDescription.setEnabled(enabled);
+        imgDescription.animate().alpha(enabled ? 1f : 0.5f);
     }
 
     public void setCigarette(Cigarette value) {
@@ -145,7 +151,7 @@ public class CigaretteView extends ExpansionsViewGroupLinearLayout {
                 expandableLayout.collapse(true);
             }
         }
-        if (have != null && haveNot != null && value!=null) {
+        if (have != null && haveNot != null && value != null) {
             cigarette.setDate(value.getDate());
             if (selected != value.isUseCigarette()) {
                 setSelected(value.isUseCigarette());
@@ -159,6 +165,7 @@ public class CigaretteView extends ExpansionsViewGroupLinearLayout {
         super.setEnabled(enabled);
         imgDescription.setEnabled(enabled);
         imgDescription.animate().alpha(enabled ? 1f : 0.5f);
+        description.setEnabled(enabled);
         have.setEnabled(enabled);
         haveNot.setEnabled(enabled);
         if (!enabled && expandableLayout.isExpanded()) {

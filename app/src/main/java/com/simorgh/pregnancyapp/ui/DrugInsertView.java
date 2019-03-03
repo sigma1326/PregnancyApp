@@ -93,8 +93,6 @@ public class DrugInsertView extends ExpansionsViewGroupLinearLayout {
 
             @Override
             public void afterTextChanged(Editable s) {
-                imgDescription.animate().alpha(s.length() > 0 ? 1f : 0.5f);
-                imgDescription.setEnabled(s.length() > 0);
                 imgApply.animate().alpha(s.length() > 0 ? 1f : 0.5f);
                 imgApply.setEnabled(s.length() > 0);
                 enableExpand(s.length() > 0);
@@ -128,6 +126,7 @@ public class DrugInsertView extends ExpansionsViewGroupLinearLayout {
 
     public void enableExpand(boolean enabled) {
         imgDescription.setEnabled(enabled);
+        imgDescription.animate().alpha(enabled ? 1f : 0.5f);
         if (!enabled && expandableLayout.isExpanded()) {
             expandableLayout.collapse(true);
         }
@@ -147,6 +146,7 @@ public class DrugInsertView extends ExpansionsViewGroupLinearLayout {
         imgApply.setEnabled(enabled);
         imgDescription.animate().alpha(enabled ? 1f : 0.5f);
         name.setEnabled(enabled);
+        description.setEnabled(enabled);
         if (!enabled && expandableLayout.isExpanded()) {
             expandableLayout.collapse(true);
         }

@@ -199,6 +199,15 @@ public class TimeLineView extends View {
         postInvalidate();
     }
 
+    public String getmText() {
+        return mText;
+    }
+
+    public void setText(String mText) {
+        this.mText = mText;
+        postInvalidate();
+    }
+
     public int getBackGroundColor() {
         return backGroundColor;
     }

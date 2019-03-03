@@ -54,5 +54,6 @@
     <string name="select_blood_type1">انتخاب گروه خونی</string>
     <string name="wrong_selected_date">تاریخ انتخابی صحیح نیست</string>
     <string name="data_saved">اطلاعات ذخیره شد</string>
+    <string name="saved_data">اطلاعات ثبت شده</string>
 
 </resources>

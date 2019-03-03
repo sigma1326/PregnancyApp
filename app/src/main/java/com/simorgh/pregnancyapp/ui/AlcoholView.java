@@ -118,10 +118,18 @@ public class AlcoholView extends ExpansionsViewGroupLinearLayout {
     }
 
 
-    public void setDescription(@NonNull String summaryText) {
-        if (description != null) {
-            description.setText(summaryText);
+    public void setDescription(String summaryText) {
+        boolean enabled = summaryText != null && !summaryText.isEmpty();
+        if (enabled) {
             alcohol.setInfo(summaryText);
+            description.setText(summaryText);
+        } else {
+            alcohol.setInfo(null);
+            description.setText(null);
+        }
+        if (isEnabled()) {
+            imgDescription.setEnabled(enabled);
+            imgDescription.animate().alpha(enabled ? 1f : 0.5f);
         }
     }
 
@@ -157,9 +165,12 @@ public class AlcoholView extends ExpansionsViewGroupLinearLayout {
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-        imgDescription.setEnabled(enabled);
+//        imgDescription.setEnabled(enabled);
+//        imgDescription.animate().alpha(enabled ? 1f : 0.5f);
+        description.setEnabled(enabled);
         have.setEnabled(enabled);
         haveNot.setEnabled(enabled);
+        description.setEnabled(enabled);
         if (!enabled && expandableLayout.isExpanded()) {
             expandableLayout.collapse(true);
         }
