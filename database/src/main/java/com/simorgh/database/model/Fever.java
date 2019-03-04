@@ -29,7 +29,7 @@ public class Fever {
         this.date = date;
     }
 
-    public boolean isHasFever() {
+    public boolean hasFever() {
         return hasFever;
     }
 
@@ -55,4 +55,31 @@ public class Fever {
 
     @Ignore
     private boolean evaluate = false;
+    @Ignore
+    private boolean hasData = false;
+
+    @Ignore
+    public void clear() {
+        hasFever = false;
+        info = null;
+        date = null;
+        evaluate = false;
+        hasData = false;
+    }
+
+    public void set(Fever value) {
+        hasFever = value.hasFever();
+        info = value.getInfo();
+        date = value.getDate();
+        evaluate = value.evaluate;
+        hasData = value.hasData;
+    }
+
+    public boolean hasData() {
+        return hasData;
+    }
+
+    public void setHasData(boolean hasData) {
+        this.hasData = hasData;
+    }
 }

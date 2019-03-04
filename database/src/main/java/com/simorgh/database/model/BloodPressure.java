@@ -66,4 +66,22 @@ public class BloodPressure {
 
     @Ignore
     private boolean evaluate = false;
+
+    @Ignore
+    public void clear() {
+        date = null;
+        minPressure = 0;
+        maxPressure = 0;
+        info = null;
+        evaluate = false;
+    }
+
+    @Ignore
+    public void set(BloodPressure value) {
+        date = value.getDate();
+        minPressure = value.getMinPressure();
+        maxPressure = value.getMaxPressure();
+        info = value.getInfo();
+        evaluate = value.evaluate;
+    }
 }

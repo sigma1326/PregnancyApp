@@ -55,4 +55,20 @@ public class ExerciseTime {
 
     @Ignore
     private boolean evaluate = false;
+
+    @Ignore
+    public void clear() {
+        minute = 0;
+        info = null;
+        date = null;
+        evaluate = false;
+    }
+
+    @Ignore
+    public void set(ExerciseTime value) {
+        date = value.getDate();
+        info = value.getInfo();
+        minute = value.getMinute();
+        evaluate = value.evaluate;
+    }
 }

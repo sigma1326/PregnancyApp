@@ -144,7 +144,6 @@ public class DrugInsertView extends ExpansionsViewGroupLinearLayout {
         super.setEnabled(enabled);
         imgDescription.setEnabled(enabled);
         imgApply.setEnabled(enabled);
-        imgDescription.animate().alpha(enabled ? 1f : 0.5f);
         name.setEnabled(enabled);
         description.setEnabled(enabled);
         if (!enabled && expandableLayout.isExpanded()) {

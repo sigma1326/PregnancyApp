@@ -55,4 +55,20 @@ public class SleepTime {
 
     @Ignore
     private boolean evaluate = false;
+
+    @Ignore
+    public void clear() {
+        hour = 0;
+        info = null;
+        date = null;
+        evaluate = false;
+    }
+
+    @Ignore
+    public void set(SleepTime value) {
+        date = value.getDate();
+        info = value.getInfo();
+        hour = value.getHour();
+        evaluate = value.evaluate;
+    }
 }

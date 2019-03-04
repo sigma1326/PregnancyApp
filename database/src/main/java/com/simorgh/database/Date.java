@@ -228,4 +228,9 @@ public class Date implements Parcelable {
         minute = 0;
         seconds = 0;
     }
+
+    public boolean isToday() {
+        Date today = new Date(Calendar.getInstance(), true);
+        return today.getDateLong() == getDateLong();
+    }
 }

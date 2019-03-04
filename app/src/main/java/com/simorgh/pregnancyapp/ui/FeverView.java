@@ -3,6 +3,7 @@ package com.simorgh.pregnancyapp.ui;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Parcel;
@@ -13,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.simorgh.database.Date;
 import com.simorgh.database.model.Fever;
 import com.simorgh.expandablelayout.ExpansionLayout;
 import com.simorgh.expandablelayout.viewgroup.ExpansionsViewGroupLinearLayout;
@@ -34,8 +34,11 @@ public class FeverView extends ExpansionsViewGroupLinearLayout {
     private Button have;
     private Button haveNot;
     private ImageView imgDescription;
-    private boolean selected = false;
     private final Fever fever = new Fever();
+    private Drawable selectedBkg;
+    private Drawable unSelectedBkg;
+    private int unSelectedTextColor = Color.parseColor("#80545454");
+    private int selectedTextColor = Color.parseColor("#ffffff");
 
 
     public FeverView(Context context) {
@@ -65,110 +68,140 @@ public class FeverView extends ExpansionsViewGroupLinearLayout {
         haveNot = v.findViewById(R.id.btn_have_not);
         imgDescription = v.findViewById(R.id.img_description);
 
+        selectedBkg = context.getResources().getDrawable(R.drawable.btn_have_bkg);
+        unSelectedBkg = context.getResources().getDrawable(R.drawable.btn_have_not_bkg);
+
+
+        imgDescription.setAlpha(0.5f);
+        imgDescription.setEnabled(false);
+
         imgDescription.setOnClickListener(v1 -> {
             expandableLayout.toggle(true);
         });
 
         have.setOnClickListener(v1 -> {
-            if (!selected) {
-                selectHave(have, haveNot, true);
-                selected = true;
-                fever.setHasFever(true);
-            }
             Utils.hideKeyboard((Activity) v1.getContext());
+            toggleSelected(true, true);
         });
 
         haveNot.setOnClickListener(v1 -> {
-            if (selected) {
-                selectHave(haveNot, have, true);
-                selected = false;
-                fever.setHasFever(false);
-            }
             Utils.hideKeyboard((Activity) v1.getContext());
+            toggleSelected(false, true);
         });
 
     }
 
-    private void selectHave(Button have, Button haveNot, boolean fromUser) {
-        int color = have.getCurrentTextColor();
-        Drawable drawable = have.getBackground();
-        have.setTextColor(haveNot.getCurrentTextColor());
-        have.setBackground(haveNot.getBackground());
+    private void toggleSelected(boolean selection, boolean fromUser) {
+        boolean clear = false;
+        if (fever.hasData()) {
+            if (selection == fever.hasFever() && fromUser) {
+                clear = true;
+                fever.setHasData(false);
+            }
+        } else {
+            if (fromUser) {
+                fever.setHasData(true);
+            }
+        }
 
-        haveNot.setTextColor(color);
-        haveNot.setBackground(drawable);
+
         if (fromUser) {
             fever.setEvaluate(true);
+            fever.setHasFever(selection);
+        }
+        if (selection) {
+            select(have, haveNot, clear);
+        } else {
+            select(haveNot, have, clear);
+        }
+        imgDescription.setEnabled(fever.hasData());
+        imgDescription.animate().alpha(fever.hasData() ? 1f : 0.5f);
+        if (!fever.hasData()) {
+            collapse();
         }
     }
 
-    @Override
-    public boolean isSelected() {
-        return selected;
+    private void select(Button have, Button haveNot, boolean clearSelection) {
+        if (fever.hasData() && !clearSelection) {
+            have.setBackground(selectedBkg);
+            haveNot.setBackground(unSelectedBkg);
+            have.setTextColor(selectedTextColor);
+            haveNot.setTextColor(unSelectedTextColor);
+        } else {
+            have.setBackground(unSelectedBkg);
+            haveNot.setBackground(unSelectedBkg);
+            have.setTextColor(unSelectedTextColor);
+            haveNot.setTextColor(unSelectedTextColor);
+        }
     }
 
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-        imgDescription.setEnabled(enabled);
-        imgDescription.animate().alpha(enabled ? 1f : 0.5f);
         description.setEnabled(enabled);
         have.setEnabled(enabled);
         haveNot.setEnabled(enabled);
-        if (!enabled && expandableLayout.isExpanded()) {
+        if (!enabled) {
+            collapse();
+        }
+        updateViewData();
+    }
+
+    private void collapse() {
+        if (expandableLayout.isExpanded()) {
             expandableLayout.collapse(true);
         }
     }
 
+
     @Override
     public void setSelected(boolean selected) {
-        this.selected = selected;
         fever.setHasFever(selected);
-        if (selected) {
-            selectHave(haveNot, have, false);
-        } else {
-            selectHave(have, haveNot, false);
-        }
+        toggleSelected(selected, false);
     }
 
-    public void setDescription(String summaryText) {
-        boolean enabled = summaryText != null && !summaryText.isEmpty();
-        if (enabled) {
-            fever.setInfo(summaryText);
-            description.setText(summaryText);
-        } else {
-            fever.setInfo(null);
-            description.setText(null);
-        }
-        imgDescription.setEnabled(enabled);
-        imgDescription.animate().alpha(enabled ? 1f : 0.5f);
+    @Override
+    public boolean isSelected() {
+        return fever.hasFever();
     }
 
     public void setFever(Fever value) {
         if (value == null) {
-            if (selected) {
-                setSelected(false);
-            }
-            description.setText(null);
-            fever.setDate(null);
-            fever.setEvaluate(false);
+            fever.clear();
+            updateViewData();
             if (expandableLayout.isExpanded()) {
                 expandableLayout.collapse(true);
             }
-        }
-        if (have != null && haveNot != null && value!=null) {
-            fever.setDate(value.getDate());
-            if (selected != value.isHasFever()) {
-                setSelected(value.isHasFever());
+        } else {
+            if (have != null && haveNot != null) {
+                fever.set(value);
+                fever.setHasData(true);
+                updateViewData();
             }
-            setDescription(value.getInfo());
+        }
+    }
+
+
+    private void updateViewData() {
+        toggleSelected(fever.hasFever(), false);
+        boolean enabled = fever.getInfo() != null && !fever.getInfo().isEmpty();
+        if (enabled) {
+            description.setText(fever.getInfo());
+        } else {
+            description.setText(null);
+        }
+        if (!isEnabled()) {
+            imgDescription.setEnabled(enabled);
+            imgDescription.animate().alpha(enabled ? 1f : 0.5f);
+        } else {
+            imgDescription.setEnabled(fever.hasData());
+            imgDescription.animate().alpha(fever.hasData() ? 1f : 0.5f);
         }
     }
 
     public Fever getFever() {
         if (have != null && haveNot != null) {
             fever.setInfo(description.getText().toString());
-            fever.setHasFever(selected);
         }
         return fever;
     }
@@ -177,57 +210,35 @@ public class FeverView extends ExpansionsViewGroupLinearLayout {
     @Override
     protected Parcelable onSaveInstanceState() {
         getFever();
-        return new State(Objects.requireNonNull(super.onSaveInstanceState()), fever.isHasFever(), fever.getInfo(), fever.getDate());
+        return new State(Objects.requireNonNull(super.onSaveInstanceState()), fever);
     }
 
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
         super.onRestoreInstanceState(state);
         if (state instanceof State) {
-            setSelected(((State) state).isSelected());
-            setDescription(((State) state).getDescription());
-            fever.setDate(((State) state).getDate());
+            setFever(((State) state).fever);
         }
     }
 
     public static final class State extends BaseSavedState {
-        private final boolean selected;
-        private final String description;
-        private final Date date;
+        private final Fever fever;
 
 
-        public State(Parcel source, boolean selected, String description, Date date) {
+        public State(Parcel source, Fever fever) {
             super(source);
-            this.selected = selected;
-            this.description = description;
-            this.date = date;
+            this.fever = fever;
         }
 
         @TargetApi(Build.VERSION_CODES.N)
-        public State(Parcel source, ClassLoader loader, boolean selected, String description, Date date) {
+        public State(Parcel source, ClassLoader loader, Fever fever) {
             super(source, loader);
-            this.selected = selected;
-            this.description = description;
-            this.date = date;
+            this.fever = fever;
         }
 
-        public State(Parcelable superState, boolean selected, String description, Date date) {
+        public State(Parcelable superState, Fever fever) {
             super(superState);
-            this.selected = selected;
-            this.description = description;
-            this.date = date;
-        }
-
-        public boolean isSelected() {
-            return selected;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public Date getDate() {
-            return date;
+            this.fever = fever;
         }
     }
 }

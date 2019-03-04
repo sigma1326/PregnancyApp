@@ -371,4 +371,22 @@ public final class Repository {
     public Date getFirstLoggedDate() {
         return dataBase.dateDAO().getFirstLoggedDate();
     }
+
+    public void removeFever(Fever value) {
+        ThreadUtils.execute(() -> {
+            dataBase.feverDAO().remove(value);
+        });
+    }
+
+    public void removeCigarette(Cigarette value) {
+        ThreadUtils.execute(() -> {
+            dataBase.cigaretteDAO().remove(value);
+        });
+    }
+
+    public void removeAlcohol(Alcohol value) {
+        ThreadUtils.execute(() -> {
+            dataBase.alcoholDAO().remove(value);
+        });
+    }
 }

@@ -55,4 +55,20 @@ public class Weight {
 
     @Ignore
     private boolean evaluate = false;
+
+    @Ignore
+    public void clear() {
+        weight = 0;
+        info = null;
+        date = null;
+        evaluate = false;
+    }
+
+    @Ignore
+    public void set(Weight value) {
+        date = value.getDate();
+        info = value.getInfo();
+        weight = value.getWeight();
+        evaluate = value.evaluate;
+    }
 }

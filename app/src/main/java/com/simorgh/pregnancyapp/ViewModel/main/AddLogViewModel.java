@@ -24,6 +24,7 @@ import androidx.lifecycle.ViewModel;
 public class AddLogViewModel extends ViewModel {
     private Repository repository;
     private boolean isEditMode = false;
+    private boolean saving = false;
     private MutableLiveData<Date> date = new MutableLiveData<>();
     private MutableLiveData<List<Drug>> drugs = new MutableLiveData<>();
     private MutableLiveData<Drug> drug = new MutableLiveData<>();
@@ -116,81 +117,15 @@ public class AddLogViewModel extends ViewModel {
                     this.sleepTime.setValue(sleepTime);
                     this.exerciseTime.setValue(exerciseTime);
                 });
+
+                boolean edit = fever != null || bloodPressure != null || weight != null || cigarette != null || alcohol != null || sleepTime != null
+                        || exerciseTime != null || (drugs != null && !drugs.isEmpty());
+                setEditing(!edit || date.isToday());
             });
         }
     }
 
-    public MutableLiveData<List<Drug>> getDrugs() {
-        return drugs;
-    }
 
-    public void setDrugs(List<Drug> drugs) {
-        this.drugs.setValue(drugs);
-    }
-
-    public MutableLiveData<Drug> getDrug() {
-        return drug;
-    }
-
-    public void setDrug(Drug drug) {
-        this.drug.setValue(drug);
-    }
-
-    public MutableLiveData<BloodPressure> getBloodPressure() {
-        return bloodPressure;
-    }
-
-    public void setBloodPressure(BloodPressure bloodPressure) {
-        this.bloodPressure.setValue(bloodPressure);
-    }
-
-    public MutableLiveData<Weight> getMotherWeight() {
-        return motherWeight;
-    }
-
-    public void setMotherWeight(Weight motherWeight) {
-        this.motherWeight.setValue(motherWeight);
-    }
-
-    public MutableLiveData<Fever> getFever() {
-        return fever;
-    }
-
-    public void setFever(Fever fever) {
-        this.fever.setValue(fever);
-    }
-
-    public MutableLiveData<Cigarette> getCigarette() {
-        return cigarette;
-    }
-
-    public void setCigarette(Cigarette cigarette) {
-        this.cigarette.setValue(cigarette);
-    }
-
-    public MutableLiveData<Alcohol> getAlcohol() {
-        return alcohol;
-    }
-
-    public void setAlcohol(Alcohol alcohol) {
-        this.alcohol.setValue(alcohol);
-    }
-
-    public MutableLiveData<SleepTime> getSleepTime() {
-        return sleepTime;
-    }
-
-    public void setSleepTime(SleepTime sleepTime) {
-        this.sleepTime.setValue(sleepTime);
-    }
-
-    public MutableLiveData<ExerciseTime> getExerciseTime() {
-        return exerciseTime;
-    }
-
-    public void setExerciseTime(ExerciseTime exerciseTime) {
-        this.exerciseTime.setValue(exerciseTime);
-    }
 
     public void removeDrug(long itemId) {
         List<Drug> temp = new ArrayList<>(Objects.requireNonNull(drugs.getValue()));
@@ -248,7 +183,11 @@ public class AddLogViewModel extends ViewModel {
                 if (f.getDate() == null) {
                     f.setDate(date.getValue());
                 }
-                repository.insertFever(f);
+                if (f.hasData()) {
+                    repository.insertFever(f);
+                } else {
+                    repository.removeFever(f);
+                }
             }
 
             Cigarette c = cigarette.getValue();
@@ -256,7 +195,11 @@ public class AddLogViewModel extends ViewModel {
                 if (c.getDate() == null) {
                     c.setDate(date.getValue());
                 }
-                repository.insertCigarette(c);
+                if (c.hasData()) {
+                    repository.insertCigarette(c);
+                } else {
+                    repository.removeCigarette(c);
+                }
             }
 
             Alcohol al = alcohol.getValue();
@@ -264,7 +207,11 @@ public class AddLogViewModel extends ViewModel {
                 if (al.getDate() == null) {
                     al.setDate(date.getValue());
                 }
-                repository.insertAlcohol(al);
+                if (al.hasData()) {
+                    repository.insertAlcohol(al);
+                } else {
+                    repository.removeAlcohol(al);
+                }
             }
 
             SleepTime st = sleepTime.getValue();
@@ -284,7 +231,13 @@ public class AddLogViewModel extends ViewModel {
                 repository.insertExerciseTime(et);
             }
 
-            repository.removeDrugs(deleteList);
+            if (!deleteList.isEmpty()) {
+                repository.removeDrugs(deleteList);
+            }
+
+            ThreadUtils.runOnUIThread(() -> {
+                loadData(date.getValue());
+            },200);
         });
     }
 
@@ -365,6 +318,21 @@ public class AddLogViewModel extends ViewModel {
         return null;
     }
 
+    public void clearFields() {
+        deleteList.clear();
+        ThreadUtils.runOnUIThread(() -> {
+            drugs.setValue(null);
+            drug.setValue(null);
+            bloodPressure.setValue(null);
+            motherWeight.setValue(null);
+            fever.setValue(null);
+            cigarette.setValue(null);
+            alcohol.setValue(null);
+            sleepTime.setValue(null);
+            exerciseTime.setValue(null);
+        });
+    }
+
     public void setEditingPosition(int position) {
         editingPosition = position;
     }
@@ -381,6 +349,86 @@ public class AddLogViewModel extends ViewModel {
 
     public MutableLiveData<Boolean> getEditing() {
         return editing;
+    }
+
+    public synchronized boolean isSaving() {
+        return saving;
+    }
+
+    public synchronized void setSaving(boolean saving) {
+        this.saving = saving;
+    }
+
+    public MutableLiveData<List<Drug>> getDrugs() {
+        return drugs;
+    }
+
+    public void setDrugs(List<Drug> drugs) {
+        this.drugs.setValue(drugs);
+    }
+
+    public MutableLiveData<Drug> getDrug() {
+        return drug;
+    }
+
+    public void setDrug(Drug drug) {
+        this.drug.setValue(drug);
+    }
+
+    public MutableLiveData<BloodPressure> getBloodPressure() {
+        return bloodPressure;
+    }
+
+    public void setBloodPressure(BloodPressure bloodPressure) {
+        this.bloodPressure.setValue(bloodPressure);
+    }
+
+    public MutableLiveData<Weight> getMotherWeight() {
+        return motherWeight;
+    }
+
+    public void setMotherWeight(Weight motherWeight) {
+        this.motherWeight.setValue(motherWeight);
+    }
+
+    public MutableLiveData<Fever> getFever() {
+        return fever;
+    }
+
+    public void setFever(Fever fever) {
+        this.fever.setValue(fever);
+    }
+
+    public MutableLiveData<Cigarette> getCigarette() {
+        return cigarette;
+    }
+
+    public void setCigarette(Cigarette cigarette) {
+        this.cigarette.setValue(cigarette);
+    }
+
+    public MutableLiveData<Alcohol> getAlcohol() {
+        return alcohol;
+    }
+
+    public void setAlcohol(Alcohol alcohol) {
+        this.alcohol.setValue(alcohol);
+    }
+
+    public MutableLiveData<SleepTime> getSleepTime() {
+        return sleepTime;
+    }
+
+    public void setSleepTime(SleepTime sleepTime) {
+        this.sleepTime.setValue(sleepTime);
+    }
+
+    public MutableLiveData<ExerciseTime> getExerciseTime() {
+        return exerciseTime;
+    }
+
+    public void setExerciseTime(ExerciseTime exerciseTime) {
+        this.exerciseTime.setValue(exerciseTime);
     }
 
     public interface itemAddedListener {

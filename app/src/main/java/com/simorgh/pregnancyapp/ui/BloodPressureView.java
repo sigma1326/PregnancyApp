@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.simorgh.database.Date;
 import com.simorgh.database.model.BloodPressure;
 import com.simorgh.expandablelayout.ExpansionLayout;
 import com.simorgh.expandablelayout.viewgroup.ExpansionsViewGroupLinearLayout;
@@ -80,7 +79,6 @@ public class BloodPressureView extends ExpansionsViewGroupLinearLayout {
             @Override
             public void afterTextChanged(Editable s) {
                 if (max.getText().toString().isEmpty()) {
-                    imgDescription.animate().alpha(s.length() > 0 ? 1f : 0.5f);
                     enableExpand(s.length() > 0);
                 }
                 try {
@@ -134,7 +132,7 @@ public class BloodPressureView extends ExpansionsViewGroupLinearLayout {
 
     }
 
-    public void enableExpand(boolean enabled) {
+    private void enableExpand(boolean enabled) {
         imgDescription.setEnabled(enabled);
         imgDescription.animate().alpha(enabled ? 1f : 0.5f);
         if (!enabled && expandableLayout.isExpanded()) {
@@ -145,8 +143,6 @@ public class BloodPressureView extends ExpansionsViewGroupLinearLayout {
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-        imgDescription.setEnabled(enabled);
-        imgDescription.animate().alpha(enabled ? 1f : 0.5f);
         description.setEnabled(enabled);
         min.setEnabled(enabled);
         max.setEnabled(enabled);
@@ -164,10 +160,6 @@ public class BloodPressureView extends ExpansionsViewGroupLinearLayout {
             bloodPressure.setInfo(null);
             description.setText(null);
         }
-        if (isEnabled()) {
-            imgDescription.setEnabled(enabled);
-            imgDescription.animate().alpha(enabled ? 1f : 0.5f);
-        }
     }
 
     public void setMin(float value) {
@@ -184,25 +176,41 @@ public class BloodPressureView extends ExpansionsViewGroupLinearLayout {
 
     public void setBloodPressure(BloodPressure value) {
         if (value == null) {
-            min.setText(null);
-            max.setText(null);
-            description.setText(null);
-            bloodPressure.setEvaluate(false);
-            bloodPressure.setDate(null);
-            bloodPressure.setMaxPressure(0);
-            bloodPressure.setMinPressure(0);
+            bloodPressure.clear();
+            updateViewData();
             if (expandableLayout.isExpanded()) {
                 expandableLayout.collapse(true);
             }
+        } else {
+            if (max != null && min != null) {
+                bloodPressure.set(value);
+                updateViewData();
+            }
         }
-        if (max != null && min != null && value != null) {
-            min.setText(String.valueOf(value.getMinPressure()));
-            max.setText(String.valueOf(value.getMaxPressure()));
-            bloodPressure.setDate(value.getDate());
-            bloodPressure.setMinPressure(value.getMinPressure());
-            bloodPressure.setMaxPressure(value.getMaxPressure());
-            description.setText(value.getInfo());
+    }
+
+    private void updateViewData() {
+        if (bloodPressure.getMinPressure() != 0) {
+            min.setText(String.valueOf((int) bloodPressure.getMinPressure()));
+        } else {
+            min.setText(null);
         }
+
+        if (bloodPressure.getMaxPressure() != 0) {
+            max.setText(String.valueOf((int) bloodPressure.getMaxPressure()));
+        } else {
+            max.setText(null);
+        }
+
+
+        boolean descriptionEnabled = bloodPressure.getInfo() != null && !bloodPressure.getInfo().isEmpty();
+        if (descriptionEnabled) {
+            description.setText(bloodPressure.getInfo());
+        } else {
+            description.setText(null);
+        }
+        imgDescription.setEnabled(descriptionEnabled);
+        imgDescription.animate().alpha(descriptionEnabled ? 1f : 0.5f);
     }
 
     public BloodPressure getBloodPressure() {
@@ -224,67 +232,35 @@ public class BloodPressureView extends ExpansionsViewGroupLinearLayout {
     @Override
     protected Parcelable onSaveInstanceState() {
         getBloodPressure();
-        return new State(Objects.requireNonNull(super.onSaveInstanceState()), bloodPressure.getInfo(), bloodPressure.getDate(), bloodPressure.getMinPressure(), bloodPressure.getMaxPressure());
+        return new State(Objects.requireNonNull(super.onSaveInstanceState()), bloodPressure);
     }
 
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
         super.onRestoreInstanceState(state);
         if (state instanceof State) {
-            setDescription(((State) state).getDescription());
-            bloodPressure.setDate(((State) state).getDate());
-            bloodPressure.setMinPressure(((State) state).getMin());
-            bloodPressure.setMaxPressure(((State) state).getMax());
-            setBloodPressure(bloodPressure);
+            setBloodPressure(((State) state).bloodPressure);
         }
     }
 
     public static final class State extends BaseSavedState {
-        private final String description;
-        private final Date date;
-        private final float min;
-        private final float max;
+        private final BloodPressure bloodPressure;
 
 
-        public State(Parcel source, String description, Date date, float min, float max) {
+        public State(Parcel source, BloodPressure bloodPressure) {
             super(source);
-            this.description = description;
-            this.date = date;
-            this.min = min;
-            this.max = max;
+            this.bloodPressure = bloodPressure;
         }
 
         @TargetApi(Build.VERSION_CODES.N)
-        public State(Parcel source, ClassLoader loader, String description, Date date, float min, float max) {
+        public State(Parcel source, ClassLoader loader, BloodPressure bloodPressure) {
             super(source, loader);
-            this.description = description;
-            this.date = date;
-            this.min = min;
-            this.max = max;
+            this.bloodPressure = bloodPressure;
         }
 
-        public State(Parcelable superState, String description, Date date, float min, float max) {
+        public State(Parcelable superState, BloodPressure bloodPressure) {
             super(superState);
-            this.description = description;
-            this.date = date;
-            this.min = min;
-            this.max = max;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public Date getDate() {
-            return date;
-        }
-
-        public float getMin() {
-            return min;
-        }
-
-        public float getMax() {
-            return max;
+            this.bloodPressure = bloodPressure;
         }
     }
 }

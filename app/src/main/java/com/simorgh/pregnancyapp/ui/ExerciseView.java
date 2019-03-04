@@ -113,8 +113,6 @@ public class ExerciseView extends ExpansionsViewGroupLinearLayout {
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-        imgDescription.setEnabled(enabled);
-        imgDescription.animate().alpha(enabled ? 1f : 0.5f);
         description.setEnabled(enabled);
         time.setEnabled(enabled);
         if (!enabled && expandableLayout.isExpanded()) {
@@ -122,40 +120,37 @@ public class ExerciseView extends ExpansionsViewGroupLinearLayout {
         }
     }
 
-    public void setDescription(String summaryText) {
-        boolean enabled = summaryText != null && !summaryText.isEmpty();
-        if (enabled) {
-            exerciseTime.setInfo(summaryText);
-            description.setText(summaryText);
-        } else {
-            exerciseTime.setInfo(null);
-            description.setText(null);
-        }
-        imgDescription.setEnabled(enabled);
-        imgDescription.animate().alpha(enabled ? 1f : 0.5f);
-    }
-
     public void setExerciseTime(ExerciseTime value) {
         if (value == null) {
-            time.setText(null);
-            description.setText(null);
-            exerciseTime.setEvaluate(false);
-            exerciseTime.setDate(null);
+            exerciseTime.clear();
+            updateViewData();
             if (expandableLayout.isExpanded()) {
                 expandableLayout.collapse(true);
             }
-        }
-        if (time != null && description != null && value!=null) {
-            if (value.getMinute() > 0) {
-                time.setText(String.valueOf(value.getMinute()));
-            } else {
-                time.setText(null);
+        } else {
+            if (time != null && description != null) {
+                exerciseTime.set(value);
+                updateViewData();
             }
-            exerciseTime.setDate(value.getDate());
-            setDescription(value.getInfo());
         }
-    }
 
+    }
+    private void updateViewData() {
+        if (exerciseTime.getMinute() != 0) {
+            time.setText(String.valueOf((int) exerciseTime.getMinute()));
+        } else {
+            time.setText(null);
+        }
+
+        boolean descriptionEnabled = exerciseTime.getInfo() != null && !exerciseTime.getInfo().isEmpty();
+        if (descriptionEnabled) {
+            description.setText(exerciseTime.getInfo());
+        } else {
+            description.setText(null);
+        }
+        imgDescription.setEnabled(descriptionEnabled);
+        imgDescription.animate().alpha(descriptionEnabled ? 1f : 0.5f);
+    }
     public ExerciseTime getExerciseTime() {
         if (time != null && description != null) {
             try {
@@ -175,57 +170,35 @@ public class ExerciseView extends ExpansionsViewGroupLinearLayout {
     @Override
     protected Parcelable onSaveInstanceState() {
         getExerciseTime();
-        return new State(Objects.requireNonNull(super.onSaveInstanceState()), exerciseTime.getMinute(), exerciseTime.getInfo(), exerciseTime.getDate());
+        return new State(Objects.requireNonNull(super.onSaveInstanceState()), exerciseTime);
     }
 
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
         super.onRestoreInstanceState(state);
         if (state instanceof State) {
-            exerciseTime.setMinute(((State) state).getHour());
-            setDescription(((State) state).getDescription());
-            exerciseTime.setDate(((State) state).getDate());
+            setExerciseTime(((State) state).exerciseTime);
         }
     }
 
     public static final class State extends BaseSavedState {
-        private final float hour;
-        private final String description;
-        private final Date date;
+        private final ExerciseTime exerciseTime;
 
 
-        public State(Parcel source, float hour, String description, Date date) {
+        public State(Parcel source, ExerciseTime exerciseTime) {
             super(source);
-            this.hour = hour;
-            this.description = description;
-            this.date = date;
+            this.exerciseTime = exerciseTime;
         }
 
         @TargetApi(Build.VERSION_CODES.N)
-        public State(Parcel source, ClassLoader loader, float hour, String description, Date date) {
+        public State(Parcel source, ClassLoader loader, ExerciseTime exerciseTime) {
             super(source, loader);
-            this.hour = hour;
-            this.description = description;
-            this.date = date;
+            this.exerciseTime = exerciseTime;
         }
 
-        public State(Parcelable superState, float hour, String description, Date date) {
+        public State(Parcelable superState, ExerciseTime exerciseTime) {
             super(superState);
-            this.hour = hour;
-            this.description = description;
-            this.date = date;
-        }
-
-        public float getHour() {
-            return hour;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public Date getDate() {
-            return date;
+            this.exerciseTime = exerciseTime;
         }
     }
 }

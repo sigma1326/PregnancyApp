@@ -52,12 +52,6 @@ public class MotherWeightView extends ExpansionsViewGroupLinearLayout {
         initView(context, attrs);
     }
 
-//    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-//    public MotherWeightView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-//        super(context, attrs, defStyleAttr, defStyleRes);
-//        initView(context, attrs);
-//    }
-
     private void initView(@NonNull final Context context, AttributeSet attrs) {
         View v = View.inflate(context, R.layout.mother_weight_layout, this);
         ViewCompat.setLayoutDirection(v, ViewCompat.LAYOUT_DIRECTION_LTR);
@@ -92,16 +86,15 @@ public class MotherWeightView extends ExpansionsViewGroupLinearLayout {
             @Override
             public void afterTextChanged(Editable s) {
                 enableExpand(!s.toString().isEmpty());
-                imgDescription.animate().alpha(!s.toString().isEmpty() ? 1f : 0.5f);
                 try {
                     float value = Float.parseFloat(s.toString());
                     if (s.length() >= 2) {
                         if (value < 0 || value > 200) {
-                            weightView.setText("");
+                            weightView.setText(null);
                         }
                     } else {
                         if (value < 0 || value > 200) {
-                            weightView.setText("");
+                            weightView.setText(null);
                         }
                     }
                 } catch (NumberFormatException e) {
@@ -122,15 +115,11 @@ public class MotherWeightView extends ExpansionsViewGroupLinearLayout {
             weight.setInfo(null);
             description.setText(null);
         }
-        imgDescription.setEnabled(enabled);
-        imgDescription.animate().alpha(enabled ? 1f : 0.5f);
     }
 
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-        imgDescription.setEnabled(enabled);
-        imgDescription.animate().alpha(enabled ? 1f : 0.5f);
         description.setEnabled(enabled);
         weightView.setEnabled(enabled);
         if (!enabled && expandableLayout.isExpanded()) {
@@ -140,6 +129,7 @@ public class MotherWeightView extends ExpansionsViewGroupLinearLayout {
 
     public void enableExpand(boolean enabled) {
         imgDescription.setEnabled(enabled);
+        imgDescription.animate().alpha(enabled ? 1f : 0.5f);
         if (!enabled && expandableLayout.isExpanded()) {
             expandableLayout.collapse(true);
         }
@@ -147,23 +137,35 @@ public class MotherWeightView extends ExpansionsViewGroupLinearLayout {
 
     public void setWeight(Weight value) {
         if (value == null) {
-            weightView.setText(null);
-            description.setText(null);
-            weight.setEvaluate(false);
-            weight.setDate(null);
+            weight.clear();
+            updateViewData();
             if (expandableLayout.isExpanded()) {
                 expandableLayout.collapse(true);
             }
-        }
-        if (weightView != null && description != null && value != null) {
-            weight.setDate(value.getDate());
-            if (value.getWeight() > 0) {
-                weightView.setText(String.valueOf(value.getWeight()));
-            } else {
-                weightView.setText(null);
+        } else {
+            if (weightView != null && description != null) {
+                weight.set(value);
+                updateViewData();
             }
-            setDescription(value.getInfo());
         }
+    }
+
+
+    private void updateViewData() {
+        if (weight.getWeight() != 0) {
+            weightView.setText(String.valueOf((int) weight.getWeight()));
+        } else {
+            weightView.setText(null);
+        }
+
+        boolean descriptionEnabled = weight.getInfo() != null && !weight.getInfo().isEmpty();
+        if (descriptionEnabled) {
+            description.setText(weight.getInfo());
+        } else {
+            description.setText(null);
+        }
+        imgDescription.setEnabled(descriptionEnabled);
+        imgDescription.animate().alpha(descriptionEnabled ? 1f : 0.5f);
     }
 
     public Weight getWeight() {
@@ -184,58 +186,34 @@ public class MotherWeightView extends ExpansionsViewGroupLinearLayout {
     @Override
     protected Parcelable onSaveInstanceState() {
         getWeight();
-        return new State(Objects.requireNonNull(super.onSaveInstanceState()), weight.getWeight(), weight.getInfo(), weight.getDate());
+        return new State(Objects.requireNonNull(super.onSaveInstanceState()), weight);
     }
 
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
         super.onRestoreInstanceState(state);
         if (state instanceof State) {
-            weight.setWeight(((State) state).getWeight());
-            setDescription(((State) state).getDescription());
-            weight.setDate(((State) state).getDate());
-            setWeight(weight);
+            setWeight(((State) state).weight);
         }
     }
 
     public static final class State extends BaseSavedState {
-        private final float weight;
-        private final String description;
-        private final Date date;
+        private Weight weight;
 
-
-        public State(Parcel source, float weight, String description, Date date) {
+        public State(Parcel source, Weight weight) {
             super(source);
             this.weight = weight;
-            this.description = description;
-            this.date = date;
         }
 
         @TargetApi(Build.VERSION_CODES.N)
-        public State(Parcel source, ClassLoader loader, float weight, String description, Date date) {
+        public State(Parcel source, ClassLoader loader, Weight weight) {
             super(source, loader);
             this.weight = weight;
-            this.description = description;
-            this.date = date;
         }
 
-        public State(Parcelable superState, float weight, String description, Date date) {
+        public State(Parcelable superState, Weight weight) {
             super(superState);
             this.weight = weight;
-            this.description = description;
-            this.date = date;
-        }
-
-        public float getWeight() {
-            return weight;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public Date getDate() {
-            return date;
         }
     }
 }

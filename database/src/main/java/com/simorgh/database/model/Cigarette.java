@@ -55,4 +55,32 @@ public class Cigarette {
 
     @Ignore
     private boolean evaluate = false;
+    @Ignore
+    private boolean hasData = false;
+
+    @Ignore
+    public void clear() {
+        date = null;
+        info = null;
+        useCigarette = false;
+        evaluate = false;
+        hasData = false;
+    }
+
+    @Ignore
+    public void set(Cigarette value) {
+        date = value.getDate();
+        info = value.getInfo();
+        useCigarette = value.isUseCigarette();
+        evaluate = value.evaluate;
+        hasData = value.hasData;
+    }
+
+    public boolean hasData() {
+        return hasData;
+    }
+
+    public void setHasData(boolean hasData) {
+        this.hasData = hasData;
+    }
 }

@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.simorgh.database.Date;
 import com.simorgh.database.model.SleepTime;
 import com.simorgh.expandablelayout.ExpansionLayout;
 import com.simorgh.expandablelayout.viewgroup.ExpansionsViewGroupLinearLayout;
@@ -51,12 +50,6 @@ public class SleepView extends ExpansionsViewGroupLinearLayout {
         super(context, attrs, defStyleAttr);
         initView(context, attrs);
     }
-
-//    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-//    public MotherWeightView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-//        super(context, attrs, defStyleAttr, defStyleRes);
-//        initView(context, attrs);
-//    }
 
     private void initView(@NonNull final Context context, AttributeSet attrs) {
         View v = View.inflate(context, R.layout.sleep_layout, this);
@@ -107,7 +100,7 @@ public class SleepView extends ExpansionsViewGroupLinearLayout {
         });
     }
 
-    public void enableExpand(boolean enabled) {
+    private void enableExpand(boolean enabled) {
         imgDescription.setEnabled(enabled);
         imgDescription.animate().alpha(enabled ? 1f : 0.5f);
         if (!enabled && expandableLayout.isExpanded()) {
@@ -118,8 +111,6 @@ public class SleepView extends ExpansionsViewGroupLinearLayout {
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-        imgDescription.setEnabled(enabled);
-        imgDescription.animate().alpha(enabled ? 1f : 0.5f);
         description.setEnabled(enabled);
         time.setEnabled(enabled);
         if (!enabled && expandableLayout.isExpanded()) {
@@ -128,36 +119,35 @@ public class SleepView extends ExpansionsViewGroupLinearLayout {
     }
 
 
-    public void setDescription(String summaryText) {
-        boolean enabled = summaryText != null && !summaryText.isEmpty();
-        if (enabled) {
-            sleepTime.setInfo(summaryText);
-            description.setText(summaryText);
-        } else {
-            sleepTime.setInfo(null);
-            description.setText(null);
-        }
-        imgDescription.setEnabled(enabled);
-        imgDescription.animate().alpha(enabled ? 1f : 0.5f);
-    }
-
     public void setSleepTime(SleepTime value) {
         if (value == null) {
-            time.setText(null);
-            description.setText(null);
-            sleepTime.setEvaluate(false);
-            sleepTime.setDate(null);
+            sleepTime.clear();
+            updateViewData();
             if (expandableLayout.isExpanded()) {
                 expandableLayout.collapse(true);
             }
         }
         if (time != null && description != null && value != null) {
-            sleepTime.setDate(value.getDate());
-            if (value.getHour() > 0) {
-                time.setText(String.valueOf(value.getHour()));
-            }
-            setDescription(value.getInfo());
+            sleepTime.set(value);
+            updateViewData();
         }
+    }
+
+    private void updateViewData() {
+        if (sleepTime.getHour() != 0) {
+            time.setText(String.valueOf((int) sleepTime.getHour()));
+        } else {
+            time.setText(null);
+        }
+
+        boolean descriptionEnabled = sleepTime.getInfo() != null && !sleepTime.getInfo().isEmpty();
+        if (descriptionEnabled) {
+            description.setText(sleepTime.getInfo());
+        } else {
+            description.setText(null);
+        }
+        imgDescription.setEnabled(descriptionEnabled);
+        imgDescription.animate().alpha(descriptionEnabled ? 1f : 0.5f);
     }
 
     public SleepTime getSleepTime() {
@@ -178,57 +168,35 @@ public class SleepView extends ExpansionsViewGroupLinearLayout {
     @Override
     protected Parcelable onSaveInstanceState() {
         getSleepTime();
-        return new State(Objects.requireNonNull(super.onSaveInstanceState()), sleepTime.getHour(), sleepTime.getInfo(), sleepTime.getDate());
+        return new State(Objects.requireNonNull(super.onSaveInstanceState()), sleepTime);
     }
 
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
         super.onRestoreInstanceState(state);
         if (state instanceof State) {
-            sleepTime.setHour(((State) state).getHour());
-            setDescription(((State) state).getDescription());
-            sleepTime.setDate(((State) state).getDate());
+            setSleepTime(((State) state).sleepTime);
         }
     }
 
     public static final class State extends BaseSavedState {
-        private final float hour;
-        private final String description;
-        private final Date date;
+        private final SleepTime sleepTime;
 
 
-        public State(Parcel source, float hour, String description, Date date) {
+        public State(Parcel source, SleepTime sleepTime) {
             super(source);
-            this.hour = hour;
-            this.description = description;
-            this.date = date;
+            this.sleepTime = sleepTime;
         }
 
         @TargetApi(Build.VERSION_CODES.N)
-        public State(Parcel source, ClassLoader loader, float hour, String description, Date date) {
+        public State(Parcel source, ClassLoader loader, SleepTime sleepTime) {
             super(source, loader);
-            this.hour = hour;
-            this.description = description;
-            this.date = date;
+            this.sleepTime = sleepTime;
         }
 
-        public State(Parcelable superState, float hour, String description, Date date) {
+        public State(Parcelable superState, SleepTime sleepTime) {
             super(superState);
-            this.hour = hour;
-            this.description = description;
-            this.date = date;
-        }
-
-        public float getHour() {
-            return hour;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public Date getDate() {
-            return date;
+            this.sleepTime = sleepTime;
         }
     }
 

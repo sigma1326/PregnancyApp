@@ -84,6 +84,9 @@ public class AddLogFragment extends BaseFragment {
     @BindView(R.id.btn_apply_changes)
     Button saveLog;
 
+    @BindView(R.id.clear_fields)
+    ImageButton clearFields;
+
 
     private final Date now = new Date(Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault()));
 
@@ -119,6 +122,10 @@ public class AddLogFragment extends BaseFragment {
 
         });
 
+        clearFields.setOnClickListener(v -> {
+            mViewModel.clearFields();
+        });
+
 
         ThreadUtils.runOnUIThread(() -> {
             datePicker.setDateRange(Objects.requireNonNull(mUserViewModel.getUser().getValue()).getPregnancyStartDate().getCalendar(), now.getCalendar());
@@ -133,21 +140,26 @@ public class AddLogFragment extends BaseFragment {
 
         datePicker.setOnDateSelectedListener(date -> {
             mViewModel.setDate(date);
-            mViewModel.setEditing(date.getDateLong() >= now.getDateLong());
         });
 
 
         mViewModel.getEditing().observe(this, enabled -> {
-//            drugInsertView.setEnabled(enabled);
-//            bloodPressureView.setEnabled(enabled);
-//            motherWeightView.setEnabled(enabled);
-//            feverView.setEnabled(enabled);
-//            cigaretteView.setEnabled(enabled);
-//            alcoholView.setEnabled(enabled);
-//            sleepView.setEnabled(enabled);
-//            exerciseView.setEnabled(enabled);
-//            saveLog.setEnabled(enabled);
-//            saveLog.animate().alpha(enabled ? 1f : 0.5f);
+            drugInsertView.setEnabled(enabled);
+            bloodPressureView.setEnabled(enabled);
+            motherWeightView.setEnabled(enabled);
+            feverView.setEnabled(enabled);
+            cigaretteView.setEnabled(enabled);
+            alcoholView.setEnabled(enabled);
+            sleepView.setEnabled(enabled);
+            exerciseView.setEnabled(enabled);
+
+            saveLog.setEnabled(enabled);
+            saveLog.animate().alpha(enabled ? 1f : 0.5f);
+
+            clearFields.setEnabled(enabled);
+            clearFields.animate().alpha(enabled ? 1f : 0.5f);
+
+            ((DrugAdapter) Objects.requireNonNull(rvDrugs.getAdapter())).setCanEdit(enabled);
         });
 
         rvDrugs.setHasFixedSize(false);
@@ -181,11 +193,15 @@ public class AddLogFragment extends BaseFragment {
         });
 
         mViewModel.getAlcohol().observe(this, alcohol -> {
-            alcoholView.setAlcohol(alcohol);
+            if (!mViewModel.isSaving()) {
+                alcoholView.setAlcohol(alcohol);
+            }
         });
 
         mViewModel.getCigarette().observe(this, cigarette -> {
-            cigaretteView.setCigarette(cigarette);
+            if (!mViewModel.isSaving()) {
+                cigaretteView.setCigarette(cigarette);
+            }
         });
 
         mViewModel.getBloodPressure().observe(this, bloodPressure -> {
@@ -209,7 +225,9 @@ public class AddLogFragment extends BaseFragment {
         });
 
         mViewModel.getFever().observe(this, fever -> {
-            feverView.setFever(fever);
+            if (!mViewModel.isSaving()) {
+                feverView.setFever(fever);
+            }
         });
 
         mViewModel.getSleepTime().observe(this, sleepTime -> {
@@ -219,6 +237,7 @@ public class AddLogFragment extends BaseFragment {
 
         saveLog.setOnClickListener(v -> {
             Utils.hideKeyboard((Activity) v.getContext());
+            mViewModel.setSaving(true);
             mViewModel.setBloodPressure(bloodPressureView.getBloodPressure());
             mViewModel.setMotherWeight(motherWeightView.getWeight());
             mViewModel.setFever(feverView.getFever());
@@ -237,6 +256,7 @@ public class AddLogFragment extends BaseFragment {
                     Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
                 });
             }
+            mViewModel.setSaving(false);
         });
     }
 }

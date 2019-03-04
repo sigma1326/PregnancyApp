@@ -55,4 +55,31 @@ public class Alcohol {
 
     @Ignore
     private boolean evaluate = false;
+    @Ignore
+    private boolean hasData = false;
+
+    @Ignore
+    public void clear() {
+        useAlcohol = false;
+        info = null;
+        date = null;
+        evaluate = false;
+        hasData = false;
+    }
+
+    public void set(Alcohol value) {
+        useAlcohol = value.isUseAlcohol();
+        info = value.getInfo();
+        date = value.getDate();
+        evaluate = value.evaluate;
+        hasData = value.hasData;
+    }
+
+    public boolean hasData() {
+        return hasData;
+    }
+
+    public void setHasData(boolean hasData) {
+        this.hasData = hasData;
+    }
 }

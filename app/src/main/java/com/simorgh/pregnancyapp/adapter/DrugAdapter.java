@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.simorgh.database.model.Drug;
 import com.simorgh.expandablelayout.ExpansionLayout;
-import com.simorgh.logger.Logger;
 import com.simorgh.pregnancyapp.R;
 
 import androidx.annotation.NonNull;
@@ -21,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class DrugAdapter extends ListAdapter<Drug, DrugAdapter.DrugViewHolder> {
     private ItemClickListener itemClickListener;
-
+    private boolean canEdit = true;
 
     public DrugAdapter(@NonNull DiffUtil.ItemCallback<Drug> diffCallback, ItemClickListener itemClickListener) {
         super(diffCallback);
@@ -71,13 +70,14 @@ public class DrugAdapter extends ListAdapter<Drug, DrugAdapter.DrugViewHolder> {
             }
 
             name.setOnClickListener(v -> {
-                if (itemClickListener != null) {
+                if (itemClickListener != null && canEdit) {
                     itemClickListener.selectItemToEdit(item, position);
                 }
             });
 
+            remove.animate().alpha(canEdit ? 1f : 0.5f);
             remove.setOnClickListener(v -> {
-                if (itemClickListener != null) {
+                if (itemClickListener != null && canEdit) {
                     itemClickListener.removeItem(item.getId(), position);
                 }
             });
@@ -89,6 +89,11 @@ public class DrugAdapter extends ListAdapter<Drug, DrugAdapter.DrugViewHolder> {
         AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
         anim.setDuration(1000);
         view.startAnimation(anim);
+    }
+
+    public void setCanEdit(boolean canEdit) {
+        this.canEdit = canEdit;
+        notifyDataSetChanged();
     }
 
     public interface ItemClickListener {
