@@ -22,4 +22,7 @@ public interface CigaretteDAO {
 
     @Delete
     void remove(Cigarette cigarette);
+
+    @Query("delete from cigarette where date=:value")
+    void remove(Date value);
 }

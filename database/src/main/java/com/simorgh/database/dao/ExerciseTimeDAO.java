@@ -22,4 +22,8 @@ public interface ExerciseTimeDAO {
 
     @Delete
     void remove(ExerciseTime exerciseTime);
+
+
+    @Query("delete from exercise_time where date=:value")
+    void remove(Date value);
 }

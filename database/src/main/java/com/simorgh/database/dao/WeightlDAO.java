@@ -24,4 +24,7 @@ public interface WeightlDAO {
 
     @Delete
     void remove(Weight weight);
+
+    @Query("delete from weights where date=:value")
+    void remove(Date value);
 }

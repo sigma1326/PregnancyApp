@@ -22,4 +22,8 @@ public interface BloodPressureDAO {
 
     @Delete
     void remove(BloodPressure bloodPressure);
+
+    @Query("delete from blood_pressure where date=:value")
+    void remove(Date value);
+
 }

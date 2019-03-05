@@ -23,4 +23,7 @@ public interface AlcoholDAO {
 
     @Delete
     void remove(Alcohol alcohol);
+
+    @Query("delete from alcohol where date=:value")
+    void remove(Date value);
 }

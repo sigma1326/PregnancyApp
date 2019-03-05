@@ -389,4 +389,52 @@ public final class Repository {
             dataBase.alcoholDAO().remove(value);
         });
     }
+
+    public void removeDrugs(Date value) {
+        ThreadUtils.execute(() -> {
+            dataBase.drugDAO().removeDrugs(value);
+        });
+    }
+
+    public void removeBloodPressure(Date value) {
+        ThreadUtils.execute(() -> {
+            dataBase.bloodPressureDAO().remove(value);
+        });
+    }
+
+    public void removeWeight(Date value) {
+        ThreadUtils.execute(() -> {
+            dataBase.weightlDAO().remove(value);
+        });
+    }
+
+    public void removeFever(Date value) {
+        ThreadUtils.execute(() -> {
+            dataBase.feverDAO().remove(value);
+        });
+    }
+
+    public void removeCigarette(Date value) {
+        ThreadUtils.execute(() -> {
+            dataBase.cigaretteDAO().remove(value);
+        });
+    }
+
+    public void removeAlcohol(Date value) {
+        ThreadUtils.execute(() -> {
+            dataBase.alcoholDAO().remove(value);
+        });
+    }
+
+    public void removeSleepTime(Date value) {
+        ThreadUtils.execute(() -> {
+            dataBase.sleepTimeDAO().remove(value);
+        });
+    }
+
+    public void removeExerciseTime(Date value) {
+        ThreadUtils.execute(() -> {
+            dataBase.exerciseTimeDAO().remove(value);
+        });
+    }
 }

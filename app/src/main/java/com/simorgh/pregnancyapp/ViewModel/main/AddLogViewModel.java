@@ -38,6 +38,8 @@ public class AddLogViewModel extends ViewModel {
     private MutableLiveData<Boolean> editing = new MutableLiveData<>(true);
     private int editingPosition = -1;
     private final List<Drug> deleteList = new ArrayList<>();
+    private Date inputDate;
+    private boolean cleared = false;
 
     public AddLogViewModel() {
         ThreadUtils.execute(() -> {
@@ -85,6 +87,7 @@ public class AddLogViewModel extends ViewModel {
 
     private void loadData(Date date) {
         deleteList.clear();
+        cleared = false;
         ThreadUtils.runOnUIThread(() -> {
             drugs.setValue(null);
             drug.setValue(null);
@@ -159,7 +162,14 @@ public class AddLogViewModel extends ViewModel {
                         }
                     }
                 }
+                if (cleared) {
+                    repository.removeDrugs(date.getValue());
+                }
                 repository.insertDrugs(drugList);
+            } else {
+                if (cleared) {
+                    repository.removeDrugs(date.getValue());
+                }
             }
 
             BloodPressure b = bloodPressure.getValue();
@@ -168,6 +178,8 @@ public class AddLogViewModel extends ViewModel {
                     b.setDate(date.getValue());
                 }
                 repository.insertBloodPressure(b);
+            } else if (cleared) {
+                repository.removeBloodPressure(date.getValue());
             }
 
             Weight weight = motherWeight.getValue();
@@ -176,6 +188,8 @@ public class AddLogViewModel extends ViewModel {
                     weight.setDate(date.getValue());
                 }
                 repository.insertWeight(weight);
+            } else if (cleared) {
+                repository.removeWeight(date.getValue());
             }
 
             Fever f = fever.getValue();
@@ -188,7 +202,10 @@ public class AddLogViewModel extends ViewModel {
                 } else {
                     repository.removeFever(f);
                 }
+            } else if (cleared) {
+                repository.removeFever(date.getValue());
             }
+
 
             Cigarette c = cigarette.getValue();
             if (c != null && c.evaluate()) {
@@ -200,6 +217,8 @@ public class AddLogViewModel extends ViewModel {
                 } else {
                     repository.removeCigarette(c);
                 }
+            }  else if (cleared) {
+                repository.removeCigarette(date.getValue());
             }
 
             Alcohol al = alcohol.getValue();
@@ -212,6 +231,8 @@ public class AddLogViewModel extends ViewModel {
                 } else {
                     repository.removeAlcohol(al);
                 }
+            } else if (cleared) {
+                repository.removeAlcohol(date.getValue());
             }
 
             SleepTime st = sleepTime.getValue();
@@ -220,6 +241,8 @@ public class AddLogViewModel extends ViewModel {
                     st.setDate(date.getValue());
                 }
                 repository.insertSleepTime(st);
+            } else if (cleared) {
+                repository.removeSleepTime(date.getValue());
             }
 
 
@@ -229,15 +252,21 @@ public class AddLogViewModel extends ViewModel {
                     et.setDate(date.getValue());
                 }
                 repository.insertExerciseTime(et);
+            } else if (cleared) {
+                repository.removeExerciseTime(date.getValue());
             }
 
             if (!deleteList.isEmpty()) {
                 repository.removeDrugs(deleteList);
             }
 
-            ThreadUtils.runOnUIThread(() -> {
-                loadData(date.getValue());
-            },200);
+            if (!cleared) {
+                ThreadUtils.runOnUIThread(() -> {
+                    loadData(date.getValue());
+                }, 200);
+            } else {
+                cleared = false;
+            }
         });
     }
 
@@ -320,6 +349,7 @@ public class AddLogViewModel extends ViewModel {
 
     public void clearFields() {
         deleteList.clear();
+        cleared = true;
         ThreadUtils.runOnUIThread(() -> {
             drugs.setValue(null);
             drug.setValue(null);
@@ -429,6 +459,14 @@ public class AddLogViewModel extends ViewModel {
 
     public void setExerciseTime(ExerciseTime exerciseTime) {
         this.exerciseTime.setValue(exerciseTime);
+    }
+
+    public void setInputDate(Date inputDate) {
+        this.inputDate = inputDate;
+    }
+
+    public Date getInputDate() {
+        return inputDate;
     }
 
     public interface itemAddedListener {

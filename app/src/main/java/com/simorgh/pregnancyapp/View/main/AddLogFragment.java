@@ -132,6 +132,7 @@ public class AddLogFragment extends BaseFragment {
             if (getArguments() != null) {
                 datePicker.setSelectedDate(AddLogFragmentArgs.fromBundle(getArguments()).getSelectedDate());
                 mViewModel.setDate(AddLogFragmentArgs.fromBundle(getArguments()).getSelectedDate());
+                mViewModel.setInputDate(AddLogFragmentArgs.fromBundle(getArguments()).getSelectedDate());
             } else {
                 datePicker.setSelectedDate(now);
                 mViewModel.setDate(now);
@@ -143,24 +144,32 @@ public class AddLogFragment extends BaseFragment {
         });
 
 
-        mViewModel.getEditing().observe(this, enabled -> {
-            drugInsertView.setEnabled(enabled);
-            bloodPressureView.setEnabled(enabled);
-            motherWeightView.setEnabled(enabled);
-            feverView.setEnabled(enabled);
-            cigaretteView.setEnabled(enabled);
-            alcoholView.setEnabled(enabled);
-            sleepView.setEnabled(enabled);
-            exerciseView.setEnabled(enabled);
+        ThreadUtils.runOnUIThread(() -> {
+            mViewModel.getEditing().observe(this, enabled -> {
+                boolean isInputDate = false;
+                if (mViewModel.getDate().getValue() != null && mViewModel.getInputDate()!=null) {
+                    isInputDate = mViewModel.getInputDate().getDateLong() == mViewModel.getDate().getValue().getDateLong();
+                }
+                enabled |= isInputDate;
+                drugInsertView.setEnabled(enabled);
+                bloodPressureView.setEnabled(enabled);
+                motherWeightView.setEnabled(enabled);
+                feverView.setEnabled(enabled);
+                cigaretteView.setEnabled(enabled);
+                alcoholView.setEnabled(enabled);
+                sleepView.setEnabled(enabled);
+                exerciseView.setEnabled(enabled);
 
-            saveLog.setEnabled(enabled);
-            saveLog.animate().alpha(enabled ? 1f : 0.5f);
+                saveLog.setEnabled(enabled);
+                saveLog.animate().alpha(enabled ? 1f : 0.5f);
 
-            clearFields.setEnabled(enabled);
-            clearFields.animate().alpha(enabled ? 1f : 0.5f);
+                clearFields.setEnabled(enabled);
+                clearFields.animate().alpha(enabled ? 1f : 0.5f);
 
-            ((DrugAdapter) Objects.requireNonNull(rvDrugs.getAdapter())).setCanEdit(enabled);
-        });
+                ((DrugAdapter) Objects.requireNonNull(rvDrugs.getAdapter())).setCanEdit(enabled);
+            });
+        },300);
+
 
         rvDrugs.setHasFixedSize(false);
         rvDrugs.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));

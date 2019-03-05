@@ -22,4 +22,7 @@ public interface SleepTimeDAO {
 
     @Delete
     void remove(SleepTime sleepTime);
+
+    @Query("delete from sleep_time where date=:value")
+    void remove(Date value);
 }

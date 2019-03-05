@@ -34,4 +34,7 @@ public interface DrugDAO {
 
     @Delete
     void remove(Drug drug);
+
+    @Query("delete from drugs where date=:value")
+    void removeDrugs(Date value);
 }
