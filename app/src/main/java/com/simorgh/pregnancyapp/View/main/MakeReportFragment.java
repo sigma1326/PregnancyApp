@@ -6,23 +6,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 
 import com.simorgh.calendarutil.CalendarTool;
 import com.simorgh.calendarutil.persiancalendar.PersianCalendar;
 import com.simorgh.database.Date;
+import com.simorgh.logger.Logger;
 import com.simorgh.persianmaterialdatepicker.date.DatePickerDialog;
 import com.simorgh.pregnancyapp.R;
 import com.simorgh.pregnancyapp.ViewModel.main.MakeReportViewModel;
 import com.simorgh.pregnancyapp.ui.BaseFragment;
 import com.simorgh.reportutil.ReportState;
-import com.simorgh.reportutil.ReportUtils;
+
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import butterknife.BindView;
 
 public class MakeReportFragment extends BaseFragment implements DatePickerDialog.OnDateSetListener {
@@ -63,6 +65,9 @@ public class MakeReportFragment extends BaseFragment implements DatePickerDialog
 
     @BindView(R.id.btn_make_report)
     Button mMakeReport;
+
+    @BindView(R.id.img_back)
+    ImageButton back;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -114,6 +119,15 @@ public class MakeReportFragment extends BaseFragment implements DatePickerDialog
             reportState.endDate = mViewModel.getEndDate().getValue();
 
             mViewModel.makeReport(getActivity(), repository, reportState);
+        });
+
+        back.setOnClickListener(v -> {
+            try {
+                Navigation.findNavController(Objects.requireNonNull(getActivity()), R.id.main_nav_host_fragment)
+                        .navigateUp();
+            } catch (Exception e) {
+                Logger.printStackTrace(e);
+            }
         });
 
     }
