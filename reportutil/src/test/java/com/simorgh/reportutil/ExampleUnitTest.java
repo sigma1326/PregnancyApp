@@ -1,8 +1,6 @@
-package com.simorgh.database;
+package com.simorgh.reportutil;
 
 import org.junit.Test;
-
-import io.reactivex.Observable;
 
 import static org.junit.Assert.*;
 
@@ -15,11 +13,5 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
-    }
-
-    @Test
-    public void myTest() {
-//        Repository repository = new Repository(this, PregnancyDataBase.getDatabase(this));
-//        Observable.fromArray(repository.getDrugs(reportState.startDate))
     }
 }

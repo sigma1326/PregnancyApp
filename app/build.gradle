@@ -56,6 +56,7 @@ dependencies {
     //    debugImplementation 'com.amitshekhar.android:debug-db:1.0.5'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation project(':persianmaterialdatepicker')
+    implementation project(':reportutil')
 }
 
 private void butterKnife() {

@@ -2,7 +2,6 @@ package com.simorgh.database;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
-import android.util.Log;
 
 import com.huma.room_for_asset.RoomAsset;
 import com.simorgh.database.callback.ArticleCallBack;
@@ -21,18 +20,13 @@ import com.simorgh.database.model.SleepTime;
 import com.simorgh.database.model.User;
 import com.simorgh.database.model.Week;
 import com.simorgh.database.model.Weight;
-import com.simorgh.logger.Logger;
 import com.simorgh.threadutils.ThreadUtils;
 
 import java.util.List;
-import java.util.concurrent.Future;
 
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import io.reactivex.BackpressureStrategy;
-import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.SingleTransformer;
@@ -66,6 +60,11 @@ public final class Repository {
     public LiveData<User> getUser() {
         return dataBase.userDAO().getUserLiveData();
     }
+
+    public User getUserOnly() {
+        return dataBase.userDAO().getUserOld();
+    }
+
 
     public Single<User> getUserSingle() {
         return dataBase.userDAO().getUser().subscribeOn(Schedulers.single()).observeOn(AndroidSchedulers.mainThread());
@@ -436,5 +435,13 @@ public final class Repository {
         ThreadUtils.execute(() -> {
             dataBase.exerciseTimeDAO().remove(value);
         });
+    }
+
+    public Integer getLoggedDatesCount() {
+        return dataBase.dateDAO().getLoggedDatesCount();
+    }
+
+    public List<Date> getLoggedDatesList(Date startDate, Date endDate) {
+        return dataBase.dateDAO().getLoggedDatesList(startDate, endDate);
     }
 }
