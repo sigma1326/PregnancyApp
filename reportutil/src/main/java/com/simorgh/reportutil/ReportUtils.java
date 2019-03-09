@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Environment;
 
 import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
@@ -546,7 +545,7 @@ public final class ReportUtils {
             File file = new File(path);
 
             Intent openFile = new Intent(Intent.ACTION_VIEW);
-            openFile.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NEW_TASK);
+            openFile.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 
             Uri apkURI = FileProvider.getUriForFile(activity, activity.getApplicationContext().getPackageName() + ".provider", file);
             openFile.setDataAndType(apkURI, "application/pdf");

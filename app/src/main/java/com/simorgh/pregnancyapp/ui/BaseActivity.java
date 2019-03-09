@@ -1,5 +1,6 @@
 package com.simorgh.pregnancyapp.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import com.simorgh.database.Repository;
@@ -9,18 +10,25 @@ import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 public class BaseActivity extends AppCompatActivity {
     @Inject
     protected Repository repository;
+
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         AppManager.getDaggerApplicationComponent().inject(this);
         super.onCreate(savedInstanceState);
 
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
     }
 }

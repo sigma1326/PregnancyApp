@@ -6,24 +6,39 @@ import com.simorgh.database.Repository;
 import com.simorgh.database.model.User;
 import com.simorgh.threadutils.ThreadUtils;
 
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.TimeZone;
+
 import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class RegisterViewModel extends ViewModel {
-    private MediatorLiveData<Date> pregnancyStartDate = new MediatorLiveData<>();
-    private MediatorLiveData<Date> motherBirthDate = new MediatorLiveData<>();
-    private MediatorLiveData<BloodType> bloodType = new MediatorLiveData<>();
+    private MutableLiveData<Date> pregnancyStartDate;
+    private MutableLiveData<Date> motherBirthDate;
+    private MutableLiveData<BloodType> bloodType = new MediatorLiveData<>();
+
+    {
+        Date now = new Date(Calendar.getInstance(), true);
+        pregnancyStartDate = new MutableLiveData<>(now);
+
+        Calendar birth = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
+        birth.add(Calendar.YEAR, -24);
+
+        motherBirthDate = new MutableLiveData<>(new Date(birth, true));
+    }
 
 
-    public MediatorLiveData<Date> getPregnancyStartDate() {
+    public MutableLiveData<Date> getPregnancyStartDate() {
         return pregnancyStartDate;
     }
 
-    public MediatorLiveData<Date> getMotherBirthDate() {
+    public MutableLiveData<Date> getMotherBirthDate() {
         return motherBirthDate;
     }
 
-    public MediatorLiveData<BloodType> getBloodType() {
+    public MutableLiveData<BloodType> getBloodType() {
         return bloodType;
     }
 

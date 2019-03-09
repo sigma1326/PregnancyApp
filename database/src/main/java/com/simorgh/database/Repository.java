@@ -20,6 +20,7 @@ import com.simorgh.database.model.SleepTime;
 import com.simorgh.database.model.User;
 import com.simorgh.database.model.Week;
 import com.simorgh.database.model.Weight;
+import com.simorgh.logger.Logger;
 import com.simorgh.threadutils.ThreadUtils;
 
 import java.util.List;
@@ -27,17 +28,71 @@ import java.util.List;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
+import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
+import io.reactivex.CompletableTransformer;
+import io.reactivex.Maybe;
 import io.reactivex.Observable;
+import io.reactivex.ObservableTransformer;
 import io.reactivex.Single;
 import io.reactivex.SingleTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 @Keep
+@SuppressLint("CheckResult")
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public final class Repository {
     private final PregnancyDataBase dataBase;
+    public static final CompletableObserver completableObserver = new CompletableObserver() {
+        @Override
+        public void onSubscribe(Disposable d) {
 
-    @SuppressLint("CheckResult")
+        }
+
+        @Override
+        public void onComplete() {
+
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            Logger.printStackTrace(e);
+        }
+    };
+
+    public static <T> SingleTransformer<T, T> applySingle() {
+        return observable -> observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public static <T> SingleTransformer<T, T> applyIOSingle() {
+        return observable -> observable.subscribeOn(Schedulers.io()).observeOn(Schedulers.io());
+    }
+
+    public static <T> ObservableTransformer<T, T> apply() {
+        return observable -> observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public static <T> ObservableTransformer<T, T> applyIO() {
+        return observable -> observable.subscribeOn(Schedulers.io()).observeOn(Schedulers.io());
+    }
+
+    public static CompletableTransformer applyCompletable() {
+        return observable -> observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public static CompletableTransformer applyIOCompletable() {
+        return observable -> observable.subscribeOn(Schedulers.io()).observeOn(Schedulers.io());
+    }
+
+    private Completable getCompletable(Runnable runnable) {
+        return Completable.create(emitter -> {
+            runnable.run();
+            emitter.onComplete();
+        });
+    }
+
     public Repository(@NonNull final Application application, PregnancyDataBase pregnancyDataBase) {
         dataBase = pregnancyDataBase;
 
@@ -45,16 +100,17 @@ public final class Repository {
     }
 
     private void init(@NonNull final Application application) {
-        ThreadUtils.execute(() -> {
+        getCompletable(() -> {
             PregnancyDataBase importDataBase = RoomAsset.databaseBuilder(application, PregnancyDataBase.class, "pregnancy-db").build();
             importDataBase.close();
-        });
+        }).compose(applyIOCompletable())
+                .subscribeWith(completableObserver);
     }
 
     public void insertUser(@NonNull final User user) {
-        ThreadUtils.execute(() -> {
-            dataBase.userDAO().insert(user);
-        });
+        getCompletable(() -> dataBase.userDAO().insert(user))
+                .compose(applyIOCompletable())
+                .subscribeWith(completableObserver);
     }
 
     public LiveData<User> getUser() {
@@ -67,14 +123,13 @@ public final class Repository {
 
 
     public Single<User> getUserSingle() {
-        return dataBase.userDAO().getUser().subscribeOn(Schedulers.single()).observeOn(AndroidSchedulers.mainThread());
+        return dataBase.userDAO().getUser().compose(applySingle());
     }
 
     @SuppressLint("CheckResult")
     public void getArticle(int articleID, ArticleCallBack callBack) {
         dataBase.articleDAO().getArticle(articleID)
-                .subscribeOn(Schedulers.single())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(applySingle())
                 .subscribe((article, throwable) -> {
                     if (throwable != null) {
                         callBack.onFailed("");
@@ -88,7 +143,7 @@ public final class Repository {
     public void getWeekArticle(int weekNumber, boolean isMotherArticle, ArticleCallBack callBack) {
         if (isMotherArticle) {
             dataBase.articleDAO().getMotherWeekArticle(weekNumber)
-                    .compose(apply())
+                    .compose(applySingle())
                     .subscribe((article, throwable) -> {
                         if (throwable != null) {
                             callBack.onFailed("");
@@ -98,7 +153,7 @@ public final class Repository {
                     });
         } else {
             dataBase.articleDAO().getEmbryoWeekArticle(weekNumber)
-                    .compose(apply())
+                    .compose(applySingle())
                     .subscribe((article, throwable) -> {
                         if (throwable != null) {
                             callBack.onFailed("");
@@ -109,13 +164,6 @@ public final class Repository {
         }
     }
 
-    private <T> SingleTransformer<T, T> apply() {
-        return observable -> observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
-    }
-
-    private <T> SingleTransformer<T, T> applyIO() {
-        return observable -> observable.subscribeOn(Schedulers.io()).observeOn(Schedulers.io());
-    }
 
     public LiveData<Article> getWeekArticle(int weekNumber, boolean isMotherArticle) {
         if (isMotherArticle) {
@@ -193,8 +241,7 @@ public final class Repository {
     @SuppressLint("CheckResult")
     public void getParagraphs(long articleID, ParagraphsCallBack callBack) {
         dataBase.paragraphDAO().getParagraphs(articleID)
-                .subscribeOn(Schedulers.single())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(applySingle())
                 .subscribe((paragraphs, throwable) -> {
                     if (throwable != null) {
                         callBack.onFailed("");
@@ -224,14 +271,6 @@ public final class Repository {
                 weekCallBack.onSuccess(week);
             }
         });
-//        dataBase.weekDAO().getWeek(weekNumber).subscribeOn(Schedulers.single())
-//                .observeOn(AndroidSchedulers.mainThread()).subscribe((week, throwable) -> {
-//            if (throwable != null) {
-//                weekCallBack.onFailed("");
-//            } else {
-//                weekCallBack.onSuccess(week);
-//            }
-//        });
     }
 
     @SuppressLint("CheckResult")
@@ -250,75 +289,75 @@ public final class Repository {
 
 
     public void updateFontSize(int value) {
-        ThreadUtils.execute(() -> {
-            dataBase.userDAO().updateFontSize(value);
-        });
+        getCompletable(() -> dataBase.userDAO().updateFontSize(value))
+                .compose(applyIOCompletable())
+                .subscribeWith(completableObserver);
     }
 
     public void updateBloodType(String type, boolean isNegative) {
-        ThreadUtils.execute(() -> {
-            dataBase.userDAO().updateBloodType(type, isNegative);
-        });
+        getCompletable(() -> dataBase.userDAO().updateBloodType(type, isNegative))
+                .compose(applyIOCompletable())
+                .subscribeWith(completableObserver);
     }
 
     public void updatePregnancyStartDate(@NonNull Date date) {
-        ThreadUtils.execute(() -> {
-            dataBase.userDAO().updatePregnancyStartDate(date);
-        });
+        getCompletable(() -> dataBase.userDAO().updatePregnancyStartDate(date))
+                .compose(applyIOCompletable())
+                .subscribeWith(completableObserver);
     }
 
     public void updateBirthDate(@NonNull Date date) {
-        ThreadUtils.execute(() -> {
-            dataBase.userDAO().updateBirthDate(date);
-        });
+        getCompletable(() -> dataBase.userDAO().updateBirthDate(date))
+                .compose(applyIOCompletable())
+                .subscribeWith(completableObserver);
     }
 
     public void insertDrugs(List<Drug> drugList) {
-        ThreadUtils.execute(() -> {
-            dataBase.drugDAO().insertAll(drugList);
-        });
+        getCompletable(() -> dataBase.drugDAO().insertAll(drugList))
+                .compose(applyIOCompletable())
+                .subscribeWith(completableObserver);
     }
 
     public void insertBloodPressure(BloodPressure b) {
-        ThreadUtils.execute(() -> {
-            dataBase.bloodPressureDAO().insert(b);
-        });
+        getCompletable(() -> dataBase.bloodPressureDAO().insert(b))
+                .compose(applyIOCompletable())
+                .subscribeWith(completableObserver);
     }
 
     public void insertWeight(Weight weight) {
-        ThreadUtils.execute(() -> {
-            dataBase.weightlDAO().insert(weight);
-        });
+        getCompletable(() -> dataBase.weightlDAO().insert(weight))
+                .compose(applyIOCompletable())
+                .subscribeWith(completableObserver);
     }
 
     public void insertFever(Fever f) {
-        ThreadUtils.execute(() -> {
-            dataBase.feverDAO().insert(f);
-        });
+        getCompletable(() -> dataBase.feverDAO().insert(f))
+                .compose(applyIOCompletable())
+                .subscribeWith(completableObserver);
     }
 
     public void insertCigarette(Cigarette cigarette) {
-        ThreadUtils.execute(() -> {
-            dataBase.cigaretteDAO().insert(cigarette);
-        });
+        getCompletable(() -> dataBase.cigaretteDAO().insert(cigarette))
+                .compose(applyIOCompletable())
+                .subscribeWith(completableObserver);
     }
 
     public void insertAlcohol(Alcohol alcohol) {
-        ThreadUtils.execute(() -> {
-            dataBase.alcoholDAO().insert(alcohol);
-        });
+        getCompletable(() -> dataBase.alcoholDAO().insert(alcohol))
+                .compose(applyIOCompletable())
+                .subscribeWith(completableObserver);
     }
 
     public void insertSleepTime(SleepTime st) {
-        ThreadUtils.execute(() -> {
-            dataBase.sleepTimeDAO().insert(st);
-        });
+        getCompletable(() -> dataBase.sleepTimeDAO().insert(st))
+                .compose(applyIOCompletable())
+                .subscribeWith(completableObserver);
     }
 
     public void insertExerciseTime(ExerciseTime exerciseTime) {
-        ThreadUtils.execute(() -> {
-            dataBase.exerciseTimeDAO().insert(exerciseTime);
-        });
+        getCompletable(() -> dataBase.exerciseTimeDAO().insert(exerciseTime))
+                .compose(applyIOCompletable())
+                .subscribeWith(completableObserver);
     }
 
     public List<Drug> getDrugs(Date date) {
@@ -354,87 +393,87 @@ public final class Repository {
     }
 
     public void removeDrugs(List<Drug> deleteList) {
-        ThreadUtils.execute(() -> {
-            dataBase.drugDAO().removeList(deleteList);
-        });
+        getCompletable(() -> dataBase.drugDAO().removeList(deleteList))
+                .compose(applyIOCompletable())
+                .subscribeWith(completableObserver);
     }
 
     public Observable<List<Date>> getLoggedDates() {
-        return dataBase
-                .dateDAO()
-                .getLoggedDates()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        return dataBase.dateDAO().getLoggedDates();
     }
 
     public Date getFirstLoggedDate() {
         return dataBase.dateDAO().getFirstLoggedDate();
     }
 
+    public Maybe<Date> getFirstLoggedDateObservable() {
+        return dataBase.dateDAO().getFirstLoggedDateObservable();
+    }
+
     public void removeFever(Fever value) {
-        ThreadUtils.execute(() -> {
-            dataBase.feverDAO().remove(value);
-        });
+        getCompletable(() -> dataBase.feverDAO().remove(value))
+                .compose(applyIOCompletable())
+                .subscribeWith(completableObserver);
     }
 
     public void removeCigarette(Cigarette value) {
-        ThreadUtils.execute(() -> {
-            dataBase.cigaretteDAO().remove(value);
-        });
+        getCompletable(() -> dataBase.cigaretteDAO().remove(value))
+                .compose(applyIOCompletable())
+                .subscribeWith(completableObserver);
     }
 
     public void removeAlcohol(Alcohol value) {
-        ThreadUtils.execute(() -> {
-            dataBase.alcoholDAO().remove(value);
-        });
+        getCompletable(() -> dataBase.alcoholDAO().remove(value))
+                .compose(applyIOCompletable())
+                .subscribeWith(completableObserver);
     }
 
     public void removeDrugs(Date value) {
-        ThreadUtils.execute(() -> {
-            dataBase.drugDAO().removeDrugs(value);
-        });
+        getCompletable(() -> dataBase.drugDAO().removeDrugs(value))
+                .compose(applyIOCompletable())
+                .subscribeWith(completableObserver);
     }
 
     public void removeBloodPressure(Date value) {
-        ThreadUtils.execute(() -> {
-            dataBase.bloodPressureDAO().remove(value);
-        });
+        getCompletable(() -> dataBase.bloodPressureDAO().remove(value))
+                .compose(applyIOCompletable())
+                .subscribeWith(completableObserver);
     }
 
     public void removeWeight(Date value) {
-        ThreadUtils.execute(() -> {
-            dataBase.weightlDAO().remove(value);
-        });
+        getCompletable(() -> dataBase.weightlDAO().remove(value))
+                .compose(applyIOCompletable())
+                .subscribeWith(completableObserver);
     }
 
     public void removeFever(Date value) {
-        ThreadUtils.execute(() -> {
-            dataBase.feverDAO().remove(value);
-        });
+        getCompletable(() -> dataBase.feverDAO().remove(value))
+                .compose(applyIOCompletable())
+                .subscribeWith(completableObserver);
     }
 
     public void removeCigarette(Date value) {
-        ThreadUtils.execute(() -> {
-            dataBase.cigaretteDAO().remove(value);
-        });
+        getCompletable(() -> dataBase.cigaretteDAO().remove(value))
+                .compose(applyIOCompletable())
+                .subscribeWith(completableObserver);
     }
 
     public void removeAlcohol(Date value) {
-        ThreadUtils.execute(() -> {
-            dataBase.alcoholDAO().remove(value);
-        });
+        getCompletable(() -> dataBase.alcoholDAO().remove(value))
+                .compose(applyIOCompletable())
+                .subscribeWith(completableObserver);
     }
 
     public void removeSleepTime(Date value) {
-        ThreadUtils.execute(() -> {
-            dataBase.sleepTimeDAO().remove(value);
-        });
+        getCompletable(() -> dataBase.sleepTimeDAO().remove(value))
+                .compose(applyIOCompletable())
+                .subscribeWith(completableObserver);
     }
 
     public void removeExerciseTime(Date value) {
-        ThreadUtils.execute(() -> {
-            dataBase.exerciseTimeDAO().remove(value);
-        });
+        getCompletable(() -> dataBase.exerciseTimeDAO().remove(value))
+                .compose(applyIOCompletable())
+                .subscribeWith(completableObserver);
     }
 
     public Integer getLoggedDatesCount() {

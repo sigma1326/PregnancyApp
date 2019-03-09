@@ -18,8 +18,12 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
+import io.reactivex.MaybeObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
-@SuppressLint("DefaultLocale")
+@SuppressLint({"DefaultLocale", "CheckResult"})
 public class UserViewModel extends ViewModel {
     private MutableLiveData<Date> firstLoggedDate = new MutableLiveData<>();
     private final Calendar nowC = Calendar.getInstance();
@@ -37,42 +41,6 @@ public class UserViewModel extends ViewModel {
     private LiveData<Pair<String, String>> endWeekLabels;
 
     private LiveData<Integer> currentWeekNumber;
-
-    public LiveData<Integer> getCurrentWeekNumber() {
-        return currentWeekNumber;
-    }
-
-    public LiveData<String> getDaysToDelivery() {
-        return daysToDelivery;
-    }
-
-    public LiveData<String> getRemainingDays() {
-        return remainingDays;
-    }
-
-    public LiveData<String> getCurrentWeek() {
-        return currentWeek;
-    }
-
-    public LiveData<String> getPregnancyStartDate() {
-        return pregnancyStartDate;
-    }
-
-    public LiveData<String> getMotherBirthDate() {
-        return motherBirthDate;
-    }
-
-    public LiveData<String> getBloodType() {
-        return bloodType;
-    }
-
-    public LiveData<String> getFontSize() {
-        return fontSize;
-    }
-
-    public LiveData<User> getUser() {
-        return user;
-    }
 
     public void getUserLiveData(Repository repository) {
         if (repository != null) {
@@ -145,12 +113,30 @@ public class UserViewModel extends ViewModel {
     }
 
     public void loadFirstLog(Repository repository) {
-        ThreadUtils.execute(() -> {
-            Date dd = repository.getFirstLoggedDate();
-            ThreadUtils.runOnUIThread(() -> {
-                firstLoggedDate.setValue(dd);
-            });
-        });
+        repository.getFirstLoggedDateObservable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new MaybeObserver<Date>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(Date date) {
+                        firstLoggedDate.setValue(date);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     public LiveData<Pair<String, String>> getStartWeekLabels() {
@@ -180,4 +166,41 @@ public class UserViewModel extends ViewModel {
     public void updateBirthDate(@NonNull Repository repository, Date date) {
         repository.updateBirthDate(date);
     }
+
+    public LiveData<Integer> getCurrentWeekNumber() {
+        return currentWeekNumber;
+    }
+
+    public LiveData<String> getDaysToDelivery() {
+        return daysToDelivery;
+    }
+
+    public LiveData<String> getRemainingDays() {
+        return remainingDays;
+    }
+
+    public LiveData<String> getCurrentWeek() {
+        return currentWeek;
+    }
+
+    public LiveData<String> getPregnancyStartDate() {
+        return pregnancyStartDate;
+    }
+
+    public LiveData<String> getMotherBirthDate() {
+        return motherBirthDate;
+    }
+
+    public LiveData<String> getBloodType() {
+        return bloodType;
+    }
+
+    public LiveData<String> getFontSize() {
+        return fontSize;
+    }
+
+    public LiveData<User> getUser() {
+        return user;
+    }
+
 }

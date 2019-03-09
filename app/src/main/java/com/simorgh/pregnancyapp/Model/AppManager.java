@@ -1,27 +1,40 @@
 package com.simorgh.pregnancyapp.Model;
 
+import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.os.StrictMode;
 
 import com.facebook.stetho.Stetho;
+import com.simorgh.logger.Logger;
 import com.simorgh.pregnancyapp.BuildConfig;
 import com.simorgh.pregnancyapp.R;
 import com.simorgh.pregnancyapp.di.component.DaggerApplicationComponent;
 import com.simorgh.pregnancyapp.di.module.ApplicationModule;
 import com.simorgh.pregnancyapp.di.module.DataBaseModule;
 import com.simorgh.threadutils.ThreadUtils;
+import com.squareup.leakcanary.LeakCanary;
 
 import androidx.multidex.MultiDexApplication;
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
 import io.github.inflationx.viewpump.ViewPump;
+import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
 
 public class AppManager extends MultiDexApplication {
     private static DaggerApplicationComponent daggerApplicationComponent;
 
+    @SuppressLint("CheckResult")
     @Override
     public void onCreate() {
         super.onCreate();
+
+        RxJavaPlugins.setErrorHandler(throwable -> {
+            Logger.e("Received undelivered error: " + throwable.getMessage());
+        });
 
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .detectDiskReads()
@@ -44,34 +57,44 @@ public class AppManager extends MultiDexApplication {
                 .build();
 
 
-        ThreadUtils.execute(() -> {
+        Completable.fromCallable(() -> {
             ThreadUtils.init(new Handler(getMainLooper()));
-//            Repository repository = new Repository(this);
-
             if (BuildConfig.DEBUG) {
                 Stetho.initializeWithDefaults(this);
             }
 
-//            if (LeakCanary.isInAnalyzerProcess(this)) {
-//                // This process is dedicated to LeakCanary for heap analysis.
-//                // You should not init your app in this process.
-//                return;
-//            }
-//            LeakCanary.install(this);
-            // Normal app init code...
+//            initLeakCanary();
+
 
             initTypeFace();
+            return true;
+        })
+                .subscribeOn(Schedulers.io())
+                .subscribeWith(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-//            Logger.i(DebugDB.getAddressLog());
+                    }
 
-//            User user = new User();
-//            user.setFontSize(14);
-//            user.setBloodType("O");
-//            user.setNegative(true);
-//            user.setBirthDate(new Date(1990, 5, 26, 14, 25, 0));
-//            user.setPregnancyStartDate(new Date(2018, 0, 25, 14, 25, 0));
-//            repository.insertUser(user);
-        });
+                    @Override
+                    public void onComplete() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
+    }
+
+    private void initLeakCanary() {
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
+        // Normal app init code...
     }
 
     private void initTypeFace() {

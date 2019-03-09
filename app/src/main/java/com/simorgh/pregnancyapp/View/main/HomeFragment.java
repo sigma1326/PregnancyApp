@@ -14,6 +14,7 @@ import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.simorgh.logger.Logger;
@@ -125,31 +126,9 @@ public class HomeFragment extends BaseFragment {
             weekSlider.setEndTextMonth(pair.second);
         });
 
-        repository
-                .getLoggedDates()
-                .observeOn(Schedulers.io())
-                .flatMap(Observable::fromIterable)
-                .flatMap(date -> {
-                    LogItem l = new LogItem(date, Objects.requireNonNull(mViewModel.getUser().getValue()).getPregnancyStartDate());
-//                    Logger.i(l.toString());
-                    return Observable.just(l);
-                }).toList().toObservable()
-                .doOnComplete(() -> {
-                    Logger.i("aha");
-                })
-                .doOnNext(logItems -> {
-                    Logger.i(logItems.toString() + "");
-                })
-                .subscribe(logItems -> {
-                    int a = 0;
-                    Logger.i(logItems.toString() + "");
-                }, Logger::printStackTrace);
-
         mViewModel.getCurrentWeekNumber().observe(this, integer -> {
             if (weekSlider != null) {
-                ThreadUtils.runOnUIThread(() -> {
-                    weekSlider.goToWeekNumber(integer);
-                }, 500);
+                ThreadUtils.onUI(() -> weekSlider.goToWeekNumber(integer), 500);
 
                 if (mHomeViewModel != null) {
                     mHomeViewModel.loadWeekData(integer);
@@ -161,7 +140,7 @@ public class HomeFragment extends BaseFragment {
 
         motionLayout = (MotionLayout) view;
 
-        ThreadUtils.runOnUIThread(() -> motionLayout.transitionToEnd(), 300);
+        ThreadUtils.onUI(() -> motionLayout.transitionToEnd(), 300);
 
 
         cardEmbryo.setOnClickListener(v -> {
@@ -259,9 +238,9 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         motionLayout = null;
         weekSlider = null;
         guideline = null;
+        super.onDestroy();
     }
 }

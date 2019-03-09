@@ -1,12 +1,9 @@
 package com.simorgh.pregnancyapp.View.main;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Toast;
 
 import com.simorgh.bottombar.BottomBar;
 import com.simorgh.logger.Logger;
@@ -23,24 +20,30 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.transition.TransitionManager;
-import io.github.inflationx.viewpump.ViewPumpContextWrapper;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class MainActivity extends BaseActivity implements BottomBar.OnItemClickListener
         , BottomBar.OnCircleItemClickListener, NavController.OnDestinationChangedListener {
 
-    private BottomBar bottomBar;
+    @BindView(R.id.bottomBar)
+    BottomBar bottomBar;
+
     private NavController navController;
-    private Animation animToolbarGone;
-    private Animation animToolbarShow;
     private Animation animBottomGone;
     private Animation animBottomShow;
 
     private UserViewModel mUserViewModel;
+    Unbinder unbinder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        unbinder = ButterKnife.bind(this);
+
 
         mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         mUserViewModel.getUserLiveData(repository);
@@ -48,7 +51,6 @@ public class MainActivity extends BaseActivity implements BottomBar.OnItemClickL
         getWindow().setBackgroundDrawable(null);
 
 
-        bottomBar = findViewById(R.id.bottomBar);
         navController = Navigation.findNavController(MainActivity.this, R.id.main_nav_host_fragment);
 
         bottomBar.setItemClickListener(this);
@@ -63,9 +65,6 @@ public class MainActivity extends BaseActivity implements BottomBar.OnItemClickL
     }
 
     private void initAnimations() {
-        animToolbarGone = AnimationUtils.loadAnimation(this, R.anim.slide_out_top);
-        animToolbarShow = AnimationUtils.loadAnimation(this, R.anim.slide_in_top);
-
         animBottomGone = AnimationUtils.loadAnimation(this, R.anim.slide_out_bottom);
         animBottomShow = AnimationUtils.loadAnimation(this, R.anim.slide_in_bottom);
 
@@ -88,25 +87,6 @@ public class MainActivity extends BaseActivity implements BottomBar.OnItemClickL
             }
         });
 
-//        animToolbarShow.setAnimationListener(new Animation.AnimationListener() {
-//            @Override
-//            public void onAnimationStart(Animation animation) {
-//                if (toolbarLayout != null) {
-//                    toolbarLayout.setVisibility(View.VISIBLE);
-//                }
-//            }
-//
-//            @Override
-//            public void onAnimationEnd(Animation animation) {
-//
-//            }
-//
-//            @Override
-//            public void onAnimationRepeat(Animation animation) {
-//
-//            }
-//        });
-
         animBottomGone.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -125,42 +105,17 @@ public class MainActivity extends BaseActivity implements BottomBar.OnItemClickL
 
             }
         });
-//        animToolbarGone.setAnimationListener(new Animation.AnimationListener() {
-//            @Override
-//            public void onAnimationStart(Animation animation) {
-//
-//            }
-//
-//            @Override
-//            public void onAnimationEnd(Animation animation) {
-//                if (toolbarLayout != null) {
-//                    toolbarLayout.setVisibility(View.GONE);
-//                }
-//            }
-//
-//            @Override
-//            public void onAnimationRepeat(Animation animation) {
-//
-//            }
-//        });
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
-    }
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         animBottomGone.cancel();
         animBottomShow.cancel();
-        animToolbarGone.cancel();
-        animToolbarShow.cancel();
         bottomBar = null;
         navController = null;
-        animToolbarShow = null;
-        animToolbarGone = null;
+        unbinder.unbind();
+        super.onDestroy();
     }
 
 

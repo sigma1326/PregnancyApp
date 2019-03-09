@@ -86,15 +86,6 @@ public class RegisterActivity extends BaseActivity implements TitleChangeListene
             parentLayout.setLayoutTransition(layoutTransition);
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-//            ((ViewGroup) findViewById(R.id.transition_container)).getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
-//            ((ViewGroup) findViewById(R.id.container)).getLayoutTransition().enableTransitionType(LayoutTransition.APPEARING);
-//            ((ViewGroup) findViewById(R.id.container)).getLayoutTransition().enableTransitionType(LayoutTransition.DISAPPEARING);
-//            ((ViewGroup) findViewById(R.id.container)).getLayoutTransition().enableTransitionType(LayoutTransition.CHANGE_APPEARING);
-//            ((ViewGroup) findViewById(R.id.container)).getLayoutTransition().enableTransitionType(LayoutTransition.CHANGE_DISAPPEARING);
-        }
-
-
         navController = Navigation.findNavController(RegisterActivity.this, R.id.register_nav_host_fragment);
 
         backButton.setOnClickListener(v -> {
@@ -174,24 +165,14 @@ public class RegisterActivity extends BaseActivity implements TitleChangeListene
 
     }
 
-    private void initRegisterView() {
-
-    }
-
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
-    }
-
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         navController = null;
         nextButton = null;
         backButton = null;
         title = null;
         unbinder.unbind();
+        super.onDestroy();
     }
 
     @Override
