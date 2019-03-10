@@ -69,6 +69,8 @@ public class WeeksInfoTabFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(UserViewModel.class);
+        mLocalViewModel = ViewModelProviders.of(this).get(WeeksInfoTabViewModel.class);
+        mLocalViewModel.setRepository(repository);
     }
 
     @SuppressLint("DefaultLocale")
@@ -77,9 +79,6 @@ public class WeeksInfoTabFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         ViewCompat.setLayoutDirection(view, ViewCompat.LAYOUT_DIRECTION_LTR);
 
-
-        mLocalViewModel = ViewModelProviders.of(this).get(WeeksInfoTabViewModel.class);
-        mLocalViewModel.setRepository(repository);
 
         mViewModel.getUser().observe(Objects.requireNonNull(getActivity()), user -> {
             if (user != null && motherWeekInfoView != null) {

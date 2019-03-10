@@ -109,17 +109,16 @@ public class RegisterActivity extends BaseActivity implements TitleChangeListene
                         mViewModel.login(repository, new RegisterViewModel.onUserUpdatedCallback() {
                             @Override
                             public void onUserUpdated() {
-                                ThreadUtils.runOnUIThread(() -> {
+                                ThreadUtils.onUI(() -> {
                                     navController.navigate(R.id.action_motherBirthDayFragment_to_mainActivity);
-                                    ThreadUtils.runOnUIThread(RegisterActivity.this::finish);
+                                    ThreadUtils.onUI(RegisterActivity.this::finish);
                                 });
                             }
 
                             @Override
                             public void onFailed() {
-                                ThreadUtils.runOnUIThread(() -> {
-                                    Toast.makeText(RegisterActivity.this, "خطا", Toast.LENGTH_SHORT).show();
-                                });
+                                ThreadUtils.onUI(() ->
+                                        Toast.makeText(RegisterActivity.this, "خطا", Toast.LENGTH_SHORT).show());
                             }
                         });
                         break;

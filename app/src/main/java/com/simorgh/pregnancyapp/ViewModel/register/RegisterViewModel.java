@@ -13,6 +13,7 @@ import java.util.TimeZone;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import io.reactivex.Completable;
 
 public class RegisterViewModel extends ViewModel {
     private MutableLiveData<Date> pregnancyStartDate;
@@ -42,29 +43,29 @@ public class RegisterViewModel extends ViewModel {
         return bloodType;
     }
 
-    public void setPregnancyStartDate(Date pregnancyStartDate) {
-        ThreadUtils.runOnUIThread(() -> {
-            this.pregnancyStartDate.setValue(pregnancyStartDate);
+    public void setPregnancyStartDate(Date value) {
+        ThreadUtils.onUI(() -> {
+            pregnancyStartDate.setValue(value);
         });
     }
 
-    public void setMotherBirthDate(Date motherBirthDate) {
-        ThreadUtils.runOnUIThread(() -> {
-            this.motherBirthDate.setValue(motherBirthDate);
+    public void setMotherBirthDate(Date value) {
+        ThreadUtils.onUI(() -> {
+            motherBirthDate.setValue(value);
         });
     }
 
-    public void setBloodType(BloodType bloodType) {
-        ThreadUtils.runOnUIThread(() -> {
-            this.bloodType.setValue(bloodType);
+    public void setBloodType(BloodType value) {
+        ThreadUtils.onUI(() -> {
+            bloodType.setValue(value);
         });
     }
 
     public void login(Repository repository, onUserUpdatedCallback callback) {
-        ThreadUtils.runOnUIThread(() -> {
+        ThreadUtils.onUI(() -> {
             User user = new User();
             BloodType b = bloodType.getValue();
-            ThreadUtils.execute(() -> {
+            Completable.fromRunnable(() -> {
                 if (b != null) {
                     user.setPregnancyStartDate(pregnancyStartDate.getValue());
                     user.setBirthDate(motherBirthDate.getValue());
@@ -75,7 +76,8 @@ public class RegisterViewModel extends ViewModel {
                 } else {
                     callback.onFailed();
                 }
-            });
+            }).compose(Repository.applyIOCompletable())
+                    .subscribeWith(Repository.completableObserver);
         });
     }
 

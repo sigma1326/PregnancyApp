@@ -231,7 +231,7 @@ public class NiceDatePicker extends ConstraintLayout {
 
     public void setMinDate(@NonNull Calendar minDate) {
         this.minDate = minDate;
-        ThreadUtils.runOnUIThread(() -> {
+        ThreadUtils.onUI(() -> {
             updateView();
             updateBubbleText(false);
         });
@@ -239,7 +239,7 @@ public class NiceDatePicker extends ConstraintLayout {
 
     public void setMaxDate(@NonNull Calendar maxDate) {
         this.maxDate.setTimeInMillis(maxDate.getTimeInMillis());
-        ThreadUtils.runOnUIThread(() -> {
+        ThreadUtils.onUI(() -> {
             updateView();
             updateBubbleText(false);
         });
@@ -248,7 +248,7 @@ public class NiceDatePicker extends ConstraintLayout {
     public void setDateRange(@NonNull Calendar minDate, @NonNull Calendar maxDate) {
         this.minDate.setTimeInMillis(minDate.getTimeInMillis());
         this.maxDate.setTimeInMillis(maxDate.getTimeInMillis());
-        ThreadUtils.runOnUIThread(() -> {
+        ThreadUtils.onUI(() -> {
             updateView();
             updateBubbleText(false);
         });

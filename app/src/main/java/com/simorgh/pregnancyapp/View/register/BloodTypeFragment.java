@@ -72,8 +72,8 @@ public class BloodTypeFragment extends BaseFragment {
 
     @Override
     public void onDetach() {
-        super.onDetach();
         titleChangeListener = null;
+        super.onDetach();
     }
 
 }

@@ -65,7 +65,7 @@ public final class ReportUtils {
                 pdfFile.delete();
             }
 
-            Date start = repository.getUserOnly().getPregnancyStartDate();
+            Date start = repository.getUser().getPregnancyStartDate();
 
 
             Document document = new Document(PageSize.A4);

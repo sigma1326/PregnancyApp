@@ -20,7 +20,7 @@ public class ArticleDetailViewModel extends ViewModel {
     private int articleType;
     private MediatorLiveData<Integer> weekNumber = new MediatorLiveData<>();
     private LiveData<List<ArticleViewSubItem>> items = new MutableLiveData<>();
-    LiveData<List<Paragraph>> paragraphs;
+    private LiveData<List<Paragraph>> paragraphs;
     private LiveData<Article> article = new MediatorLiveData<>();
 
     public LiveData<Integer> getWeekNumber() {
@@ -32,31 +32,40 @@ public class ArticleDetailViewModel extends ViewModel {
         if (repository != null) {
             article = repository.getWeekArticle(value, articleType == 0);
 
-            paragraphs = Transformations.switchMap(article, input -> repository.getParagraphsLiveData(input.getId()));
+            paragraphs = Transformations.switchMap(article, input -> {
+                if (input != null) {
+                    return repository.getParagraphsLiveData(input.getId());
+                } else {
+                    return null;
+                }
+            });
 
             items = Transformations.map(paragraphs, paragraphs -> {
-                List<ArticleViewSubItem> list = new ArrayList<>();
-                Article art = article.getValue();
-                ArticleViewSubItem title;
-                ArticleViewSubItem image = null;
-                if (art != null) {
-                    title = new ArticleViewSubItem((int) art.getId(), ArticleSubItemType.title, art.getTitle());
-                    image = new ArticleViewSubItem((int) art.getId(), ArticleSubItemType.image, art.getImageName());
-                    list.add(title);
-                }
-                if (paragraphs != null && !paragraphs.isEmpty()) {
-                    for (int i = 0; i < Objects.requireNonNull(paragraphs).size(); i++) {
-                        ArticleViewSubItem p = new ArticleViewSubItem(paragraphs.get(0).getArticleID()
-                                , ArticleSubItemType.paragraph, paragraphs.get(i).getContent());
-                        list.add(p);
-                        if (i == 0) {
-                            if (image != null) {
-                                list.add(image);
+                if (paragraphs != null) {
+                    List<ArticleViewSubItem> list = new ArrayList<>();
+                    Article art = article.getValue();
+                    ArticleViewSubItem title;
+                    ArticleViewSubItem image = null;
+                    if (art != null) {
+                        title = new ArticleViewSubItem((int) art.getId(), ArticleSubItemType.title, art.getTitle());
+                        image = new ArticleViewSubItem((int) art.getId(), ArticleSubItemType.image, art.getImageName());
+                        list.add(title);
+                    }
+                    if (!paragraphs.isEmpty()) {
+                        for (int i = 0; i < Objects.requireNonNull(paragraphs).size(); i++) {
+                            ArticleViewSubItem p = new ArticleViewSubItem(paragraphs.get(0).getArticleID()
+                                    , ArticleSubItemType.paragraph, paragraphs.get(i).getContent());
+                            list.add(p);
+                            if (i == 0) {
+                                if (image != null) {
+                                    list.add(image);
+                                }
                             }
                         }
                     }
+                    return list;
                 }
-                return list;
+                return null;
             });
 
         }

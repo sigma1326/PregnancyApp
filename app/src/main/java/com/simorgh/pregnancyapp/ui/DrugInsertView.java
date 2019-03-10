@@ -110,15 +110,13 @@ public class DrugInsertView extends ExpansionsViewGroupLinearLayout {
                         description.setText("");
                         drug = new Drug();
                     } else {
-                        ThreadUtils.runOnUIThread(() -> {
-                            Toast.makeText(context, " فیلد دارو نمی‌تواند خالی باشد", Toast.LENGTH_SHORT).show();
-                        });
+                        ThreadUtils.onUI(() ->
+                                Toast.makeText(context, " فیلد دارو نمی‌تواند خالی باشد", Toast.LENGTH_SHORT).show());
                     }
                 }
             } else {
-                ThreadUtils.runOnUIThread(() -> {
-                    Toast.makeText(context, " فیلد دارو نمی‌تواند خالی باشد", Toast.LENGTH_SHORT).show();
-                });
+                ThreadUtils.onUI(() ->
+                        Toast.makeText(context, " فیلد دارو نمی‌تواند خالی باشد", Toast.LENGTH_SHORT).show());
             }
         });
 

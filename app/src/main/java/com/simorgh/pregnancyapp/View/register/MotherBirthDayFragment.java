@@ -86,7 +86,7 @@ public class MotherBirthDayFragment extends BaseFragment {
 
     @Override
     public void onDetach() {
-        super.onDetach();
         titleChangeListener = null;
+        super.onDetach();
     }
 }

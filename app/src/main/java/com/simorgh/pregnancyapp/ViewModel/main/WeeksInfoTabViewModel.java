@@ -3,35 +3,24 @@ package com.simorgh.pregnancyapp.ViewModel.main;
 import com.simorgh.database.Repository;
 import com.simorgh.database.callback.WeekCallBack;
 import com.simorgh.database.model.Week;
+import com.simorgh.logger.Logger;
 import com.simorgh.threadutils.ThreadUtils;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 public class WeeksInfoTabViewModel extends ViewModel {
-    private MutableLiveData<Integer> weekNumber = new MutableLiveData<>();
-    private MediatorLiveData<Week> weekLiveData = new MediatorLiveData<>();
+    private MutableLiveData<Week> weekLiveData = new MutableLiveData<>();
     private Repository repository;
-
-    public MutableLiveData<Integer> getWeekNumber() {
-        return weekNumber;
-    }
+    private final CompositeDisposable disposable = new CompositeDisposable();
 
     public void syncWeekNumber(Integer weekNumber) {
-        ThreadUtils.runOnUIThread(() -> {
-            this.weekNumber.setValue(weekNumber);
-            loadWeekData(weekNumber);
-        });
+        loadWeekData(weekNumber);
     }
-
-    public void setWeekNumber(Integer weekNumber) {
-        ThreadUtils.runOnUIThread(() -> {
-            this.weekNumber.setValue(weekNumber);
-        });
-    }
-
 
     public LiveData<Week> getWeekLiveData() {
         return weekLiveData;
@@ -45,39 +34,20 @@ public class WeeksInfoTabViewModel extends ViewModel {
         this.repository = repository;
     }
 
-    public synchronized void loadWeekData(int weekNumber) {
+    public void loadWeekData(int weekNumber) {
         if (repository != null) {
-             repository.getWeekLiveData(weekNumber, new WeekCallBack() {
-                @Override
-                public void onSuccess(Week week) {
-                    ThreadUtils.runOnUIThread(() -> {
-                        weekLiveData.setValue(week);
-                    });
-                }
-
-                @Override
-                public void onFailed(String error) {
-
-                }
-            });
+            Disposable d = repository.getWeek(weekNumber)
+                    .subscribe(week -> weekLiveData.setValue(week), Logger::printStackTrace);
+            disposable.add(d);
         }
     }
-//
-//    public synchronized void loadWeekData() {
-//        if (repository != null) {
-//            repository.getWeekLiveData(weekNumber.getValue(), new WeekCallBack() {
-//                @Override
-//                public void onSuccess(Week week) {
-//                    ThreadUtils.runOnUIThread(() -> {
-//                        weekLiveData.setValue(week);
-//                    });
-//                }
-//
-//                @Override
-//                public void onFailed(String error) {
-//
-//                }
-//            });
-//        }
-//    }
+
+    @Override
+    protected void onCleared() {
+        if (!disposable.isDisposed()) {
+            disposable.clear();
+        }
+        repository = null;
+        super.onCleared();
+    }
 }

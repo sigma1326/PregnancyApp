@@ -264,25 +264,6 @@ public class MainActivity extends BaseActivity implements BottomBar.OnItemClickL
         }
     }
 
-    private boolean isAnimatingToolbar;
-    private boolean isAnimatingBottomBar;
-
-//    private void runToolbarAnim(boolean visible) {
-//        if (toolbarLayout == null) {
-//            return;
-//        }
-//        if (visible) {
-//            if (toolbarLayout.getVisibility() != View.VISIBLE) {
-//                toolbarLayout.startAnimation(animToolbarShow);
-//            }
-//        } else {
-//            if (toolbarLayout.getVisibility() != View.GONE) {
-//                toolbarLayout.startAnimation(animToolbarGone);
-//            }
-//
-//        }
-//    }
-
     private void runBottomAnim(boolean visible) {
         if (bottomBar == null) {
             return;

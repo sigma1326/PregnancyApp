@@ -3,15 +3,19 @@ package com.simorgh.pregnancyapp.ViewModel.main;
 import com.simorgh.database.Repository;
 import com.simorgh.database.callback.WeekCallBack;
 import com.simorgh.database.model.Week;
+import com.simorgh.logger.Logger;
 import com.simorgh.threadutils.ThreadUtils;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 public class HomeViewModel extends ViewModel {
     private volatile int weekNumber = 1;
     private Repository repository;
+    private final CompositeDisposable disposable = new CompositeDisposable();
 
     private MutableLiveData<Week> weekLiveData = new MutableLiveData<>();
 
@@ -39,21 +43,21 @@ public class HomeViewModel extends ViewModel {
         this.repository = repository;
     }
 
-    public synchronized void loadWeekData(int weekNumber) {
+    public void loadWeekData(int weekNumber) {
         if (repository != null) {
-             repository.getWeekLiveData(weekNumber, new WeekCallBack() {
-                @Override
-                public void onSuccess(Week weekLiveData1) {
-                    ThreadUtils.runOnUIThread(() -> {
-                        weekLiveData.setValue(weekLiveData1);
-                    });
-                }
-
-                @Override
-                public void onFailed(String error) {
-
-                }
-            });
+            Disposable d = repository.getWeek(weekNumber)
+                    .subscribe(week -> weekLiveData.setValue(week), Logger::printStackTrace);
+            disposable.add(d);
         }
     }
+
+    @Override
+    protected void onCleared() {
+        if (!disposable.isDisposed()) {
+            disposable.clear();
+        }
+        repository = null;
+        super.onCleared();
+    }
+
 }

@@ -37,9 +37,7 @@ public class PregnancyCategoriesDetailViewModel extends ViewModel {
         repository.getArticlesForType(type, new ArticlesForTypeCallBack() {
             @Override
             public void onSuccess(List<ArticleWithParagraph> articles1) {
-                ThreadUtils.runOnUIThread(() -> {
-                    articles.setValue(articles1);
-                });
+                ThreadUtils.onUI(() -> articles.setValue(articles1));
             }
 
             @Override

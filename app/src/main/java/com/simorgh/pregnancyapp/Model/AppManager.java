@@ -1,10 +1,10 @@
 package com.simorgh.pregnancyapp.Model;
 
 import android.annotation.SuppressLint;
-import android.os.Handler;
 import android.os.StrictMode;
 
 import com.facebook.stetho.Stetho;
+import com.simorgh.database.Repository;
 import com.simorgh.logger.Logger;
 import com.simorgh.pregnancyapp.BuildConfig;
 import com.simorgh.pregnancyapp.R;
@@ -19,15 +19,13 @@ import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
 import io.github.inflationx.viewpump.ViewPump;
 import io.reactivex.Completable;
-import io.reactivex.CompletableObserver;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.plugins.RxJavaPlugins;
-import io.reactivex.schedulers.Schedulers;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
+@SuppressLint("CheckResult")
 public class AppManager extends MultiDexApplication {
     private static DaggerApplicationComponent daggerApplicationComponent;
 
-    @SuppressLint("CheckResult")
     @Override
     public void onCreate() {
         super.onCreate();
@@ -57,34 +55,15 @@ public class AppManager extends MultiDexApplication {
                 .build();
 
 
-        Completable.fromCallable(() -> {
-            ThreadUtils.init(new Handler(getMainLooper()));
+        Completable.fromRunnable(() -> {
             if (BuildConfig.DEBUG) {
                 Stetho.initializeWithDefaults(this);
             }
 
 //            initLeakCanary();
 
-
             initTypeFace();
-            return true;
-        })
-                .subscribeOn(Schedulers.io())
-                .subscribeWith(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-                });
+        }).subscribeWith(Repository.completableObserver);
     }
 
     private void initLeakCanary() {
@@ -98,7 +77,7 @@ public class AppManager extends MultiDexApplication {
     }
 
     private void initTypeFace() {
-        ThreadUtils.execute(() -> {
+        Completable.fromRunnable(() -> {
             ViewPump.init(ViewPump.builder()
                     .addInterceptor(new CalligraphyInterceptor(
                             new CalligraphyConfig.Builder()
@@ -106,7 +85,7 @@ public class AppManager extends MultiDexApplication {
                                     .setFontAttrId(R.attr.fontPath)
                                     .build()))
                     .build());
-        });
+        }).subscribeWith(Repository.completableObserver);
     }
 
 
@@ -116,7 +95,8 @@ public class AppManager extends MultiDexApplication {
 
     @Override
     public void onTerminate() {
-        super.onTerminate();
         ThreadUtils.shutDownTasks();
+        Repository.finish();
+        super.onTerminate();
     }
 }

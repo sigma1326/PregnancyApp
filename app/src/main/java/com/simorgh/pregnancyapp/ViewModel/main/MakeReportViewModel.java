@@ -20,6 +20,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import io.reactivex.Observer;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
 public class MakeReportViewModel extends ViewModel {
@@ -28,6 +29,7 @@ public class MakeReportViewModel extends ViewModel {
     private LiveData<String> startDateString = new MutableLiveData<>();
     private LiveData<String> endDateString = new MutableLiveData<>();
     private boolean start;
+    private final CompositeDisposable disposable = new CompositeDisposable();
 
     {
         Calendar calendar = Calendar.getInstance();
@@ -66,9 +68,9 @@ public class MakeReportViewModel extends ViewModel {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
-        ThreadUtils.runOnUIThread(() -> {
-            this.startDate.setValue(startDate);
+    public void setStartDate(Date value) {
+        ThreadUtils.onUI(() -> {
+            startDate.setValue(value);
         });
     }
 
@@ -76,9 +78,9 @@ public class MakeReportViewModel extends ViewModel {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
-        ThreadUtils.runOnUIThread(() -> {
-            this.endDate.setValue(endDate);
+    public void setEndDate(Date value) {
+        ThreadUtils.onUI(() -> {
+            endDate.setValue(value);
         });
     }
 
@@ -98,29 +100,40 @@ public class MakeReportViewModel extends ViewModel {
         return start;
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @SuppressLint("CheckResult")
     public void makeReport(FragmentActivity activity, Repository repository, ReportState reportState) {
-        ReportUtils.createReport(activity, repository, reportState).subscribeWith(new Observer<Boolean>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-                Toast.makeText(activity, "در حال ایجاد گزارش...", Toast.LENGTH_SHORT).show();
-            }
+        ReportUtils.createReport(activity, repository, reportState)
+                .subscribeWith(new Observer<Boolean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        Toast.makeText(activity, "در حال ایجاد گزارش...", Toast.LENGTH_SHORT).show();
+                        disposable.add(d);
+                    }
 
-            @Override
-            public void onNext(Boolean aBoolean) {
-                Logger.i("made pdf:" + aBoolean);
-            }
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+                        Logger.i("made pdf:" + aBoolean);
+                    }
 
-            @Override
-            public void onError(Throwable e) {
-                Logger.printStackTrace(e);
-            }
+                    @Override
+                    public void onError(Throwable e) {
+                        Logger.printStackTrace(e);
+                    }
 
-            @Override
-            public void onComplete() {
-                Logger.i("onComplete");
-            }
-        });
+                    @Override
+                    public void onComplete() {
+                        Logger.i("onComplete");
+                    }
+                });
 
+    }
+
+    @Override
+    protected void onCleared() {
+        if (!disposable.isDisposed()) {
+            disposable.clear();
+        }
+        super.onCleared();
     }
 }

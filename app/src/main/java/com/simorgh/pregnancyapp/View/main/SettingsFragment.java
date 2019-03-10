@@ -34,6 +34,7 @@ import butterknife.BindView;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -74,6 +75,9 @@ public class SettingsFragment extends BaseFragment implements DatePickerDialog.O
 
     @BindView(R.id.tv_font_size_title)
     TextView mFontSizeTitle;
+
+    private final CompositeDisposable disposable = new CompositeDisposable();
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -177,6 +181,9 @@ public class SettingsFragment extends BaseFragment implements DatePickerDialog.O
 
     @Override
     public void onDestroy() {
+        if (!disposable.isDisposed()) {
+            disposable.clear();
+        }
         makeReport.setOnClickListener(null);
         navController = null;
         makeReport = null;
@@ -244,7 +251,7 @@ public class SettingsFragment extends BaseFragment implements DatePickerDialog.O
                 .subscribeWith(new Observer<Boolean>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        disposable.add(d);
                     }
 
                     @Override

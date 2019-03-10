@@ -85,8 +85,8 @@ public class PregnancyStartDateFragment extends BaseFragment {
 
     @Override
     public void onDetach() {
-        super.onDetach();
         titleChangeListener = null;
+        super.onDetach();
     }
 
 }

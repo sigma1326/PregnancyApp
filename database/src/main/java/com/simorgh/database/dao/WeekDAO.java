@@ -10,6 +10,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import io.reactivex.Maybe;
 import io.reactivex.Single;
 
 @Dao
@@ -22,7 +23,7 @@ public interface WeekDAO {
     void insertAll(List<Week> weeks);
 
     @Query("select * from weeks  where week_number=:number")
-    Single<Week> getWeek(int number);
+    Maybe<Week> getWeek(int number);
 
     @Query("select * from weeks  where week_number=:number")
     Week getWeekOld(int number);

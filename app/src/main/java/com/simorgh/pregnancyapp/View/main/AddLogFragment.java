@@ -127,7 +127,7 @@ public class AddLogFragment extends BaseFragment {
         });
 
 
-        ThreadUtils.runOnUIThread(() -> {
+        ThreadUtils.onUI(() -> {
             datePicker.setDateRange(Objects.requireNonNull(mUserViewModel.getUser().getValue()).getPregnancyStartDate().getCalendar(), now.getCalendar());
             if (getArguments() != null) {
                 datePicker.setSelectedDate(AddLogFragmentArgs.fromBundle(getArguments()).getSelectedDate());
@@ -144,7 +144,7 @@ public class AddLogFragment extends BaseFragment {
         });
 
 
-        ThreadUtils.runOnUIThread(() -> {
+        ThreadUtils.onUI(() -> {
             mViewModel.getEditing().observe(this, enabled -> {
                 boolean isInputDate = false;
                 if (mViewModel.getDate().getValue() != null && mViewModel.getInputDate()!=null) {
@@ -195,7 +195,7 @@ public class AddLogFragment extends BaseFragment {
 
         drugInsertView.setInsertDrugListener(drug -> {
             mViewModel.addDrug(drug, success -> {
-                ThreadUtils.runOnUIThread(() -> {
+                ThreadUtils.onUI(() -> {
                     Toast.makeText(getContext(), success ? "دارو اضافه شد" : "دارو موجود است", Toast.LENGTH_SHORT).show();
                 });
             });
@@ -218,7 +218,7 @@ public class AddLogFragment extends BaseFragment {
         });
 
         mViewModel.getDrugs().observe(this, drugs -> {
-            ThreadUtils.runOnUIThread(() -> {
+            ThreadUtils.onUI(() -> {
 //                rvDrugs.setMinimumHeight(drugs.size() * 45);
                 ((DrugAdapter) Objects.requireNonNull(rvDrugs.getAdapter())).submitList(drugs);
                 Objects.requireNonNull(rvDrugs.getAdapter()).notifyDataSetChanged();
@@ -257,11 +257,11 @@ public class AddLogFragment extends BaseFragment {
             String error = mViewModel.checkErrors();
             if (error == null) {
                 mViewModel.saveLog(repository);
-                ThreadUtils.runOnUIThread(() -> {
+                ThreadUtils.onUI(() -> {
                     Toast.makeText(getContext(), getString(R.string.data_saved), Toast.LENGTH_SHORT).show();
                 });
             } else {
-                ThreadUtils.runOnUIThread(() -> {
+                ThreadUtils.onUI(() -> {
                     Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
                 });
             }

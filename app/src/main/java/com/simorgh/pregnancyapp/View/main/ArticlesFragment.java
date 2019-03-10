@@ -54,7 +54,7 @@ public class ArticlesFragment extends BaseFragment {
         tabLayout = view.findViewById(R.id.tabs);
 
 
-        ThreadUtils.runOnUIThread(() -> {
+        ThreadUtils.onUI(() -> {
             adapter.clear();
 
             PregnancyTabFragment pregnancyTabFragment = new PregnancyTabFragment();
@@ -72,11 +72,6 @@ public class ArticlesFragment extends BaseFragment {
         });
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-    }
 
     @Override
     public void onDestroyView() {

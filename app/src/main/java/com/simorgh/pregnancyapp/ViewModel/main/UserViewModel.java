@@ -8,7 +8,7 @@ import com.simorgh.calendarutil.persiancalendar.PersianCalendar;
 import com.simorgh.database.Date;
 import com.simorgh.database.Repository;
 import com.simorgh.database.model.User;
-import com.simorgh.threadutils.ThreadUtils;
+import com.simorgh.logger.Logger;
 
 import java.util.Calendar;
 import java.util.Objects;
@@ -18,12 +18,10 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
-import io.reactivex.MaybeObserver;
-import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
-@SuppressLint({"DefaultLocale", "CheckResult"})
+@SuppressLint({"DefaultLocale"})
 public class UserViewModel extends ViewModel {
     private MutableLiveData<Date> firstLoggedDate = new MutableLiveData<>();
     private final Calendar nowC = Calendar.getInstance();
@@ -42,9 +40,11 @@ public class UserViewModel extends ViewModel {
 
     private LiveData<Integer> currentWeekNumber;
 
+    private final CompositeDisposable disposable = new CompositeDisposable();
+
     public void getUserLiveData(Repository repository) {
         if (repository != null) {
-            user = repository.getUser();
+            user = repository.getUserLiveData();
             remainingDays = Transformations.map(user, input -> {
                 float diffDays = CalendarTool.getDaysFromDiff(nowC, input.getPregnancyStartDate().getCalendar());
                 return String.valueOf(40 * 7 - ((int) diffDays)) + " روز" + "\n" + "باقی‌مانده";
@@ -113,30 +113,9 @@ public class UserViewModel extends ViewModel {
     }
 
     public void loadFirstLog(Repository repository) {
-        repository.getFirstLoggedDateObservable()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new MaybeObserver<Date>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(Date date) {
-                        firstLoggedDate.setValue(date);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+        Disposable d = repository.getFirstLoggedDateObservable()
+                .subscribe(date -> firstLoggedDate.setValue(date), Logger::printStackTrace);
+        disposable.add(d);
     }
 
     public LiveData<Pair<String, String>> getStartWeekLabels() {
@@ -203,4 +182,9 @@ public class UserViewModel extends ViewModel {
         return user;
     }
 
+    @Override
+    protected void onCleared() {
+        disposable.clear();
+        super.onCleared();
+    }
 }

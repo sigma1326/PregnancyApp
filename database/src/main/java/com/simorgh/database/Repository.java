@@ -32,11 +32,13 @@ import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
 import io.reactivex.CompletableTransformer;
 import io.reactivex.Maybe;
+import io.reactivex.MaybeTransformer;
 import io.reactivex.Observable;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.Single;
 import io.reactivex.SingleTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -45,10 +47,11 @@ import io.reactivex.schedulers.Schedulers;
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public final class Repository {
     private final PregnancyDataBase dataBase;
+    private static final CompositeDisposable compositeDisposable = new CompositeDisposable();
     public static final CompletableObserver completableObserver = new CompletableObserver() {
         @Override
         public void onSubscribe(Disposable d) {
-
+            compositeDisposable.add(d);
         }
 
         @Override
@@ -62,6 +65,12 @@ public final class Repository {
         }
     };
 
+    public static void finish() {
+        if (!compositeDisposable.isDisposed()) {
+            compositeDisposable.clear();
+        }
+    }
+
     public static <T> SingleTransformer<T, T> applySingle() {
         return observable -> observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
@@ -74,7 +83,15 @@ public final class Repository {
         return observable -> observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
+    public static <T> MaybeTransformer<T, T> applyMaybe() {
+        return observable -> observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    }
+
     public static <T> ObservableTransformer<T, T> applyIO() {
+        return observable -> observable.subscribeOn(Schedulers.io()).observeOn(Schedulers.io());
+    }
+
+    public static <T> MaybeTransformer<T, T> applyMaybeIO() {
         return observable -> observable.subscribeOn(Schedulers.io()).observeOn(Schedulers.io());
     }
 
@@ -113,11 +130,11 @@ public final class Repository {
                 .subscribeWith(completableObserver);
     }
 
-    public LiveData<User> getUser() {
+    public LiveData<User> getUserLiveData() {
         return dataBase.userDAO().getUserLiveData();
     }
 
-    public User getUserOnly() {
+    public User getUser() {
         return dataBase.userDAO().getUserOld();
     }
 
@@ -262,15 +279,8 @@ public final class Repository {
     }
 
     @SuppressLint("CheckResult")
-    public void getWeekLiveData(int weekNumber, WeekCallBack weekCallBack) {
-        ThreadUtils.execute(() -> {
-            Week week = dataBase.weekDAO().getWeekOld(weekNumber);
-            if (week == null) {
-                weekCallBack.onFailed("");
-            } else {
-                weekCallBack.onSuccess(week);
-            }
-        });
+    public Maybe<Week> getWeek(int weekNumber) {
+        return dataBase.weekDAO().getWeek(weekNumber).compose(applyMaybe());
     }
 
     @SuppressLint("CheckResult")
@@ -407,7 +417,7 @@ public final class Repository {
     }
 
     public Maybe<Date> getFirstLoggedDateObservable() {
-        return dataBase.dateDAO().getFirstLoggedDateObservable();
+        return dataBase.dateDAO().getFirstLoggedDateObservable().compose(applyMaybe());
     }
 
     public void removeFever(Fever value) {

@@ -1,5 +1,7 @@
 package com.simorgh.pregnancyapp.ViewModel.main;
 
+import android.util.Pair;
+
 import com.simorgh.database.Date;
 import com.simorgh.database.Repository;
 import com.simorgh.database.model.Alcohol;
@@ -20,46 +22,32 @@ import java.util.Objects;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 public class AddLogViewModel extends ViewModel {
     private Repository repository;
     private boolean isEditMode = false;
     private boolean saving = false;
-    private MutableLiveData<Date> date = new MutableLiveData<>();
-    private MutableLiveData<List<Drug>> drugs = new MutableLiveData<>();
-    private MutableLiveData<Drug> drug = new MutableLiveData<>();
-    private MutableLiveData<BloodPressure> bloodPressure = new MutableLiveData<>();
-    private MutableLiveData<Weight> motherWeight = new MutableLiveData<>();
-    private MutableLiveData<Fever> fever = new MutableLiveData<>();
-    private MutableLiveData<Cigarette> cigarette = new MutableLiveData<>();
-    private MutableLiveData<Alcohol> alcohol = new MutableLiveData<>();
-    private MutableLiveData<SleepTime> sleepTime = new MutableLiveData<>();
-    private MutableLiveData<ExerciseTime> exerciseTime = new MutableLiveData<>();
-    private MutableLiveData<Boolean> editing = new MutableLiveData<>(true);
+    private final MutableLiveData<Date> date = new MutableLiveData<>();
+    private final MutableLiveData<List<Drug>> drugs = new MutableLiveData<>();
+    private final MutableLiveData<Drug> drug = new MutableLiveData<>();
+    private final MutableLiveData<BloodPressure> bloodPressure = new MutableLiveData<>();
+    private final MutableLiveData<Weight> motherWeight = new MutableLiveData<>();
+    private final MutableLiveData<Fever> fever = new MutableLiveData<>();
+    private final MutableLiveData<Cigarette> cigarette = new MutableLiveData<>();
+    private final MutableLiveData<Alcohol> alcohol = new MutableLiveData<>();
+    private final MutableLiveData<SleepTime> sleepTime = new MutableLiveData<>();
+    private final MutableLiveData<ExerciseTime> exerciseTime = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> editing = new MutableLiveData<>(true);
     private int editingPosition = -1;
     private final List<Drug> deleteList = new ArrayList<>();
     private Date inputDate;
     private boolean cleared = false;
+    private final CompositeDisposable disposable = new CompositeDisposable();
 
-    public AddLogViewModel() {
-        ThreadUtils.execute(() -> {
-            List<Drug> drugs = new ArrayList<>();
-            for (int i = 0; i < 10; i++) {
-                Drug drug = new Drug();
-                drug.setId(i);
-                drug.setDrugName("دارو " + i);
-                if (i % 2 == 0) {
-                    drug.setInfo("توضیحات");
-                } else {
-                    drug.setInfo("");
-                }
-                drugs.add(drug);
-            }
-            ThreadUtils.runOnUIThread(() -> {
-//                this.drugs.setValue(drugs);
-            });
-        });
-    }
 
     public void setRepository(Repository repository) {
         this.repository = repository;
@@ -77,76 +65,104 @@ public class AddLogViewModel extends ViewModel {
         return date;
     }
 
-    public void setDate(Date date) {
-        ThreadUtils.runOnUIThread(() -> {
-            this.date.setValue(date);
-            Logger.i(date.toString());
-        });
-        loadData(date);
+    public void setDate(Date value) {
+        ThreadUtils.onUI(() -> date.setValue(value));
+        loadData(value);
     }
 
-    private void loadData(Date date) {
-        deleteList.clear();
-        cleared = false;
-        ThreadUtils.runOnUIThread(() -> {
-            drugs.setValue(null);
-            drug.setValue(null);
-            bloodPressure.setValue(null);
-            motherWeight.setValue(null);
-            fever.setValue(null);
-            cigarette.setValue(null);
-            alcohol.setValue(null);
-            sleepTime.setValue(null);
-            exerciseTime.setValue(null);
-        });
-        if (repository != null) {
-            ThreadUtils.execute(() -> {
-                List<Drug> drugs = repository.getDrugs(date);
-                Fever fever = repository.getFever(date);
-                BloodPressure bloodPressure = repository.getBloodPressure(date);
-                Weight weight = repository.getWeight(date);
-                Cigarette cigarette = repository.getCigarette(date);
-                Alcohol alcohol = repository.getAlcohol(date);
-                SleepTime sleepTime = repository.getSleepTime(date);
-                ExerciseTime exerciseTime = repository.getExerciseTime(date);
+    private void loadData(Date value) {
+        clearFields();
 
-                ThreadUtils.runOnUIThread(() -> {
-                    this.drugs.setValue(drugs);
-                    this.fever.setValue(fever);
-                    this.bloodPressure.setValue(bloodPressure);
-                    this.motherWeight.setValue(weight);
-                    this.cigarette.setValue(cigarette);
-                    this.alcohol.setValue(alcohol);
-                    this.sleepTime.setValue(sleepTime);
-                    this.exerciseTime.setValue(exerciseTime);
-                });
+        if (repository != null) {
+            Disposable d = Observable.create(emitter -> {
+                List<Drug> drugs = repository.getDrugs(value);
+                Fever fever = repository.getFever(value);
+                BloodPressure bloodPressure = repository.getBloodPressure(value);
+                Weight weight = repository.getWeight(value);
+                Cigarette cigarette = repository.getCigarette(value);
+                Alcohol alcohol = repository.getAlcohol(value);
+                SleepTime sleepTime = repository.getSleepTime(value);
+                ExerciseTime exerciseTime = repository.getExerciseTime(value);
+
+                if (drugs != null) {
+                    emitter.onNext(drugs);
+                }
+                if (fever != null) {
+                    emitter.onNext(fever);
+                }
+                if (bloodPressure != null) {
+                    emitter.onNext(bloodPressure);
+                }
+                if (weight != null) {
+                    emitter.onNext(weight);
+                }
+                if (cigarette != null) {
+                    emitter.onNext(cigarette);
+                }
+                if (alcohol != null) {
+                    emitter.onNext(alcohol);
+                }
+                if (sleepTime != null) {
+                    emitter.onNext(sleepTime);
+                }
+                if (exerciseTime != null) {
+                    emitter.onNext(exerciseTime);
+                }
 
                 boolean edit = fever != null || bloodPressure != null || weight != null || cigarette != null || alcohol != null || sleepTime != null
                         || exerciseTime != null || (drugs != null && !drugs.isEmpty());
-                setEditing(!edit || date.isToday());
-            });
+
+                emitter.onNext(edit);
+
+                emitter.onComplete();
+            }).compose(Repository.apply())
+                    .subscribe(object -> {
+                        if (object instanceof List) {
+                            this.drugs.setValue(((List<Drug>) object));
+                        } else if (object instanceof Fever) {
+                            this.fever.setValue(((Fever) object));
+                        } else if (object instanceof BloodPressure) {
+                            this.bloodPressure.setValue(((BloodPressure) object));
+                        } else if (object instanceof Weight) {
+                            this.motherWeight.setValue(((Weight) object));
+                        } else if (object instanceof Cigarette) {
+                            this.cigarette.setValue(((Cigarette) object));
+                        } else if (object instanceof Alcohol) {
+                            this.alcohol.setValue(((Alcohol) object));
+                        } else if (object instanceof SleepTime) {
+                            this.sleepTime.setValue(((SleepTime) object));
+                        } else if (object instanceof ExerciseTime) {
+                            this.exerciseTime.setValue(((ExerciseTime) object));
+                        } else if (object instanceof Boolean) {
+                            setEditing(!((Boolean) object) || value.isToday());
+                        }
+                    }, Logger::printStackTrace);
+            disposable.add(d);
         }
     }
-
 
 
     public void removeDrug(long itemId) {
-        List<Drug> temp = new ArrayList<>(Objects.requireNonNull(drugs.getValue()));
-        for (int i = 0; i < Objects.requireNonNull(drugs.getValue()).size(); i++) {
-            if (Objects.requireNonNull(temp).get(i).getId() == itemId && editingPosition != -1 && editingPosition == i) {
-                editingPosition = -1;
-                deleteList.add(Objects.requireNonNull(temp).get(i));
-                temp.remove(i);
-                break;
+        Disposable d = Observable.fromCallable(() -> {
+            List<Drug> temp = new ArrayList<>(Objects.requireNonNull(drugs.getValue()));
+            for (int i = 0; i < Objects.requireNonNull(drugs.getValue()).size(); i++) {
+                if (Objects.requireNonNull(temp).get(i).getId() == itemId && editingPosition != -1 && editingPosition == i) {
+                    editingPosition = -1;
+                    deleteList.add(Objects.requireNonNull(temp).get(i));
+                    temp.remove(i);
+                    break;
+                }
             }
-        }
-        if (Objects.requireNonNull(temp).size() != drugs.getValue().size()) {
-            drugs.setValue(temp);
-        }
+            return temp;
+        }).compose(Repository.apply())
+                .filter(drugs1 -> drugs.getValue() != null)
+                .filter(drugs1 -> drugs1.size() != drugs.getValue().size())
+                .subscribe(drugs::setValue, Logger::printStackTrace);
+        disposable.add(d);
     }
 
     public void saveLog(@NonNull Repository repository) {
-        ThreadUtils.execute(() -> {
+        Disposable dis = Completable.fromCallable(() -> {
             List<Drug> drugList = drugs.getValue();
             if (drugList != null && !drugList.isEmpty()) {
                 if (drugList.get(0).getDate() == null) {
@@ -217,7 +233,7 @@ public class AddLogViewModel extends ViewModel {
                 } else {
                     repository.removeCigarette(c);
                 }
-            }  else if (cleared) {
+            } else if (cleared) {
                 repository.removeCigarette(date.getValue());
             }
 
@@ -261,59 +277,68 @@ public class AddLogViewModel extends ViewModel {
             }
 
             if (!cleared) {
-                ThreadUtils.runOnUIThread(() -> {
+                ThreadUtils.onUI(() -> {
                     loadData(date.getValue());
                 }, 200);
             } else {
                 cleared = false;
             }
-        });
+            return true;
+        }).compose(Repository.applyIOCompletable())
+                .subscribe();
+        disposable.add(dis);
     }
 
     public void addDrug(@NonNull Drug drug, itemAddedListener itemAddedListener) {
-        ThreadUtils.execute(() -> {
-            drug.setDate(date.getValue());
-            List<Drug> temp = drugs.getValue();
-            if (temp == null || Objects.requireNonNull(temp).isEmpty()) {
-                temp = new ArrayList<>();
-                temp.add(drug);
-                List<Drug> finalTemp2 = temp;
-                ThreadUtils.runOnUIThread(() -> {
-                    drugs.setValue(finalTemp2);
-                    itemAddedListener.itemAdded(true);
-                });
-            } else {
-                boolean contains = false;
-//                boolean modified = false;
-                for (int i = 0; i < temp.size(); i++) {
-                    if (temp.get(i).getId() == drug.getId()) {
-                        if (editingPosition != -1) {
-                            if (i == editingPosition) {
-                                contains = true;
-                                editingPosition = -1;
-                                temp.get(i).setDrugName(drug.getDrugName());
-                                temp.get(i).setInfo(drug.getInfo());
-                                break;
+        Disposable d = Observable.just(date.getValue())
+                .filter(date1 -> date1 != null)
+                .zipWith(Observable.just(drug), (date1, drug1) -> {
+                    drug1.setDate(date1);
+                    return drug1;
+                }).map(drug1 -> {
+                    boolean createArray = drugs.getValue() == null || drugs.getValue().isEmpty();
+                    return new Pair<Drug, Boolean>(drug1, createArray);
+                })
+                .flatMap(drugBooleanPair -> {
+                    if (drugBooleanPair.second) {
+                        return Observable.fromCallable(() -> {
+                            List<Drug> temp = new ArrayList<>();
+                            temp.add(drugBooleanPair.first);
+                            return temp;
+                        });
+                    } else {
+                        return Observable.fromCallable(() -> {
+                            boolean contains = false;
+                            List<Drug> temp = drugs.getValue();
+                            for (int i = 0; i < temp.size(); i++) {
+                                if (temp.get(i).getId() == drug.getId()) {
+                                    if (editingPosition != -1) {
+                                        if (i == editingPosition) {
+                                            contains = true;
+                                            editingPosition = -1;
+                                            temp.get(i).setDrugName(drug.getDrugName());
+                                            temp.get(i).setInfo(drug.getInfo());
+                                            break;
+                                        }
+                                    }
+                                }
                             }
-                        }
+                            if (contains) {
+                                return temp;
+                            } else {
+                                temp.add(drugBooleanPair.first);
+                                return temp;
+                            }
+                        });
                     }
-                }
-                if (!contains) {
-                    Objects.requireNonNull(temp).add(drug);
-                    List<Drug> finalTemp = temp;
-                    ThreadUtils.runOnUIThread(() -> {
-                        drugs.setValue(finalTemp);
-                        itemAddedListener.itemAdded(true);
-                    });
-                } else {
-                    List<Drug> finalTemp = temp;
-                    ThreadUtils.runOnUIThread(() -> {
-                        drugs.setValue(finalTemp);
-                        itemAddedListener.itemAdded(true);
-                    });
-                }
-            }
-        });
+                })
+                .compose(Repository.apply())
+                .subscribe(drugs1 -> {
+                    drugs.setValue(drugs1);
+                    itemAddedListener.itemAdded(true);
+                }, Logger::printStackTrace);
+
+        disposable.add(d);
     }
 
     public String checkErrors() {
@@ -350,7 +375,7 @@ public class AddLogViewModel extends ViewModel {
     public void clearFields() {
         deleteList.clear();
         cleared = true;
-        ThreadUtils.runOnUIThread(() -> {
+        ThreadUtils.onUI(() -> {
             drugs.setValue(null);
             drug.setValue(null);
             bloodPressure.setValue(null);
@@ -372,7 +397,7 @@ public class AddLogViewModel extends ViewModel {
     }
 
     public void setEditing(boolean b) {
-        ThreadUtils.runOnUIThread(() -> {
+        ThreadUtils.onUI(() -> {
             editing.setValue(b);
         });
     }
@@ -467,6 +492,15 @@ public class AddLogViewModel extends ViewModel {
 
     public Date getInputDate() {
         return inputDate;
+    }
+
+
+    @Override
+    protected void onCleared() {
+        if (!disposable.isDisposed()) {
+            disposable.clear();
+        }
+        super.onCleared();
     }
 
     public interface itemAddedListener {
