@@ -21,8 +21,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.simorgh.logger.Logger;
-
 import java.util.Objects;
 
 import androidx.annotation.Keep;
@@ -329,14 +327,29 @@ public class WeekSlider extends View {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        float newX = getNewX(event.getX());
-//        Logger.d((px2dp(event.getX())) + " : " + px2dp(getWidth() - event.getX()));
-//        Logger.d(newX + "");
+        float newX;
+        boolean animate = true;
+        if (event.getX() >= bubbleRect.left && event.getX() <= bubbleRect.right) {
+            animate = false;
+            newX = event.getX();
+        } else {
+            newX = getNewX(event.getX());
+        }
 
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
-                if (newX != -1) {
-                    animate(newX);
+                if (animate) {
+                    if (newX != -1) {
+                        animate(newX);
+                    }
+                } else {
+                    reachedX = newX;
+                    if (stateUpdateListener != null) {
+                        stateUpdateListener
+                                .onStateUpdated(((reachedX - unreachedRect.left) / (unreachedRect.right - unreachedRect.left))
+                                        , weekNumber);
+                    }
+                    postInvalidate();
                 }
                 return true;
             case MotionEvent.ACTION_MOVE:

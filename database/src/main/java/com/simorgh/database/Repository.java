@@ -23,6 +23,8 @@ import com.simorgh.database.model.Weight;
 import com.simorgh.logger.Logger;
 import com.simorgh.threadutils.ThreadUtils;
 
+import org.jetbrains.annotations.Contract;
+
 import java.util.List;
 
 import androidx.annotation.Keep;
@@ -71,34 +73,50 @@ public final class Repository {
         }
     }
 
+    @NonNull
+    @Contract(pure = true)
     public static <T> SingleTransformer<T, T> applySingle() {
         return observable -> observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
+    @NonNull
+    @Contract(pure = true)
     public static <T> SingleTransformer<T, T> applyIOSingle() {
         return observable -> observable.subscribeOn(Schedulers.io()).observeOn(Schedulers.io());
     }
 
+    @NonNull
+    @Contract(pure = true)
     public static <T> ObservableTransformer<T, T> apply() {
         return observable -> observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
+    @NonNull
+    @Contract(pure = true)
     public static <T> MaybeTransformer<T, T> applyMaybe() {
         return observable -> observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
+    @NonNull
+    @Contract(pure = true)
     public static <T> ObservableTransformer<T, T> applyIO() {
         return observable -> observable.subscribeOn(Schedulers.io()).observeOn(Schedulers.io());
     }
 
+    @NonNull
+    @Contract(pure = true)
     public static <T> MaybeTransformer<T, T> applyMaybeIO() {
         return observable -> observable.subscribeOn(Schedulers.io()).observeOn(Schedulers.io());
     }
 
+    @NonNull
+    @Contract(pure = true)
     public static CompletableTransformer applyCompletable() {
         return observable -> observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
+    @NonNull
+    @Contract(pure = true)
     public static CompletableTransformer applyIOCompletable() {
         return observable -> observable.subscribeOn(Schedulers.io()).observeOn(Schedulers.io());
     }
