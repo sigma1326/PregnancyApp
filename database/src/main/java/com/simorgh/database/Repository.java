@@ -161,45 +161,6 @@ public final class Repository {
         return dataBase.userDAO().getUser().compose(applySingle());
     }
 
-    @SuppressLint("CheckResult")
-    public void getArticle(int articleID, ArticleCallBack callBack) {
-        dataBase.articleDAO().getArticle(articleID)
-                .compose(applySingle())
-                .subscribe((article, throwable) -> {
-                    if (throwable != null) {
-                        callBack.onFailed("");
-                    } else {
-                        callBack.onSuccess(article);
-                    }
-                });
-    }
-
-    @SuppressLint("CheckResult")
-    public void getWeekArticle(int weekNumber, boolean isMotherArticle, ArticleCallBack callBack) {
-        if (isMotherArticle) {
-            dataBase.articleDAO().getMotherWeekArticle(weekNumber)
-                    .compose(applySingle())
-                    .subscribe((article, throwable) -> {
-                        if (throwable != null) {
-                            callBack.onFailed("");
-                        } else {
-                            callBack.onSuccess(article);
-                        }
-                    });
-        } else {
-            dataBase.articleDAO().getEmbryoWeekArticle(weekNumber)
-                    .compose(applySingle())
-                    .subscribe((article, throwable) -> {
-                        if (throwable != null) {
-                            callBack.onFailed("");
-                        } else {
-                            callBack.onSuccess(article);
-                        }
-                    });
-        }
-    }
-
-
     public LiveData<Article> getWeekArticle(int weekNumber, boolean isMotherArticle) {
         if (isMotherArticle) {
             return dataBase.articleDAO().getMotherWeekArticleLiveData(weekNumber);

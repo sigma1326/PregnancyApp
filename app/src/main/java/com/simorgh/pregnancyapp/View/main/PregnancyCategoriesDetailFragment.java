@@ -78,26 +78,17 @@ public class PregnancyCategoriesDetailFragment extends BaseFragment {
         categories.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         categories.setHasFixedSize(true);
         categories.setNestedScrollingEnabled(false);
-        categories.setAdapter(new CategoryAdapter(new CategoryAdapter.ItemDiffCallBack(),
-                new CategoryAdapter.ItemClickListener() {
-                    @NonNull
-                    @Override
-                    public String toString() {
-                        return super.toString();
-                    }
-                }));
+        categories.setAdapter(new CategoryAdapter(new CategoryAdapter.ItemDiffCallBack()));
 
 
         mViewModel.getData(repository);
 
 
-        mViewModel.getArticles().observe(this, articles -> {
-            ((CategoryAdapter) Objects.requireNonNull(categories.getAdapter())).submitList(articles);
-        });
+        mViewModel.getArticles().observe(this, articles ->
+                ((CategoryAdapter) Objects.requireNonNull(categories.getAdapter())).submitList(articles));
 
-        mUserViewModel.getFontSize().observe(this,s -> {
-            ((CategoryAdapter) Objects.requireNonNull(categories.getAdapter())).setFontSize(Integer.parseInt(s));
-        });
+        mUserViewModel.getFontSize().observe(this, s ->
+                ((CategoryAdapter) Objects.requireNonNull(categories.getAdapter())).setFontSize(Integer.parseInt(s)));
     }
 
 }

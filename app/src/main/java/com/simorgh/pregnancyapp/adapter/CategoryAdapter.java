@@ -19,13 +19,11 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CategoryAdapter extends ListAdapter<ArticleWithParagraph, CategoryAdapter.ArticleViewHolder> {
-    private ItemClickListener itemClickListener;
     private int fontSize = 14;
 
 
-    public CategoryAdapter(@NonNull DiffUtil.ItemCallback<ArticleWithParagraph> diffCallback, ItemClickListener itemClickListener) {
+    public CategoryAdapter(@NonNull DiffUtil.ItemCallback<ArticleWithParagraph> diffCallback) {
         super(diffCallback);
-        this.itemClickListener = itemClickListener;
     }
 
     protected CategoryAdapter(@NonNull AsyncDifferConfig<ArticleWithParagraph> config) {
@@ -82,21 +80,10 @@ public class CategoryAdapter extends ListAdapter<ArticleWithParagraph, CategoryA
         }
     }
 
-    private void setFadeAnimation(View view) {
-        AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
-        anim.setDuration(1000);
-        view.startAnimation(anim);
-    }
-
     public void setFontSize(int size) {
         fontSize = size;
         notifyDataSetChanged();
     }
-
-    public interface ItemClickListener {
-
-    }
-
 
     public class ArticleViewHolder extends RecyclerView.ViewHolder {
         ArticleViewHolder(@NonNull View itemView) {

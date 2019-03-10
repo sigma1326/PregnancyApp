@@ -123,7 +123,7 @@ public class AddLogFragment extends BaseFragment {
         });
 
         clearFields.setOnClickListener(v -> {
-            mViewModel.clearFields();
+            mViewModel.clearFields(true);
         });
 
 

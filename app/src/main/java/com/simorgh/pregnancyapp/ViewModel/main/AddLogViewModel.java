@@ -71,7 +71,7 @@ public class AddLogViewModel extends ViewModel {
     }
 
     private void loadData(Date value) {
-        clearFields();
+        clearFields(false);
 
         if (repository != null) {
             Disposable d = Observable.create(emitter -> {
@@ -372,9 +372,9 @@ public class AddLogViewModel extends ViewModel {
         return null;
     }
 
-    public void clearFields() {
+    public void clearFields(boolean flagClear) {
         deleteList.clear();
-        cleared = true;
+        cleared = flagClear;
         ThreadUtils.onUI(() -> {
             drugs.setValue(null);
             drug.setValue(null);
