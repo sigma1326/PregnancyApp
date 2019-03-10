@@ -251,7 +251,7 @@ public class WeekSlider extends View {
     private void drawBubbleIndicator(Canvas canvas) {
         indicatorPath.reset();
         paint.setColor(reachedColor);
-        indicatorPath.moveTo(bubbleRect.centerX(), bubbleRect.bottom);
+        indicatorPath.moveTo(bubbleRect.centerX(), bubbleRect.bottom - dp2px(1));
         indicatorPath.rLineTo(dp2px(7), 0);
         indicatorPath.rLineTo(-dp2px(7f), 0.2f * getHeight());
         indicatorPath.rLineTo(-dp2px(7f), -0.2f * getHeight());
@@ -327,29 +327,28 @@ public class WeekSlider extends View {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        float newX;
-        boolean animate = true;
-        if (event.getX() >= bubbleRect.left && event.getX() <= bubbleRect.right) {
-            animate = false;
-            newX = event.getX();
-        } else {
-            newX = getNewX(event.getX());
-        }
+        float newX = getNewX(event.getX());
 
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
+                boolean animate = true;
+                if (event.getX() >= bubbleRect.left && event.getX() <= bubbleRect.right) {
+                    animate = false;
+                }
                 if (animate) {
                     if (newX != -1) {
                         animate(newX);
                     }
                 } else {
-                    reachedX = newX;
-                    if (stateUpdateListener != null) {
-                        stateUpdateListener
-                                .onStateUpdated(((reachedX - unreachedRect.left) / (unreachedRect.right - unreachedRect.left))
-                                        , weekNumber);
+                    if (newX != -1) {
+                        reachedX = newX;
+                        if (stateUpdateListener != null) {
+                            stateUpdateListener
+                                    .onStateUpdated(((reachedX - unreachedRect.left) / (unreachedRect.right - unreachedRect.left))
+                                            , weekNumber);
+                        }
+                        postInvalidate();
                     }
-                    postInvalidate();
                 }
                 return true;
             case MotionEvent.ACTION_MOVE:
