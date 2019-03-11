@@ -54,7 +54,7 @@ public class BloodPressureView extends ExpansionsViewGroupLinearLayout {
 
 
     private void initView(@NonNull final Context context, AttributeSet attrs) {
-        View v = View.inflate(context, R.layout.blood_pressure_layout, this);
+        View v = View.inflate(context, R.layout.view_blood_pressure, this);
         ViewCompat.setLayoutDirection(v, ViewCompat.LAYOUT_DIRECTION_LTR);
 
 

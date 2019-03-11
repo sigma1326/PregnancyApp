@@ -12,4 +12,4 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     tools:background="@drawable/bkg_reverse"
-    tools:listitem="@layout/log_item" />
+    tools:listitem="@layout/item_log" />

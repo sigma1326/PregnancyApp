@@ -2,22 +2,17 @@ package com.simorgh.pregnancyapp.View.register;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.simorgh.calendarutil.CalendarTool;
-import com.simorgh.calendarutil.persiancalendar.PersianCalendar;
 import com.simorgh.database.Date;
 import com.simorgh.logger.Logger;
 import com.simorgh.nicedatepicker.NiceDatePicker;
 import com.simorgh.pregnancyapp.R;
 import com.simorgh.pregnancyapp.View.TitleChangeListener;
-import com.simorgh.pregnancyapp.ViewModel.register.PregnancyStartDateViewModel;
 import com.simorgh.pregnancyapp.ViewModel.register.RegisterViewModel;
 import com.simorgh.pregnancyapp.ui.BaseFragment;
-import com.simorgh.threadutils.ThreadUtils;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -40,7 +35,7 @@ public class PregnancyStartDateFragment extends BaseFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.pregnancy_start_date_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_pregnancy_start_date, container, false);
     }
 
     @Override

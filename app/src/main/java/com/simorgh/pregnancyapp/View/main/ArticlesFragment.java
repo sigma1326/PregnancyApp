@@ -33,7 +33,7 @@ public class ArticlesFragment extends BaseFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.articles_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_articles, container, false);
     }
 
     @Override

@@ -59,9 +59,9 @@ public class ArticleDetailFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (articleType == 0) {
-            return inflater.inflate(R.layout.article_detail_fragment_mother, container, false);
+            return inflater.inflate(R.layout.fragment_article_detail_mother, container, false);
         } else {
-            return inflater.inflate(R.layout.article_detail_fragment_embryo, container, false);
+            return inflater.inflate(R.layout.fragment_article_detail_embryo, container, false);
         }
     }
 

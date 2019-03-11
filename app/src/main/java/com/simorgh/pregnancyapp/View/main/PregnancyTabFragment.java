@@ -8,18 +8,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.simorgh.calendarutil.CalendarTool;
-import com.simorgh.calendarutil.persiancalendar.PersianCalendar;
-import com.simorgh.database.Date;
 import com.simorgh.logger.Logger;
 import com.simorgh.pregnancyapp.R;
 import com.simorgh.pregnancyapp.ViewModel.main.UserViewModel;
 import com.simorgh.pregnancyapp.ui.BaseFragment;
 
-import org.w3c.dom.Text;
-
-import java.util.Calendar;
-import java.util.Locale;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
@@ -57,7 +50,7 @@ public class PregnancyTabFragment extends BaseFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.pregnancy_tab_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_pregnancy_tab, container, false);
     }
 
     @Override

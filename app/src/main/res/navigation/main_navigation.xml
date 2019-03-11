@@ -9,7 +9,7 @@
         android:id="@+id/homeFragment"
         android:name="com.simorgh.pregnancyapp.View.main.HomeFragment"
         android:label="home_fragment"
-        tools:layout="@layout/home_fragment">
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_settingsFragment"
             app:destination="@id/settingsFragment"
@@ -55,12 +55,12 @@
         android:id="@+id/makeReportFragment"
         android:name="com.simorgh.pregnancyapp.View.main.MakeReportFragment"
         android:label="make_report_fragment"
-        tools:layout="@layout/make_report_fragment" />
+        tools:layout="@layout/fragment_make_report" />
     <fragment
         android:id="@+id/articlesFragment"
         android:name="com.simorgh.pregnancyapp.View.main.ArticlesFragment"
         android:label="articles_fragment"
-        tools:layout="@layout/articles_fragment">
+        tools:layout="@layout/fragment_articles">
         <action
             android:id="@+id/action_articlesFragment_to_pregnancyCategoriesDetailFragment"
             app:destination="@id/pregnancyCategoriesDetailFragment"
@@ -114,7 +114,7 @@
         android:id="@+id/settingsFragment"
         android:name="com.simorgh.pregnancyapp.View.main.SettingsFragment"
         android:label="settings_fragment"
-        tools:layout="@layout/settings_fragment">
+        tools:layout="@layout/fragment_settings">
         <action
             android:id="@+id/action_settingsFragment_to_makeReportFragment"
             app:destination="@id/makeReportFragment"
@@ -160,7 +160,7 @@
         android:id="@+id/logsFragment"
         android:name="com.simorgh.pregnancyapp.View.main.LogsFragment"
         android:label="logs_fragment"
-        tools:layout="@layout/logs_fragment">
+        tools:layout="@layout/fragment_logs">
         <action
             android:id="@+id/action_logsFragment_to_addLogFragment"
             app:destination="@id/addLogFragment"
@@ -198,7 +198,7 @@
         android:id="@+id/articleDetailFragment"
         android:name="com.simorgh.pregnancyapp.View.main.ArticleDetailFragment"
         android:label="article_detail_fragment"
-        tools:layout="@layout/article_detail_fragment_mother" >
+        tools:layout="@layout/fragment_article_detail_mother" >
         <argument
             android:name="article_type"
             app:argType="integer"
@@ -226,7 +226,7 @@
         android:id="@+id/addLogFragment"
         android:name="com.simorgh.pregnancyapp.View.main.AddLogFragment"
         android:label="add_log_fragment"
-        tools:layout="@layout/add_log_fragment" >
+        tools:layout="@layout/fragment_add_log" >
         <argument
             android:name="selectedDate"
             app:argType="com.simorgh.database.Date" />

@@ -51,7 +51,7 @@ public class LogAdapter extends ListAdapter<LogItem, LogAdapter.LogItemViewHolde
     @NonNull
     @Override
     public LogItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.log_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_log, parent, false);
         ViewCompat.setLayoutDirection(v, ViewCompat.LAYOUT_DIRECTION_LTR);
         return new LogItemViewHolder(v);
     }

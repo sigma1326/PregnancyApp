@@ -1,16 +1,11 @@
 package com.simorgh.pregnancyapp.View.main;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.ViewSwitcher;
 
 import com.simorgh.calendarutil.CalendarTool;
 import com.simorgh.database.callback.ParagraphsCallBack;
@@ -62,7 +57,7 @@ public class WeeksInfoTabFragment extends BaseFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.weeks_info_tab_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_weeks_info_tab, container, false);
     }
 
     @Override

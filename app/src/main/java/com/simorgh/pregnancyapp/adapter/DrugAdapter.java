@@ -34,7 +34,7 @@ public class DrugAdapter extends ListAdapter<Drug, DrugAdapter.DrugViewHolder> {
     @NonNull
     @Override
     public DrugViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.drug_item_layout, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_drug, parent, false);
         ViewCompat.setLayoutDirection(v, ViewCompat.LAYOUT_DIRECTION_LTR);
         return new DrugViewHolder(v);
     }

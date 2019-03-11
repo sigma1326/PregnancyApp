@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.simorgh.database.Date;
 import com.simorgh.database.model.ExerciseTime;
 import com.simorgh.expandablelayout.ExpansionLayout;
 import com.simorgh.expandablelayout.viewgroup.ExpansionsViewGroupLinearLayout;
@@ -53,7 +52,7 @@ public class ExerciseView extends ExpansionsViewGroupLinearLayout {
     }
 
     private void initView(@NonNull final Context context, AttributeSet attrs) {
-        View v = View.inflate(context, R.layout.exercise_layout, this);
+        View v = View.inflate(context, R.layout.view_exercise, this);
         ViewCompat.setLayoutDirection(v, ViewCompat.LAYOUT_DIRECTION_LTR);
 
 

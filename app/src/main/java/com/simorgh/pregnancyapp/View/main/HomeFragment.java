@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,17 +13,14 @@ import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.simorgh.logger.Logger;
 import com.simorgh.pregnancyapp.R;
 import com.simorgh.pregnancyapp.ViewModel.main.HomeViewModel;
 import com.simorgh.pregnancyapp.ViewModel.main.UserViewModel;
-import com.simorgh.pregnancyapp.adapter.LogItem;
 import com.simorgh.pregnancyapp.ui.BaseFragment;
 import com.simorgh.threadutils.ThreadUtils;
-import com.simorgh.weekslider.SizeConverter;
 import com.simorgh.weekslider.WeekSlider;
 
 import java.util.Objects;
@@ -33,18 +29,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.motion.widget.MotionLayout;
 import androidx.constraintlayout.widget.Guideline;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import butterknife.BindView;
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
-import static android.util.TypedValue.COMPLEX_UNIT_FRACTION;
 import static android.util.TypedValue.COMPLEX_UNIT_PX;
-import static android.util.TypedValue.COMPLEX_UNIT_SP;
 
 
 public class HomeFragment extends BaseFragment {
@@ -90,7 +79,7 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.home_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override

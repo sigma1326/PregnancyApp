@@ -21,11 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.ViewCompat;
 
-import static android.util.TypedValue.COMPLEX_UNIT_DIP;
-import static android.util.TypedValue.COMPLEX_UNIT_FRACTION;
-import static android.util.TypedValue.COMPLEX_UNIT_FRACTION_PARENT;
 import static android.util.TypedValue.COMPLEX_UNIT_PX;
-import static android.util.TypedValue.COMPLEX_UNIT_SP;
 
 @Keep
 public class EmbryoWeekInfoView extends ConstraintLayout {
@@ -67,7 +63,7 @@ public class EmbryoWeekInfoView extends ConstraintLayout {
     };
 
     private void initView(@NonNull final Context context, AttributeSet attrs) {
-        View v = View.inflate(context, R.layout.embryo_week_info_layout, this);
+        View v = View.inflate(context, R.layout.view_embryo_week_info, this);
         ViewCompat.setLayoutDirection(v, ViewCompat.LAYOUT_DIRECTION_LTR);
 
 

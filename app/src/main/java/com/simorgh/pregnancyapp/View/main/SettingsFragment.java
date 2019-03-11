@@ -35,10 +35,8 @@ import androidx.navigation.Navigation;
 import butterknife.BindView;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class SettingsFragment extends BaseFragment implements DatePickerDialog.OnDateSetListener {
 
@@ -90,7 +88,7 @@ public class SettingsFragment extends BaseFragment implements DatePickerDialog.O
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.settings_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_settings, container, false);
     }
 
     @SuppressLint("DefaultLocale")

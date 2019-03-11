@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.simorgh.database.Date;
 import com.simorgh.database.model.Weight;
 import com.simorgh.expandablelayout.ExpansionLayout;
 import com.simorgh.expandablelayout.viewgroup.ExpansionsViewGroupLinearLayout;
@@ -53,7 +52,7 @@ public class MotherWeightView extends ExpansionsViewGroupLinearLayout {
     }
 
     private void initView(@NonNull final Context context, AttributeSet attrs) {
-        View v = View.inflate(context, R.layout.mother_weight_layout, this);
+        View v = View.inflate(context, R.layout.view_mother_weight, this);
         ViewCompat.setLayoutDirection(v, ViewCompat.LAYOUT_DIRECTION_LTR);
 
 

@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.simorgh.database.Date;
 import com.simorgh.database.model.Cigarette;
 import com.simorgh.expandablelayout.ExpansionLayout;
 import com.simorgh.expandablelayout.viewgroup.ExpansionsViewGroupLinearLayout;
@@ -58,7 +57,7 @@ public class CigaretteView extends ExpansionsViewGroupLinearLayout {
     }
 
     private void initView(@NonNull final Context context, AttributeSet attrs) {
-        View v = View.inflate(context, R.layout.cigarette_layout, this);
+        View v = View.inflate(context, R.layout.view_cigarette, this);
         ViewCompat.setLayoutDirection(v, ViewCompat.LAYOUT_DIRECTION_LTR);
 
 

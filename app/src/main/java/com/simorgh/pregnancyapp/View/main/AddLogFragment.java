@@ -104,7 +104,7 @@ public class AddLogFragment extends BaseFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.add_log_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_add_log, container, false);
     }
 
     @Override

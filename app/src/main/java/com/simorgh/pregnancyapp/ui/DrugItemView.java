@@ -1,24 +1,19 @@
 package com.simorgh.pregnancyapp.ui;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.simorgh.expandablelayout.ExpandableLayout;
 import com.simorgh.expandablelayout.ExpansionLayout;
 import com.simorgh.pregnancyapp.R;
-import com.simorgh.pregnancyapp.utils.Utils;
 
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.ViewCompat;
 
 @Keep
@@ -52,7 +47,7 @@ public class DrugItemView extends LinearLayout {
     }
 
     private void initView(@NonNull final Context context, AttributeSet attrs) {
-        View v = View.inflate(context, R.layout.drug_item_layout, this);
+        View v = View.inflate(context, R.layout.item_drug, this);
         ViewCompat.setLayoutDirection(v, ViewCompat.LAYOUT_DIRECTION_LTR);
 
 

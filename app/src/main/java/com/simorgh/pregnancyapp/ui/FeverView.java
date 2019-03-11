@@ -58,7 +58,7 @@ public class FeverView extends ExpansionsViewGroupLinearLayout {
 
 
     private void initView(@NonNull final Context context, AttributeSet attrs) {
-        View v = View.inflate(context, R.layout.fever_layout, this);
+        View v = View.inflate(context, R.layout.view_fever, this);
         ViewCompat.setLayoutDirection(v, ViewCompat.LAYOUT_DIRECTION_LTR);
 
 

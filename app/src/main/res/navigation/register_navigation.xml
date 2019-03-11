@@ -9,7 +9,7 @@
         android:id="@+id/motherBirthDayFragment"
         android:name="com.simorgh.pregnancyapp.View.register.MotherBirthDayFragment"
         android:label="mother_birth_day_fragment"
-        tools:layout="@layout/mother_birth_day_fragment">
+        tools:layout="@layout/fragment_mother_birth_day">
         <action
             android:id="@+id/action_motherBirthDayFragment_to_mainActivity"
             app:destination="@id/mainActivity"
@@ -22,7 +22,7 @@
         android:id="@+id/pregnancyStartDateFragment"
         android:name="com.simorgh.pregnancyapp.View.register.PregnancyStartDateFragment"
         android:label="pregnancy_start_date_fragment"
-        tools:layout="@layout/pregnancy_start_date_fragment">
+        tools:layout="@layout/fragment_pregnancy_start_date">
         <action
             android:id="@+id/action_pregnancyStartDateFragment_to_bloodTypeFragment"
             app:destination="@id/bloodTypeFragment"
@@ -36,7 +36,7 @@
         android:id="@+id/bloodTypeFragment"
         android:name="com.simorgh.pregnancyapp.View.register.BloodTypeFragment"
         android:label="blood_type_fragment"
-        tools:layout="@layout/blood_type_fragment">
+        tools:layout="@layout/fragment_blood_type">
         <action
             android:id="@+id/action_bloodTypeFragment_to_motherBirthDayFragment"
             app:destination="@id/motherBirthDayFragment"

@@ -3,7 +3,6 @@ package com.simorgh.pregnancyapp.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.widget.TextView;
 
 import com.simorgh.database.model.ArticleWithParagraph;
@@ -35,7 +34,7 @@ public class CategoryAdapter extends ListAdapter<ArticleWithParagraph, CategoryA
     @NonNull
     @Override
     public ArticleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.article_summary_layout, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_article_summary, parent, false);
         ViewCompat.setLayoutDirection(v, ViewCompat.LAYOUT_DIRECTION_LTR);
         return new ArticleViewHolder(v);
     }

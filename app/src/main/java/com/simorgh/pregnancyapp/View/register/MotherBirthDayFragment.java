@@ -7,24 +7,19 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.simorgh.calendarutil.CalendarTool;
-import com.simorgh.calendarutil.persiancalendar.PersianCalendar;
 import com.simorgh.database.Date;
 import com.simorgh.logger.Logger;
 import com.simorgh.nicedatepicker.NiceDatePicker;
 import com.simorgh.pregnancyapp.R;
 import com.simorgh.pregnancyapp.View.TitleChangeListener;
-import com.simorgh.pregnancyapp.ViewModel.register.MotherBirthDayViewModel;
 import com.simorgh.pregnancyapp.ViewModel.register.RegisterViewModel;
 import com.simorgh.pregnancyapp.ui.BaseFragment;
-import com.simorgh.threadutils.ThreadUtils;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -41,7 +36,7 @@ public class MotherBirthDayFragment extends BaseFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.mother_birth_day_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_mother_birth_day, container, false);
     }
 
     @Override

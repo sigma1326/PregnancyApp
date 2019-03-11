@@ -21,7 +21,6 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.ViewCompat;
 
-import static android.util.TypedValue.COMPLEX_UNIT_FRACTION;
 import static android.util.TypedValue.COMPLEX_UNIT_PX;
 
 @Keep
@@ -63,7 +62,7 @@ public class MotherWeekInfoView extends ConstraintLayout {
     };
 
     private void initView(@NonNull final Context context, AttributeSet attrs) {
-        View v = View.inflate(context, R.layout.mother_week_info_layout, this);
+        View v = View.inflate(context, R.layout.view_mother_week_info, this);
         ViewCompat.setLayoutDirection(v, ViewCompat.LAYOUT_DIRECTION_LTR);
 
         expandableLayout = v.findViewById(R.id.expandable_layout);

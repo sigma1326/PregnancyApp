@@ -9,17 +9,12 @@ import android.view.ViewStub;
 import android.view.animation.BounceInterpolator;
 import android.widget.TextView;
 
-import com.simorgh.database.Date;
-import com.simorgh.logger.Logger;
 import com.simorgh.pregnancyapp.R;
 import com.simorgh.pregnancyapp.ViewModel.main.LogsViewModel;
 import com.simorgh.pregnancyapp.ViewModel.main.UserViewModel;
 import com.simorgh.pregnancyapp.adapter.LogAdapter;
-import com.simorgh.pregnancyapp.adapter.LogItem;
 import com.simorgh.pregnancyapp.ui.BaseFragment;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -28,9 +23,6 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class LogsFragment extends BaseFragment {
 
@@ -44,7 +36,7 @@ public class LogsFragment extends BaseFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.logs_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_logs, container, false);
     }
 
     @Override
@@ -65,7 +57,7 @@ public class LogsFragment extends BaseFragment {
         mViewModel.getLogList().observe(this, logItems -> {
             if (logItems.isEmpty()) {
                 if (!isInflated.get()) {
-                    viewStub.setLayoutResource(R.layout.logs_empty_layout);
+                    viewStub.setLayoutResource(R.layout.item_logs_empty);
                     viewStub.inflate();
                     isInflated.set(true);
                 }

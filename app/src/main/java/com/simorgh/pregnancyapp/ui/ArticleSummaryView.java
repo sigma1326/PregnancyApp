@@ -41,7 +41,7 @@ public class ArticleSummaryView extends ConstraintLayout {
     }
 
     private void initView(@NonNull final Context context, AttributeSet attrs) {
-        View v = View.inflate(context, R.layout.article_summary_layout, this);
+        View v = View.inflate(context, R.layout.view_article_summary, this);
         ViewCompat.setLayoutDirection(v, ViewCompat.LAYOUT_DIRECTION_LTR);
 
 
