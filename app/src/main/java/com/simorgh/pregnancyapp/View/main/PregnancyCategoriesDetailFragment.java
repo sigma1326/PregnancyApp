@@ -2,12 +2,10 @@ package com.simorgh.pregnancyapp.View.main;
 
 import androidx.lifecycle.ViewModelProviders;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,7 +19,6 @@ import android.widget.TextView;
 
 import com.simorgh.logger.Logger;
 import com.simorgh.pregnancyapp.R;
-import com.simorgh.pregnancyapp.View.TitleChangeListener;
 import com.simorgh.pregnancyapp.ViewModel.main.PregnancyCategoriesDetailViewModel;
 import com.simorgh.pregnancyapp.ViewModel.main.UserViewModel;
 import com.simorgh.pregnancyapp.adapter.CategoryAdapter;
@@ -45,7 +42,7 @@ public class PregnancyCategoriesDetailFragment extends BaseFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.pregnancy_categories_detail_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_pregnancy_categories_detail, container, false);
     }
 
     @Override

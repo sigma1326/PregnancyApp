@@ -212,7 +212,7 @@
         android:id="@+id/pregnancyCategoriesDetailFragment"
         android:name="com.simorgh.pregnancyapp.View.main.PregnancyCategoriesDetailFragment"
         android:label="pregnancy_categories_detail_fragment"
-        tools:layout="@layout/pregnancy_categories_detail_fragment" >
+        tools:layout="@layout/fragment_pregnancy_categories_detail" >
         <argument
             android:name="category_type"
             app:argType="integer"
