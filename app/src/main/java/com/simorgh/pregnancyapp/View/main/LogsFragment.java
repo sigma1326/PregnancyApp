@@ -71,7 +71,7 @@ public class LogsFragment extends BaseFragment {
                         .start();
             } else {
                 if (!isInflated.get()) {
-                    viewStub.setLayoutResource(R.layout.logs_layout);
+                    viewStub.setLayoutResource(R.layout.layout_logs);
                     viewStub.inflate();
                     isInflated.set(true);
                 }
