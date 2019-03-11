@@ -332,7 +332,8 @@ public class WeekSlider extends View {
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
                 boolean animate = true;
-                if (event.getX() >= bubbleRect.left && event.getX() <= bubbleRect.right) {
+                float w = (bubbleRect.right - bubbleRect.left) / 4f;
+                if (event.getX() >= bubbleRect.left + w && event.getX() <= bubbleRect.right - w) {
                     animate = false;
                 }
                 if (animate) {

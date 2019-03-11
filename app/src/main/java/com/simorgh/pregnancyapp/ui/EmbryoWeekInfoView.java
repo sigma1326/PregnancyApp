@@ -12,6 +12,7 @@ import android.widget.ViewSwitcher;
 
 import com.simorgh.expandablelayout.ExpandableLayout;
 import com.simorgh.pregnancyapp.R;
+import com.simorgh.weekslider.SizeConverter;
 
 import java.util.Objects;
 
@@ -19,6 +20,12 @@ import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.ViewCompat;
+
+import static android.util.TypedValue.COMPLEX_UNIT_DIP;
+import static android.util.TypedValue.COMPLEX_UNIT_FRACTION;
+import static android.util.TypedValue.COMPLEX_UNIT_FRACTION_PARENT;
+import static android.util.TypedValue.COMPLEX_UNIT_PX;
+import static android.util.TypedValue.COMPLEX_UNIT_SP;
 
 @Keep
 public class EmbryoWeekInfoView extends ConstraintLayout {
@@ -53,7 +60,8 @@ public class EmbryoWeekInfoView extends ConstraintLayout {
         TextView t = new TextView(getContext());
         t.setGravity(Gravity.START);
         t.setTypeface(Typeface.createFromAsset(Objects.requireNonNull(getContext()).getAssets(), "fonts/iransans_medium.ttf"));
-        t.setTextSize(12);
+        t.setTextSize(COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.tv_summary)
+                + SizeConverter.spToPx(getContext(), 2));
         t.setTextColor(Color.parseColor("#511011"));
         return t;
     };
@@ -79,6 +87,8 @@ public class EmbryoWeekInfoView extends ConstraintLayout {
                 clickedListener.onReadMoreClicked(v1);
             }
         });
+
+        readMore.setTextSize(COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.tv_summary));
     }
 
 //    @Override

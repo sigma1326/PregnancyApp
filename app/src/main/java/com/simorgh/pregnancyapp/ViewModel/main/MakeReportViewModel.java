@@ -119,6 +119,7 @@ public class MakeReportViewModel extends ViewModel {
                     @Override
                     public void onError(Throwable e) {
                         Logger.printStackTrace(e);
+                        Toast.makeText(activity, "عملیات با خطا مواجه شد", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

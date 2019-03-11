@@ -24,6 +24,7 @@ import com.simorgh.pregnancyapp.ViewModel.main.UserViewModel;
 import com.simorgh.pregnancyapp.adapter.LogItem;
 import com.simorgh.pregnancyapp.ui.BaseFragment;
 import com.simorgh.threadutils.ThreadUtils;
+import com.simorgh.weekslider.SizeConverter;
 import com.simorgh.weekslider.WeekSlider;
 
 import java.util.Objects;
@@ -32,6 +33,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.motion.widget.MotionLayout;
 import androidx.constraintlayout.widget.Guideline;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import butterknife.BindView;
@@ -39,6 +41,10 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+
+import static android.util.TypedValue.COMPLEX_UNIT_FRACTION;
+import static android.util.TypedValue.COMPLEX_UNIT_PX;
+import static android.util.TypedValue.COMPLEX_UNIT_SP;
 
 
 public class HomeFragment extends BaseFragment {
@@ -96,7 +102,7 @@ public class HomeFragment extends BaseFragment {
         TextView t = new TextView(getContext());
         t.setGravity(Gravity.START);
         t.setTypeface(Typeface.createFromAsset(Objects.requireNonNull(getActivity()).getAssets(), "fonts/iransans_medium.ttf"));
-        t.setTextSize(11);
+        t.setTextSize(COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.tv_summary));
         t.setTextColor(Color.parseColor("#3d3d3d"));
         return t;
     };

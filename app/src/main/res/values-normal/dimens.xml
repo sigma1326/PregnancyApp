@@ -3,4 +3,6 @@
     <dimen name="radius_1">65dp</dimen>
     <dimen name="bubble_pregnancy_info_text_size">11sp</dimen>
     <dimen name="btn_pregnancy_category_text_size">11.3sp</dimen>
+    <dimen name="tv_title">12.3sp</dimen>
+    <dimen name="tv_summary">11sp</dimen>
 </resources>
