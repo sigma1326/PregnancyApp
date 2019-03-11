@@ -57,7 +57,7 @@ public class LogsFragment extends BaseFragment {
         mViewModel.getLogList().observe(this, logItems -> {
             if (logItems.isEmpty()) {
                 if (!isInflated.get()) {
-                    viewStub.setLayoutResource(R.layout.item_logs_empty);
+                    viewStub.setLayoutResource(R.layout.layout_logs_empty);
                     viewStub.inflate();
                     isInflated.set(true);
                 }
