@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.simorgh.calendarutil.CalendarTool;
 import com.simorgh.calendarutil.persiancalendar.PersianCalendar;
 import com.simorgh.database.Date;
+import com.simorgh.database.Repository;
 import com.simorgh.logger.Logger;
 import com.simorgh.persianmaterialdatepicker.date.DatePickerDialog;
 import com.simorgh.pregnancyapp.R;
@@ -19,6 +20,7 @@ import com.simorgh.pregnancyapp.ViewModel.main.SettingsViewModel;
 import com.simorgh.pregnancyapp.ViewModel.main.UserViewModel;
 import com.simorgh.pregnancyapp.ui.BaseFragment;
 import com.simorgh.pregnancyapp.utils.DialogMaker;
+import com.simorgh.sweetalertdialog.SweetAlertDialog;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -222,12 +224,14 @@ public class SettingsFragment extends BaseFragment implements DatePickerDialog.O
                         clearHourMinuteSecond(temp);
 
                         boolean invalid = temp.getTimeInMillis() < min.getTimeInMillis()
-                                || temp.getTimeInMillis() > max.getTimeInMillis();
+                                || temp.getTimeInMillis() > now.getTimeInMillis();
                         if (invalid) {
-                            return true;
-                        } else {
-                            mViewModel.updatePregnancyStartDate(repository, new Date(temp));
+                            return 0;
+                        } else if (temp.getTimeInMillis() > max.getTimeInMillis()) {
+                            return -1;
                         }
+                        mViewModel.updatePregnancyStartDate(repository, new Date(temp));
+                        return 1;
                     } else if (mSettingsViewModel.getDateType() == 2) {
                         min.add(Calendar.YEAR, -50);
                         max.add(Calendar.YEAR, -16);
@@ -239,31 +243,50 @@ public class SettingsFragment extends BaseFragment implements DatePickerDialog.O
                         boolean invalid = temp.getTimeInMillis() < min.getTimeInMillis()
                                 || temp.getTimeInMillis() > max.getTimeInMillis();
                         if (invalid) {
-                            return true;
+                            return 0;
                         } else {
                             mViewModel.updateBirthDate(repository, new Date(temp));
                         }
                     }
-                    return false;
+                    return 1;
                 }))
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new Observer<Boolean>() {
+                .compose(Repository.apply())
+                .subscribeWith(new Observer<Integer>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         disposable.add(d);
                     }
 
                     @Override
-                    public void onNext(Boolean invalid) {
-                        if (invalid) {
-                            Toast.makeText(getContext(), getString(R.string.wrong_selected_date), Toast.LENGTH_SHORT).show();
+                    public void onNext(Integer invalid) {
+                        switch (invalid) {
+                            case -1:
+                                if (getContext() != null) {
+                                    new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
+                                            .setTitleText("پاک کردن رکوردهای قبلی")
+                                            .setContentText("آیا اطمینان دارید؟")
+                                            .setConfirmText("بله")
+                                            .setCancelText("بی‌خیال")
+                                            .setConfirmClickListener(sweetAlertDialog -> {
+                                                mSettingsViewModel.clearAllData(repository);
+                                                sweetAlertDialog.dismissWithAnimation();
+                                            })
+                                            .setCancelClickListener(SweetAlertDialog::dismissWithAnimation)
+                                            .show();
+                                }
+                                break;
+                            case 0:
+                                Toast.makeText(getContext(),
+                                        getString(R.string.wrong_selected_date), Toast.LENGTH_SHORT).show();
+                                break;
+                            case 1:
+                                break;
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Logger.printStackTrace(e);
                     }
 
                     @Override

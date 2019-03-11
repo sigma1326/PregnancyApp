@@ -118,21 +118,21 @@ public class AddLogViewModel extends ViewModel {
             }).compose(Repository.apply())
                     .subscribe(object -> {
                         if (object instanceof List) {
-                            this.drugs.setValue(((List<Drug>) object));
+                            drugs.setValue(((List<Drug>) object));
                         } else if (object instanceof Fever) {
-                            this.fever.setValue(((Fever) object));
+                            fever.setValue(((Fever) object));
                         } else if (object instanceof BloodPressure) {
-                            this.bloodPressure.setValue(((BloodPressure) object));
+                            bloodPressure.setValue(((BloodPressure) object));
                         } else if (object instanceof Weight) {
-                            this.motherWeight.setValue(((Weight) object));
+                            motherWeight.setValue(((Weight) object));
                         } else if (object instanceof Cigarette) {
-                            this.cigarette.setValue(((Cigarette) object));
+                            cigarette.setValue(((Cigarette) object));
                         } else if (object instanceof Alcohol) {
-                            this.alcohol.setValue(((Alcohol) object));
+                            alcohol.setValue(((Alcohol) object));
                         } else if (object instanceof SleepTime) {
-                            this.sleepTime.setValue(((SleepTime) object));
+                            sleepTime.setValue(((SleepTime) object));
                         } else if (object instanceof ExerciseTime) {
-                            this.exerciseTime.setValue(((ExerciseTime) object));
+                            exerciseTime.setValue(((ExerciseTime) object));
                         } else if (object instanceof Boolean) {
                             setEditing(!((Boolean) object) || value.isToday());
                         }

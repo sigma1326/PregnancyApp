@@ -25,4 +25,7 @@ public interface SleepTimeDAO {
 
     @Query("delete from sleep_time where date=:value")
     void remove(Date value);
+
+    @Query("delete from sleep_time")
+    void clearAll();
 }

@@ -26,4 +26,7 @@ public interface FeverDAO {
 
     @Query("delete from fevers where date=:value")
     void remove(Date value);
+
+    @Query("delete from fevers")
+    void clearAll();
 }

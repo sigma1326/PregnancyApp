@@ -1,5 +1,7 @@
 package com.simorgh.pregnancyapp.ViewModel.main;
 
+import com.simorgh.database.Repository;
+
 import androidx.lifecycle.ViewModel;
 
 public class SettingsViewModel extends ViewModel {
@@ -17,5 +19,11 @@ public class SettingsViewModel extends ViewModel {
 
     public void setDateType(int dateType) {
         this.dateType = dateType;
+    }
+
+    public void clearAllData(Repository repository) {
+        if (repository != null) {
+            repository.clearAllData();
+        }
     }
 }

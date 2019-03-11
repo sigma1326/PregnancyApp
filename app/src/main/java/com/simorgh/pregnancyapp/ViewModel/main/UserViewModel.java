@@ -184,7 +184,9 @@ public class UserViewModel extends ViewModel {
 
     @Override
     protected void onCleared() {
-        disposable.clear();
+        if (!disposable.isDisposed()) {
+            disposable.clear();
+        }
         super.onCleared();
     }
 }

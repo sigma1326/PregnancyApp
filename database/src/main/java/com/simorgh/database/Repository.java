@@ -472,4 +472,18 @@ public final class Repository {
     public List<Date> getLoggedDatesList(Date startDate, Date endDate) {
         return dataBase.dateDAO().getLoggedDatesList(startDate, endDate);
     }
+
+    public void clearAllData() {
+        getCompletable(() -> {
+            dataBase.drugDAO().clearAll();
+            dataBase.bloodPressureDAO().clearAll();
+            dataBase.weightlDAO().clearAll();
+            dataBase.feverDAO().clearAll();
+            dataBase.cigaretteDAO().clearAll();
+            dataBase.alcoholDAO().clearAll();
+            dataBase.sleepTimeDAO().clearAll();
+            dataBase.exerciseTimeDAO().clearAll();
+        }).compose(applyIOCompletable())
+                .subscribeWith(completableObserver);
+    }
 }
