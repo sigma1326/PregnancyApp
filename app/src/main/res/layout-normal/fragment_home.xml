@@ -71,7 +71,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:elevation="5dp"
-        app:constraint_referenced_ids="card_embryo,img_embryo,tv_embryo_summary,tv_embryo_title" />
+        app:constraint_referenced_ids="card_embryo,img_embryo,tv_embryo_summary,tv_embryo_title"
+        tools:targetApi="lollipop" />
 
 
     <androidx.constraintlayout.widget.Group
@@ -79,7 +80,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:elevation="5dp"
-        app:constraint_referenced_ids="card_mother,img_mother,tv_mother_summary,tv_mother_title" />
+        app:constraint_referenced_ids="card_mother,img_mother,tv_mother_summary,tv_mother_title"
+        tools:targetApi="lollipop" />
 
 
     <FrameLayout

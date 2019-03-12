@@ -3,6 +3,7 @@ package com.simorgh.expandablelayout;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -39,6 +40,7 @@ public class HorizontalExpansionLayout extends HorizontalScrollView {
         init(context, attrs);
     }
 
+    @SuppressLint("CustomViewStyleable")
     private void init(@NonNull Context context, @Nullable AttributeSet attrs) {
         requestDisallowInterceptTouchEvent(true);
 
@@ -121,7 +123,7 @@ public class HorizontalExpansionLayout extends HorizontalScrollView {
         onViewAdded();
     }
 
-    private void onViewAdded(){
+    private void onViewAdded() {
         if (getChildCount() != 0) {
             final View childView = getChildAt(0);
             childView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {

@@ -1,5 +1,7 @@
 package com.simorgh.calendarutil.persiancalendar;
 
+import android.annotation.SuppressLint;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -10,6 +12,7 @@ import androidx.annotation.NonNull;
  * Created by Saman on 3/29/2017 AD.
  */
 
+@SuppressLint("SimpleDateFormat")
 public class PersianDate
 {
 	/*----- Define Variable ---*/
@@ -712,7 +715,8 @@ public class PersianDate
 	/**
 	 * initi with time in milesecond
 	 */
-	private void changeTime(){
+	@SuppressLint("SimpleDateFormat")
+    private void changeTime(){
 		this.initGrgDate(Integer.parseInt(new SimpleDateFormat("yyyy").format(this.timeInMiliSecond)), Integer.parseInt(new SimpleDateFormat("MM").format(this.timeInMiliSecond)),
 				Integer.parseInt(new SimpleDateFormat("dd").format(this.timeInMiliSecond)), Integer.parseInt(new SimpleDateFormat("HH").format(this.timeInMiliSecond)),
 				Integer.parseInt(new SimpleDateFormat("mm").format(this.timeInMiliSecond)), Integer.parseInt(new SimpleDateFormat("ss").format(this.timeInMiliSecond)));

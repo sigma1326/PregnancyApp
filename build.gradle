@@ -5,7 +5,7 @@ buildscript {
         google()
         jcenter()
         maven { url "https://jitpack.io" }
-        
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.2'
@@ -30,6 +30,72 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 ext {
+    //Room
     roomVersion = '2.1.0-alpha04'
+    reactiveStreamsVersion = '2.0.0'
     archLifecycleVersion = '2.1.0-alpha02'
+    lifecycleExtensionsVersion = '2.1.0-alpha02'
+
+    //Room Asset
+    roomAssetVersion = '1.0.3'
+
+    //Itext Pdf
+    iTextVersion = '5.5.13'
+
+    //RxPermission
+    rxPermissionsVersion = '0.10.2'
+
+    //Default
+    appCompactVersion = '1.1.0-alpha02'
+    materialVersion = '1.1.0-alpha03'
+    cardViewVersion = '1.0.0'
+    recyclerViewVersion = '1.0.0'
+    constraintlayoutVersion = '2.0.0-alpha3'
+    navigationVersion = '1.0.0-beta02'
+    legacySupportVersion = '1.0.0'
+    coreVersion = '1.0.1'
+
+    //MultiDex
+    multiDexVersion = '2.0.1'
+
+    //Test
+    jUnitVersion = '4.12'
+    runnerVersion = '1.1.1'
+    expressoVersion = '3.1.1'
+    testRulesVersion = '1.1.2-alpha01'
+
+    //Dagger
+    daggerVersion = '2.21'
+
+    //RX Java
+    rxJavaVersion = '2.2.2'
+    rxAndroidVersion = '2.1.0'
+
+    //Gson
+    gsonVersion = '2.8.5'
+
+    //Stetho
+    stethoVersion = '1.5.0'
+
+    //Calligraphy
+    calligraphyVersion = '3.0.0'
+    viewPumpVersion = '1.0.0'
+
+    //LeakCanary
+    leakCanaryVersion = '1.6.3'
+
+    //TransitionEveryWhere
+    transitionEveryWhereVersion = '2.0.0-alpha01'
+
+    //HtmlTextView
+    htmlTextViewVersion = '3.6'
+
+    //butterKnife
+    butterKnifeVersion = '10.1.0'
+
+    //SweetAlertDialogPersian
+    sweetAlertDialogPersianVersion = '1.2.1'
+
+    //Annotations-java Version
+    annotationsJavaVersion = '15.0'
 }

@@ -1,5 +1,6 @@
 package com.simorgh.pregnancyapp.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -10,14 +11,12 @@ import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
+@SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity {
     @Inject
     protected Repository repository;
-
 
 
     @Override

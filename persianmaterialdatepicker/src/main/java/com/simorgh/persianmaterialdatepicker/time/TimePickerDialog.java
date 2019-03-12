@@ -17,6 +17,7 @@
 package com.simorgh.persianmaterialdatepicker.time;
 
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -51,6 +52,7 @@ import androidx.annotation.NonNull;
 /**
  * Dialog to set a time.
  */
+@SuppressLint("InflateParams")
 public class TimePickerDialog extends DialogFragment implements RadialPickerLayout.OnValueSelectedListener {
     private static final String TAG = "TimePickerDialog";
 

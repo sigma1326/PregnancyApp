@@ -167,7 +167,8 @@
         app:layout_constraintEnd_toEndOf="@+id/tv_report_options"
         app:layout_constraintStart_toEndOf="@id/chb_blood_pressure"
         app:layout_constraintTop_toBottomOf="@+id/tv_report_options"
-        tools:fontFamily="@font/iransans_medium" />
+        tools:fontFamily="@font/iransans_medium"
+        tools:targetApi="jelly_bean_mr1" />
 
     <CheckBox
         android:id="@+id/chb_blood_pressure"
@@ -186,7 +187,8 @@
         app:layout_constraintEnd_toStartOf="@id/chb_drugs"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_report_options"
-        tools:fontFamily="@font/iransans_medium" />
+        tools:fontFamily="@font/iransans_medium"
+        tools:targetApi="jelly_bean_mr1" />
 
     <CheckBox
         android:id="@+id/chb_mother_weight"
@@ -203,7 +205,8 @@
         app:layout_constraintEnd_toEndOf="@+id/tv_report_options"
         app:layout_constraintStart_toEndOf="@id/chb_fever"
         app:layout_constraintTop_toBottomOf="@+id/chb_drugs"
-        tools:fontFamily="@font/iransans_medium" />
+        tools:fontFamily="@font/iransans_medium"
+        tools:targetApi="jelly_bean_mr1" />
 
 
     <CheckBox
@@ -224,7 +227,8 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chb_blood_pressure"
-        tools:fontFamily="@font/iransans_medium" />
+        tools:fontFamily="@font/iransans_medium"
+        tools:targetApi="jelly_bean_mr1" />
 
     <CheckBox
         android:id="@+id/chb_cigarette"
@@ -241,7 +245,8 @@
         app:layout_constraintEnd_toEndOf="@+id/tv_report_options"
         app:layout_constraintStart_toEndOf="@id/chb_alcohol"
         app:layout_constraintTop_toBottomOf="@+id/chb_mother_weight"
-        tools:fontFamily="@font/iransans_medium" />
+        tools:fontFamily="@font/iransans_medium"
+        tools:targetApi="jelly_bean_mr1" />
 
     <CheckBox
         android:id="@+id/chb_alcohol"
@@ -261,7 +266,8 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chb_fever"
-        tools:fontFamily="@font/iransans_medium" />
+        tools:fontFamily="@font/iransans_medium"
+        tools:targetApi="jelly_bean_mr1" />
 
 
     <CheckBox
@@ -279,7 +285,8 @@
         app:layout_constraintEnd_toEndOf="@+id/tv_report_options"
         app:layout_constraintStart_toEndOf="@id/chb_exercise"
         app:layout_constraintTop_toBottomOf="@+id/chb_alcohol"
-        tools:fontFamily="@font/iransans_medium" />
+        tools:fontFamily="@font/iransans_medium"
+        tools:targetApi="jelly_bean_mr1" />
 
     <CheckBox
         android:id="@+id/chb_exercise"
@@ -299,7 +306,8 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chb_alcohol"
-        tools:fontFamily="@font/iransans_medium" />
+        tools:fontFamily="@font/iransans_medium"
+        tools:targetApi="jelly_bean_mr1" />
 
     <Button
         android:id="@+id/btn_make_report"

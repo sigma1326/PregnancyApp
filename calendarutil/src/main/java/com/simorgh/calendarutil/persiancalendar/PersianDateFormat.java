@@ -1,6 +1,8 @@
 package com.simorgh.calendarutil.persiancalendar;
 
 
+import android.annotation.SuppressLint;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,6 +12,7 @@ import java.util.Date;
  * Created by Saman on 3/31/2017 AD.
  */
 
+@SuppressLint("SimpleDateFormat")
 public class PersianDateFormat {
   //variable
   /**

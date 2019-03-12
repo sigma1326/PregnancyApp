@@ -17,7 +17,8 @@
         android:layout_gravity="center"
         android:clickable="true"
         android:orientation="vertical"
-        android:textColor="@color/mdtp_date_picker_selector" >
+        android:textColor="@color/mdtp_date_picker_selector"
+        android:focusable="true">
 
         <TextView
             android:id="@+id/date_picker_month"

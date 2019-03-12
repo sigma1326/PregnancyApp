@@ -30,16 +30,26 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha02'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
-    implementation project(':logger')
+    Default()
+    Test()
     RxJava()
+
+    implementation project(':logger')
+}
+
+private void Default() {
+    dependencies.implementation "androidx.appcompat:appcompat:$rootProject.appCompactVersion"
+    dependencies.implementation "com.google.android.material:material:$rootProject.materialVersion"
+}
+
+private void Test() {
+    dependencies.testImplementation "junit:junit:$rootProject.jUnitVersion"
+    dependencies.androidTestImplementation "androidx.test:runner:$rootProject.runnerVersion"
+    dependencies.androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.expressoVersion"
 }
 
 private void RxJava() {
     //RX
-    dependencies.implementation 'io.reactivex.rxjava2:rxjava:2.2.2'
-    dependencies.implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    dependencies.implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
+    dependencies.implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"
 }

@@ -34,7 +34,8 @@
         app:tabMaxWidth="0dp"
         app:tabSelectedTextColor="#af0608"
         app:tabTextAppearance="@style/tab_text"
-        app:tabTextColor="#a6a6a6" />
+        app:tabTextColor="#a6a6a6"
+        tools:targetApi="lollipop" />
 
 
     <androidx.viewpager.widget.ViewPager
@@ -47,5 +48,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabs" />
+        app:layout_constraintTop_toBottomOf="@+id/tabs"
+        tools:targetApi="jelly_bean_mr1" />
 </androidx.constraintlayout.widget.ConstraintLayout>
