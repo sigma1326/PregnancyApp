@@ -137,7 +137,7 @@ public class CalendarTool {
         return calendar;
     }
 
-    static final UmmalquraCalendar hijri = new UmmalquraCalendar();
+    private static final UmmalquraCalendar hijri = new UmmalquraCalendar();
 
     public static UmmalquraCalendar GregorianToHijri(Calendar calendar) {
         hijri.clear();
@@ -245,7 +245,7 @@ public class CalendarTool {
     }
 
     @SuppressLint("DefaultLocale")
-    public static String format(int day, String monthName, int year) {
+    private static String format(int day, String monthName, int year) {
         return String.format("%02d  %-15s  %d", day, monthName, year);
     }
 
@@ -299,7 +299,7 @@ public class CalendarTool {
         return s.toString();
     }
 
-    static final PersianCalendar p = new PersianCalendar();
+    private static final PersianCalendar p = new PersianCalendar();
 
     public static int getDaysInMonth(int month, int year, int calendarType) {
         switch (calendarType) {

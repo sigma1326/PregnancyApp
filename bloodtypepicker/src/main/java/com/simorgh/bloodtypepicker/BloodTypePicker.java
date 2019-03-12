@@ -125,7 +125,7 @@ public class BloodTypePicker extends ConstraintLayout {
     }
 
     public interface OnBloodTypePickedListener {
-        public void onBloodTypePicked(BloodType bloodType);
+        void onBloodTypePicked(BloodType bloodType);
     }
 
 

@@ -141,7 +141,7 @@ public class PersianCalendar extends GregorianCalendar {
 	 * Calculate persian date from current Date and populates the corresponding
 	 * fields(persianYear, persianMonth, persianDay)
 	 */
-	private static PersianDate persianDate = new PersianDate();
+	private static final PersianDate persianDate = new PersianDate();
 
 	protected void calculatePersianDate() {
 //		long julianDate = ((long) Math.floor((getTimeInMillis() - PersianCalendarConstants.MILLIS_JULIAN_EPOCH)) / PersianCalendarConstants.MILLIS_OF_A_DAY);
@@ -339,17 +339,6 @@ public class PersianCalendar extends GregorianCalendar {
 	public String toString() {
 		String str = super.toString();
 		return str.substring(0, str.length() - 1) + ",PersianDate=" + getPersianShortDate() + "]";
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		return super.equals(obj);
-
-	}
-
-	@Override
-	public int hashCode() {
-		return super.hashCode();
 	}
 
 	@Override

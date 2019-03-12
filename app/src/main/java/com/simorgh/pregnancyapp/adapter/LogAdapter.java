@@ -35,10 +35,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class LogAdapter extends ListAdapter<LogItem, LogAdapter.LogItemViewHolder> {
     private Calendar temp = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-    private volatile PersianCalendar tempPersianDate = CalendarTool.GregorianToPersian(Calendar.getInstance());
-    private Calendar min = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-    private Calendar max = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-    private Calendar now = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
+    private final PersianCalendar tempPersianDate = CalendarTool.GregorianToPersian(Calendar.getInstance());
+    private final Calendar min = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
+    private final Calendar max = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
+    private final Calendar now = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
 
     public LogAdapter(@NonNull DiffUtil.ItemCallback<LogItem> diffCallback) {
         super(diffCallback);
@@ -65,7 +65,7 @@ public class LogAdapter extends ListAdapter<LogItem, LogAdapter.LogItemViewHolde
         if (item != null) {
             TimeLineView timeLineView = holder.itemView.findViewById(R.id.time_line_view);
             TextView dayNumber = holder.itemView.findViewById(R.id.tv_day_number);
-            ImageView babyImage = holder.itemView.findViewById(R.id.img_baby);
+//            ImageView babyImage = holder.itemView.findViewById(R.id.img_baby);
             Button showLogs = holder.itemView.findViewById(R.id.btn_show_logs);
 
             persianCalendar = CalendarTool.GregorianToPersian(item.getDate().getCalendar());

@@ -52,9 +52,7 @@ public class BloodTypeFragment extends BaseFragment {
         } else {
             bloodTypePicker.setBloodType(mViewModel.getBloodType().getValue());
         }
-        bloodTypePicker.setBloodTypePickedListener(bloodType -> {
-            mViewModel.setBloodType(bloodType);
-        });
+        bloodTypePicker.setBloodTypePickedListener(bloodType -> mViewModel.setBloodType(bloodType));
     }
 
     @Override

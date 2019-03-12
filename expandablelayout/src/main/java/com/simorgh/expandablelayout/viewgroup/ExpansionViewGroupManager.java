@@ -8,7 +8,7 @@ import com.simorgh.expandablelayout.ExpansionLayout;
 
 class ExpansionViewGroupManager {
     private final ViewGroup viewGroup;
-    private ExpansionLayoutCollection expansionLayoutCollection = new ExpansionLayoutCollection();
+    private final ExpansionLayoutCollection expansionLayoutCollection = new ExpansionLayoutCollection();
 
     public ExpansionViewGroupManager(ViewGroup viewGroup) {
         this.viewGroup = viewGroup;

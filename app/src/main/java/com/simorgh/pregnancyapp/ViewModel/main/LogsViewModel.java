@@ -6,8 +6,6 @@ import com.simorgh.logger.Logger;
 import com.simorgh.pregnancyapp.adapter.LogItem;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -18,8 +16,8 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class LogsViewModel extends ViewModel {
-    private MutableLiveData<List<LogItem>> logList = new MutableLiveData<>();
-    private CompositeDisposable disposable = new CompositeDisposable();
+    private final MutableLiveData<List<LogItem>> logList = new MutableLiveData<>();
+    private final CompositeDisposable disposable = new CompositeDisposable();
 
     public MutableLiveData<List<LogItem>> getLogList() {
         return logList;
@@ -36,9 +34,7 @@ public class LogsViewModel extends ViewModel {
                             .toList()
                     )
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(logItems -> {
-                        logList.setValue(logItems);
-                    }, Logger::printStackTrace);
+                    .subscribe(logItems -> logList.setValue(logItems), Logger::printStackTrace);
             disposable.add(d);
         }
     }

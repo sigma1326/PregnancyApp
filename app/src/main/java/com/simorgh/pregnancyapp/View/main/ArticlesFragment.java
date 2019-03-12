@@ -81,11 +81,11 @@ public class ArticlesFragment extends BaseFragment {
         super.onDestroyView();
     }
 
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    class SectionsPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -95,7 +95,7 @@ public class ArticlesFragment extends BaseFragment {
             return mFragmentList.get(position);
         }
 
-        public void clear() {
+        void clear() {
             mFragmentList.clear();
             mFragmentTitleList.clear();
         }
@@ -105,7 +105,7 @@ public class ArticlesFragment extends BaseFragment {
             return mFragmentList.size();
         }
 
-        public void addFragment(Fragment fragment, String title) {
+        void addFragment(Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }

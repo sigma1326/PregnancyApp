@@ -136,19 +136,10 @@ public class HorizontalExpansionLayout extends HorizontalScrollView {
                         expand(false);
                     }
 
-                    childView.addOnLayoutChangeListener(new OnLayoutChangeListener() {
-                        @Override
-                        public void onLayoutChange(View view, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                            if (expanded && animator == null) {
-                                final int width = right - left;
-                                post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        setWidth(width);
-
-                                    }
-                                });
-                            }
+                    childView.addOnLayoutChangeListener((view, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+                        if (expanded && animator == null) {
+                            final int width = right - left;
+                            post(() -> setWidth(width));
                         }
                     });
 
@@ -158,7 +149,7 @@ public class HorizontalExpansionLayout extends HorizontalScrollView {
         }
     }
 
-    public void collapse(boolean animated) {
+    private void collapse(boolean animated) {
         if (!isEnabled() || !expanded) {
             return;
         }
@@ -166,12 +157,7 @@ public class HorizontalExpansionLayout extends HorizontalScrollView {
         pingIndicatorListeners(false);
         if (animated) {
             final ValueAnimator valueAnimator = ValueAnimator.ofFloat(1f * getWidth(), 0f);
-            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                    setWidth((Float) valueAnimator.getAnimatedValue());
-                }
-            });
+            valueAnimator.addUpdateListener(valueAnimator1 -> setWidth((Float) valueAnimator1.getAnimatedValue()));
             valueAnimator.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
@@ -206,7 +192,7 @@ public class HorizontalExpansionLayout extends HorizontalScrollView {
         }
     }
 
-    public void expand(boolean animated) {
+    private void expand(boolean animated) {
         if (!isEnabled() || expanded) {
             return;
         }
@@ -214,12 +200,7 @@ public class HorizontalExpansionLayout extends HorizontalScrollView {
         pingIndicatorListeners(true);
         if (animated) {
             final ValueAnimator valueAnimator = ValueAnimator.ofFloat(0f, getChildAt(0).getWidth());
-            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                    setWidth((Float) valueAnimator.getAnimatedValue());
-                }
-            });
+            valueAnimator.addUpdateListener(valueAnimator1 -> setWidth((Float) valueAnimator1.getAnimatedValue()));
             valueAnimator.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
@@ -259,11 +240,11 @@ public class HorizontalExpansionLayout extends HorizontalScrollView {
         return expanded;
     }
 
-    public interface Listener {
+    interface Listener {
         void onExpansionChanged(HorizontalExpansionLayout expansionLayout, boolean expanded);
     }
 
-    public interface IndicatorListener {
+    interface IndicatorListener {
         void onStartedExpand(HorizontalExpansionLayout expansionLayout, boolean willExpand);
     }
 }

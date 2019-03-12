@@ -27,6 +27,7 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
+@SuppressWarnings("unchecked")
 public class AddLogViewModel extends ViewModel {
     private Repository repository;
     private boolean isEditMode = false;
@@ -156,7 +157,7 @@ public class AddLogViewModel extends ViewModel {
             return temp;
         }).compose(Repository.apply())
                 .filter(drugs1 -> drugs.getValue() != null)
-                .filter(drugs1 -> drugs1.size() != drugs.getValue().size())
+                .filter(drugs1 -> drugs1.size() != Objects.requireNonNull(drugs.getValue()).size())
                 .subscribe(drugs::setValue, Logger::printStackTrace);
         disposable.add(d);
     }
@@ -277,9 +278,7 @@ public class AddLogViewModel extends ViewModel {
             }
 
             if (!cleared) {
-                ThreadUtils.onUI(() -> {
-                    loadData(date.getValue());
-                }, 200);
+                ThreadUtils.onUI(() -> loadData(date.getValue()), 200);
             } else {
                 cleared = false;
             }
@@ -290,14 +289,14 @@ public class AddLogViewModel extends ViewModel {
     }
 
     public void addDrug(@NonNull Drug drug, itemAddedListener itemAddedListener) {
-        Disposable d = Observable.just(date.getValue())
-                .filter(date1 -> date1 != null)
+        Disposable d = Observable.just(Objects.requireNonNull(date.getValue()))
+                .filter(Objects::nonNull)
                 .zipWith(Observable.just(drug), (date1, drug1) -> {
                     drug1.setDate(date1);
                     return drug1;
                 }).map(drug1 -> {
                     boolean createArray = drugs.getValue() == null || drugs.getValue().isEmpty();
-                    return new Pair<Drug, Boolean>(drug1, createArray);
+                    return new Pair<>(drug1, createArray);
                 })
                 .flatMap(drugBooleanPair -> {
                     if (drugBooleanPair.second) {
@@ -310,7 +309,7 @@ public class AddLogViewModel extends ViewModel {
                         return Observable.fromCallable(() -> {
                             boolean contains = false;
                             List<Drug> temp = drugs.getValue();
-                            for (int i = 0; i < temp.size(); i++) {
+                            for (int i = 0; i < Objects.requireNonNull(temp).size(); i++) {
                                 if (temp.get(i).getId() == drug.getId()) {
                                     if (editingPosition != -1) {
                                         if (i == editingPosition) {
@@ -396,10 +395,8 @@ public class AddLogViewModel extends ViewModel {
         return editingPosition;
     }
 
-    public void setEditing(boolean b) {
-        ThreadUtils.onUI(() -> {
-            editing.setValue(b);
-        });
+    private void setEditing(boolean b) {
+        ThreadUtils.onUI(() -> editing.setValue(b));
     }
 
     public MutableLiveData<Boolean> getEditing() {
@@ -504,6 +501,6 @@ public class AddLogViewModel extends ViewModel {
     }
 
     public interface itemAddedListener {
-        public void itemAdded(boolean success);
+        void itemAdded(boolean success);
     }
 }

@@ -18,8 +18,6 @@ import androidx.recyclerview.widget.AsyncDifferConfig;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
-import io.reactivex.Observable;
-import io.reactivex.android.plugins.RxAndroidPlugins;
 
 public class ArticleDetailAdapter extends ListAdapter<ArticleViewSubItem, ArticleDetailAdapter.ArticleSubItemViewHolder> {
     private int fontSize = 14;

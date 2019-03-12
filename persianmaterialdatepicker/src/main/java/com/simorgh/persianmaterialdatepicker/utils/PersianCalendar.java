@@ -5,6 +5,8 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import androidx.annotation.NonNull;
+
 public class PersianCalendar extends GregorianCalendar {
 
   private int persianYear;
@@ -220,22 +222,12 @@ public class PersianCalendar extends GregorianCalendar {
     this.delimiter = delimiter;
   }
 
+  @NonNull
   @Override
   public String toString() {
     String str = super.toString();
     return str.substring(0, str.length() - 1) + ",PersianDate="
       + getPersianShortDate() + "]";
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    return super.equals(obj);
-
-  }
-
-  @Override
-  public int hashCode() {
-    return super.hashCode();
   }
 
   @Override
@@ -257,9 +249,9 @@ public class PersianCalendar extends GregorianCalendar {
   }
 
   // Helper Functions
-  private static int gregorianDaysInMonth[] = {31, 28, 31, 30, 31, 30, 31,
+  private static final int[] gregorianDaysInMonth = {31, 28, 31, 30, 31, 30, 31,
     31, 30, 31, 30, 31};
-  private static int persianDaysInMonth[] = {31, 31, 31, 31, 31, 31, 30, 30,
+  private static final int[] persianDaysInMonth = {31, 31, 31, 31, 31, 31, 30, 30,
     30, 30, 30, 29};
 
   private static YearMonthDay gregorianToJalali(YearMonthDay gregorian) {
@@ -278,9 +270,9 @@ public class PersianCalendar extends GregorianCalendar {
     gregorian.setYear(gregorian.getYear() - 1600);
     gregorian.setDay(gregorian.getDay() - 1);
 
-    gregorianDayNo = 365 * gregorian.getYear() + (int) Math.floor((gregorian.getYear() + 3) / 4)
-      - (int) Math.floor((gregorian.getYear() + 99) / 100)
-      + (int) Math.floor((gregorian.getYear() + 399) / 400);
+    gregorianDayNo = 365 * gregorian.getYear() + (int) Math.floor((gregorian.getYear() + 3) / 4f)
+      - (int) Math.floor((gregorian.getYear() + 99) / 100f)
+      + (int) Math.floor((gregorian.getYear() + 399) / 400f);
     for (i = 0; i < gregorian.getMonth(); ++i) {
       gregorianDayNo += gregorianDaysInMonth[i];
     }
@@ -294,14 +286,14 @@ public class PersianCalendar extends GregorianCalendar {
 
     persianDayNo = gregorianDayNo - 79;
 
-    persianNP = (int) Math.floor(persianDayNo / 12053);
+    persianNP = (int) Math.floor(persianDayNo / 12053f);
     persianDayNo = persianDayNo % 12053;
 
-    persianYear = 979 + 33 * persianNP + 4 * (int) (persianDayNo / 1461);
+    persianYear = 979 + 33 * persianNP + 4 * (persianDayNo / 1461);
     persianDayNo = persianDayNo % 1461;
 
     if (persianDayNo >= 366) {
-      persianYear += (int) Math.floor((persianDayNo - 1) / 365);
+      persianYear += (int) Math.floor((persianDayNo - 1) / 365f);
       persianDayNo = (persianDayNo - 1) % 365;
     }
 
@@ -331,8 +323,8 @@ public class PersianCalendar extends GregorianCalendar {
     persian.setYear(persian.getYear() - 979);
     persian.setDay(persian.getDay() - 1);
 
-    persianDayNo = 365 * persian.getYear() + (int) (persian.getYear() / 33) * 8
-      + (int) Math.floor(((persian.getYear() % 33) + 3) / 4);
+    persianDayNo = 365 * persian.getYear() + (persian.getYear() / 33) * 8
+      + (int) Math.floor(((persian.getYear() % 33) + 3) / 4f);
     for (i = 0; i < persian.getMonth(); ++i) {
       persianDayNo += persianDaysInMonth[i];
     }
@@ -341,13 +333,13 @@ public class PersianCalendar extends GregorianCalendar {
 
     gregorianDayNo = persianDayNo + 79;
 
-    gregorianYear = 1600 + 400 * (int) Math.floor(gregorianDayNo / 146097); /* 146097 = 365*400 + 400/4 - 400/100 + 400/400 */
+    gregorianYear = 1600 + 400 * (int) Math.floor(gregorianDayNo / 146097f); /* 146097 = 365*400 + 400/4 - 400/100 + 400/400 */
     gregorianDayNo = gregorianDayNo % 146097;
 
     leap = 1;
     if (gregorianDayNo >= 36525) /* 36525 = 365*100 + 100/4 */ {
       gregorianDayNo--;
-      gregorianYear += 100 * (int) Math.floor(gregorianDayNo / 36524); /* 36524 = 365*100 + 100/4 - 100/100 */
+      gregorianYear += 100 * (int) Math.floor(gregorianDayNo / 36524f); /* 36524 = 365*100 + 100/4 - 100/100 */
       gregorianDayNo = gregorianDayNo % 36524;
 
       if (gregorianDayNo >= 365) {
@@ -357,14 +349,14 @@ public class PersianCalendar extends GregorianCalendar {
       }
     }
 
-    gregorianYear += 4 * (int) Math.floor(gregorianDayNo / 1461); /* 1461 = 365*4 + 4/4 */
+    gregorianYear += 4 * (int) Math.floor(gregorianDayNo / 1461f); /* 1461 = 365*4 + 4/4 */
     gregorianDayNo = gregorianDayNo % 1461;
 
     if (gregorianDayNo >= 366) {
       leap = 0;
 
       gregorianDayNo--;
-      gregorianYear += (int) Math.floor(gregorianDayNo / 365);
+      gregorianYear += (int) Math.floor(gregorianDayNo / 365f);
       gregorianDayNo = gregorianDayNo % 365;
     }
 
@@ -414,6 +406,7 @@ public class PersianCalendar extends GregorianCalendar {
       this.day = date;
     }
 
+    @NonNull
     public String toString() {
       return getYear() + "/" + getMonth() + "/" + getDay();
     }

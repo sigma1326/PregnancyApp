@@ -41,11 +41,6 @@ public abstract class MonthView extends View {
   private static final String TAG = "MonthView";
 
   /**
-   * These params can be passed into the view to control how it appears.
-   * {@link #VIEW_PARAMS_WEEK} is the only required field, though the default
-   * values are unlikely to fit most layouts correctly.
-   */
-  /**
    * This sets the height of this week in pixels
    */
   public static final String VIEW_PARAMS_HEIGHT = "height";
@@ -83,7 +78,7 @@ public abstract class MonthView extends View {
   public static final String VIEW_PARAMS_SHOW_WK_NUM = "show_wk_num";
 
   protected static int DEFAULT_HEIGHT = 32;
-  protected static int MIN_HEIGHT = 10;
+  protected static final int MIN_HEIGHT = 10;
   protected static final int DEFAULT_SELECTED_DAY = -1;
   protected static final int DEFAULT_WEEK_START = Calendar.SATURDAY;
   protected static final int DEFAULT_NUM_DAYS = 7;
@@ -94,7 +89,7 @@ public abstract class MonthView extends View {
 
   private static final int SELECTED_CIRCLE_ALPHA = 255;
 
-  protected static int DAY_SEPARATOR_WIDTH = 1;
+  protected static final int DAY_SEPARATOR_WIDTH = 1;
   protected static int MINI_DAY_NUMBER_TEXT_SIZE;
   protected static int MONTH_LABEL_TEXT_SIZE;
   protected static int MONTH_DAY_LABEL_TEXT_SIZE;
@@ -107,7 +102,7 @@ public abstract class MonthView extends View {
   protected DatePickerController mController;
 
   // affects the padding on the sides of this view
-  protected int mEdgePadding = 0;
+  protected final int mEdgePadding = 0;
 
 
   protected Paint mMonthNumPaint;
@@ -130,7 +125,7 @@ public abstract class MonthView extends View {
   // Quick reference to the width of this view, matches parent
   protected int mWidth;
   // The height this view should draw at in pixels, set by height param
-  protected int mRowHeight = DEFAULT_HEIGHT;
+  protected int mRowHeight;
   // If this view contains the today
   protected boolean mHasToday = false;
   // Which day is selected [0-6] or -1 if no day is selected
@@ -140,7 +135,7 @@ public abstract class MonthView extends View {
   // Which day of the week to start on [0-6]
   protected int mWeekStart = DEFAULT_WEEK_START;
   // How many days to display
-  protected int mNumDays = DEFAULT_NUM_DAYS;
+  protected final int mNumDays = DEFAULT_NUM_DAYS;
   // The number of days + a spot for week number if it is displayed
   protected int mNumCells = mNumDays;
   // The left edge of the selected day
@@ -158,16 +153,16 @@ public abstract class MonthView extends View {
   protected OnDayClickListener mOnDayClickListener;
 
   // Whether to prevent setting the accessibility delegate
-  private boolean mLockAccessibilityDelegate;
+  private final boolean mLockAccessibilityDelegate;
 
-  protected int mDayTextColor;
-  protected int mSelectedDayTextColor;
-  protected int mMonthDayTextColor;
-  protected int mTodayNumberColor;
-  protected int mHighlightedDayTextColor;
-  protected int mDisabledDayTextColor;
-  protected int mMonthTitleColor;
-  private float rightSpace = 30;
+  protected final int mDayTextColor;
+  protected final int mSelectedDayTextColor;
+  protected final int mMonthDayTextColor;
+  protected final int mTodayNumberColor;
+  protected final int mHighlightedDayTextColor;
+  protected final int mDisabledDayTextColor;
+  protected final int mMonthTitleColor;
+  private final float rightSpace = 30;
 
   public MonthView(Context context) {
     this(context, null, null);
@@ -577,11 +572,8 @@ public abstract class MonthView extends View {
 
     if (isBeforeMin(year, month, day)) {
       return true;
-    } else if (isAfterMax(year, month, day)) {
-      return true;
-    }
+    } else return isAfterMax(year, month, day);
 
-    return false;
   }
 
   private boolean isSelectable(int year, int month, int day) {
@@ -631,11 +623,7 @@ public abstract class MonthView extends View {
       return false;
     }
 
-    if (day < minDate.getPersianDay()) {
-      return true;
-    } else {
-      return false;
-    }
+    return day < minDate.getPersianDay();
   }
 
   private boolean isAfterMax(int year, int month, int day) {
@@ -659,11 +647,7 @@ public abstract class MonthView extends View {
       return false;
     }
 
-    if (day > maxDate.getPersianMonth()) {
-      return true;
-    } else {
-      return false;
-    }
+    return day > maxDate.getPersianMonth();
   }
 
   /**
@@ -781,13 +765,13 @@ public abstract class MonthView extends View {
     }
 
     @Override
-    protected void onPopulateEventForVirtualView(int virtualViewId, AccessibilityEvent event) {
+    protected void onPopulateEventForVirtualView(int virtualViewId, @NonNull AccessibilityEvent event) {
       event.setContentDescription(getItemDescription(virtualViewId));
     }
 
     @Override
     protected void onPopulateNodeForVirtualView(int virtualViewId,
-                                                AccessibilityNodeInfoCompat node) {
+                                                @NonNull AccessibilityNodeInfoCompat node) {
       getItemBounds(virtualViewId, mTempRect);
 
       node.setContentDescription(getItemDescription(virtualViewId));

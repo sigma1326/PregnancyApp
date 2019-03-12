@@ -69,7 +69,7 @@ public class DatePickerDialog extends DialogFragment implements
 
   private final PersianCalendar mPersianCalendar = new PersianCalendar();
   private OnDateSetListener mCallBack;
-  private HashSet<OnDateChangedListener> mListeners = new HashSet<>();
+  private final HashSet<OnDateChangedListener> mListeners = new HashSet<>();
   private DialogInterface.OnCancelListener mOnCancelListener;
   private DialogInterface.OnDismissListener mOnDismissListener;
 
@@ -148,7 +148,7 @@ public class DatePickerDialog extends DialogFragment implements
     return ret;
   }
 
-  public void initialize(OnDateSetListener callBack, int year, int monthOfYear, int dayOfMonth) {
+  private void initialize(OnDateSetListener callBack, int year, int monthOfYear, int dayOfMonth) {
     mCallBack = callBack;
     mPersianCalendar.setPersianDate(year, monthOfYear, dayOfMonth);
     mThemeDark = false;
@@ -196,7 +196,7 @@ public class DatePickerDialog extends DialogFragment implements
   }
 
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+  public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
     Log.d(TAG, "onCreateView: ");
     getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
@@ -306,7 +306,7 @@ public class DatePickerDialog extends DialogFragment implements
   }
 
   @Override
-  public void onCancel(DialogInterface dialog) {
+  public void onCancel(@NonNull DialogInterface dialog) {
     super.onCancel(dialog);
     if (mOnCancelListener != null) {
       mOnCancelListener.onCancel(dialog);

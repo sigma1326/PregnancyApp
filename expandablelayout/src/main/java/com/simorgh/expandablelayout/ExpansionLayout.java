@@ -194,7 +194,7 @@ public class ExpansionLayout extends NestedScrollView {
         }
     }
 
-    public void expand(boolean animated) {
+    private void expand(boolean animated) {
         if (!isEnabled() || expanded) {
             return;
         }

@@ -111,7 +111,7 @@ public class ExerciseView extends ExpansionsViewGroupLinearLayout {
 
     }
 
-    public void enableExpand(boolean enabled) {
+    private void enableExpand(boolean enabled) {
         imgDescription.setEnabled(enabled);
         if (!enabled && expandableLayout.isExpanded()) {
             expandableLayout.collapse(true);
@@ -206,7 +206,7 @@ public class ExerciseView extends ExpansionsViewGroupLinearLayout {
             this.exerciseTime = exerciseTime;
         }
 
-        public State(Parcelable superState, ExerciseTime exerciseTime) {
+        State(Parcelable superState, ExerciseTime exerciseTime) {
             super(superState);
             this.exerciseTime = exerciseTime;
         }

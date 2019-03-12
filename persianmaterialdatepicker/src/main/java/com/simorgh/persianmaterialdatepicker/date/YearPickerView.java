@@ -35,6 +35,8 @@ import com.simorgh.persianmaterialdatepicker.utils.LanguageUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+
 /**
  * Displays a selectable list of years.
  */
@@ -43,8 +45,8 @@ public class YearPickerView extends ListView implements OnItemClickListener, Dat
 
     private final DatePickerController mController;
     private YearAdapter mAdapter;
-    private int mViewSize;
-    private int mChildSize;
+    private final int mViewSize;
+    private final int mChildSize;
     private TextViewWithCircularIndicator mSelectedView;
 
     /**
@@ -109,8 +111,9 @@ public class YearPickerView extends ListView implements OnItemClickListener, Dat
             super(context, resource, objects);
         }
 
+        @NonNull
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
             TextViewWithCircularIndicator v = (TextViewWithCircularIndicator)
                     super.getView(position, convertView, parent);
             v.requestLayout();
@@ -129,13 +132,9 @@ public class YearPickerView extends ListView implements OnItemClickListener, Dat
     }
 
     public void postSetSelectionFromTop(final int position, final int offset) {
-        post(new Runnable() {
-
-            @Override
-            public void run() {
-                setSelectionFromTop(position, offset);
-                requestLayout();
-            }
+        post(() -> {
+            setSelectionFromTop(position, offset);
+            requestLayout();
         });
     }
 

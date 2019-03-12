@@ -93,18 +93,14 @@ public class ArticleDetailFragment extends BaseFragment {
 
 //        repository.getWeekArticleItems(1,true);
 
-        mViewModel.getItems().observe(this, articleViewSubItems -> {
-            ((ArticleDetailAdapter) Objects.requireNonNull(rvArticleDetail.getAdapter())).submitList(articleViewSubItems);
-        });
+        mViewModel.getItems().observe(this, articleViewSubItems ->
+                ((ArticleDetailAdapter) Objects.requireNonNull(rvArticleDetail.getAdapter()))
+                        .submitList(articleViewSubItems));
 
-        mUserViewModel.getFontSize().observe(this, s -> {
-            ((ArticleDetailAdapter) Objects.requireNonNull(rvArticleDetail.getAdapter())).setFontSize(Integer.parseInt(s));
-        });
+        mUserViewModel.getFontSize().observe(this, s ->
+                ((ArticleDetailAdapter) Objects.requireNonNull(rvArticleDetail.getAdapter()))
+                        .setFontSize(Integer.parseInt(s)));
     }
 
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
 }

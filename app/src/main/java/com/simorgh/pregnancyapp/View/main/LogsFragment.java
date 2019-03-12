@@ -32,7 +32,7 @@ public class LogsFragment extends BaseFragment {
     private TextView emptyLogs;
 
     private RecyclerView rvLogs;
-    public AtomicBoolean isInflated = new AtomicBoolean(false);
+    public final AtomicBoolean isInflated = new AtomicBoolean(false);
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

@@ -64,9 +64,7 @@ public class MotherBirthDayFragment extends BaseFragment {
         } else {
             datePicker.setSelectedDate(value);
         }
-        datePicker.setOnDateSelectedListener(date -> {
-            mViewModel.setMotherBirthDate(date);
-        });
+        datePicker.setOnDateSelectedListener(date -> mViewModel.setMotherBirthDate(date));
     }
 
     @Override

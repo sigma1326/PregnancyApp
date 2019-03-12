@@ -270,12 +270,7 @@ public class ExpandableLayout extends ConstraintLayout {
         animator.setInterpolator(interpolator);
         animator.setDuration(duration);
 
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                setExpansion((float) valueAnimator.getAnimatedValue());
-            }
-        });
+        animator.addUpdateListener(valueAnimator -> setExpansion((float) valueAnimator.getAnimatedValue()));
 
         animator.addListener(new ExpansionListener(targetExpansion));
 
@@ -293,7 +288,7 @@ public class ExpandableLayout extends ConstraintLayout {
     }
 
     private class ExpansionListener implements Animator.AnimatorListener {
-        private int targetExpansion;
+        private final int targetExpansion;
         private boolean canceled;
 
         public ExpansionListener(int targetExpansion) {

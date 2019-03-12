@@ -75,8 +75,8 @@ public class RadialTextsView extends View {
   ObjectAnimator mDisappearAnimator;
   ObjectAnimator mReappearAnimator;
   private InvalidateUpdateListener mInvalidateUpdateListener;
-  private Context context;
-  private String fontName="DroidNaskh-Regular";
+  private final Context context;
+  private String fontName;
 
   public RadialTextsView(Context context, String fontName) {
     super(context);
@@ -257,7 +257,6 @@ public class RadialTextsView extends View {
         /*
          * The numbers need to be drawn in a 7x7 grid, representing the points on the Unit Circle.
          */
-    float offset1 = numbersRadius;
     // cos(30) = a / r => r * cos(30) = a => r * √3/2 = a
     float offset2 = numbersRadius * ((float) Math.sqrt(3)) / 2f;
     // sin(30) = o / r => r * sin(30) = o => r / 2 = a
@@ -267,8 +266,8 @@ public class RadialTextsView extends View {
     // We'll need yTextBase to be slightly lower to account for the text's baseline.
     yCenter -= (mPaint.descent() + mPaint.ascent()) / 2;
 
-    textGridHeights[0] = yCenter - offset1;
-    textGridWidths[0] = xCenter - offset1;
+    textGridHeights[0] = yCenter - numbersRadius;
+    textGridWidths[0] = xCenter - numbersRadius;
     textGridHeights[1] = yCenter - offset2;
     textGridWidths[1] = xCenter - offset2;
     textGridHeights[2] = yCenter - offset3;
@@ -279,8 +278,8 @@ public class RadialTextsView extends View {
     textGridWidths[4] = xCenter + offset3;
     textGridHeights[5] = yCenter + offset2;
     textGridWidths[5] = xCenter + offset2;
-    textGridHeights[6] = yCenter + offset1;
-    textGridWidths[6] = xCenter + offset1;
+    textGridHeights[6] = yCenter + numbersRadius;
+    textGridWidths[6] = xCenter + numbersRadius;
   }
 
   /**

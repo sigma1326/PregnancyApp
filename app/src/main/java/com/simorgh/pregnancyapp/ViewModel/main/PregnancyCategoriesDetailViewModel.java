@@ -12,7 +12,7 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class PregnancyCategoriesDetailViewModel extends ViewModel {
-    private MediatorLiveData<List<ArticleWithParagraph>> articles = new MediatorLiveData<>();
+    private final MediatorLiveData<List<ArticleWithParagraph>> articles = new MediatorLiveData<>();
     private String titleText = "";
     private int type = 0;
 

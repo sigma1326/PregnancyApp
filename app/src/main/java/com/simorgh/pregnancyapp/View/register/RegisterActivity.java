@@ -1,8 +1,6 @@
 package com.simorgh.pregnancyapp.View.register;
 
 import android.animation.LayoutTransition;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -17,11 +15,9 @@ import android.widget.Toast;
 import com.simorgh.logger.Logger;
 import com.simorgh.pregnancyapp.R;
 import com.simorgh.pregnancyapp.View.TitleChangeListener;
-import com.simorgh.pregnancyapp.View.main.MainActivity;
 import com.simorgh.pregnancyapp.ViewModel.register.RegisterViewModel;
 import com.simorgh.pregnancyapp.ui.BaseActivity;
 import com.simorgh.threadutils.ThreadUtils;
-import com.squareup.haha.perflib.Main;
 import com.transitionseverywhere.ChangeText;
 import com.transitionseverywhere.extra.Scale;
 
@@ -40,7 +36,6 @@ import androidx.transition.TransitionSet;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 public class RegisterActivity extends BaseActivity implements TitleChangeListener {
 

@@ -127,7 +127,7 @@ public class DrugInsertView extends ExpansionsViewGroupLinearLayout {
 
     }
 
-    public void enableExpand(boolean enabled) {
+    private void enableExpand(boolean enabled) {
         imgDescription.setEnabled(enabled);
         imgDescription.animate().alpha(enabled ? 1f : 0.5f);
         if (!enabled && expandableLayout.isExpanded()) {
@@ -135,7 +135,7 @@ public class DrugInsertView extends ExpansionsViewGroupLinearLayout {
         }
     }
 
-    public void setDescription(@NonNull String summaryText) {
+    private void setDescription(@NonNull String summaryText) {
         if (description != null) {
             description.setText(summaryText);
             drug.setInfo(summaryText);
@@ -168,7 +168,7 @@ public class DrugInsertView extends ExpansionsViewGroupLinearLayout {
         return name.getText().toString();
     }
 
-    public void setName(@NonNull String value) {
+    private void setName(@NonNull String value) {
         if (name != null) {
             drug.setDrugName(value);
             name.setText(value);
@@ -209,7 +209,7 @@ public class DrugInsertView extends ExpansionsViewGroupLinearLayout {
     }
 
     public interface InsertDrugListener {
-        public void insertDrug(Drug drug);
+        void insertDrug(Drug drug);
     }
 
 
@@ -255,7 +255,7 @@ public class DrugInsertView extends ExpansionsViewGroupLinearLayout {
             this.date = date;
         }
 
-        public State(Parcelable superState, long id, String name, String description, Date date) {
+        State(Parcelable superState, long id, String name, String description, Date date) {
             super(superState);
             this.id = id;
             this.name = name;
@@ -263,19 +263,19 @@ public class DrugInsertView extends ExpansionsViewGroupLinearLayout {
             this.date = date;
         }
 
-        public long getId() {
+        long getId() {
             return id;
         }
 
-        public String getName() {
+        String getName() {
             return name;
         }
 
-        public String getDescription() {
+        String getDescription() {
             return description;
         }
 
-        public Date getDate() {
+        Date getDate() {
             return date;
         }
     }

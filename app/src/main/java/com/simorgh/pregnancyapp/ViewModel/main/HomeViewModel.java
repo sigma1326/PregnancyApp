@@ -1,10 +1,8 @@
 package com.simorgh.pregnancyapp.ViewModel.main;
 
 import com.simorgh.database.Repository;
-import com.simorgh.database.callback.WeekCallBack;
 import com.simorgh.database.model.Week;
 import com.simorgh.logger.Logger;
-import com.simorgh.threadutils.ThreadUtils;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -17,7 +15,7 @@ public class HomeViewModel extends ViewModel {
     private Repository repository;
     private final CompositeDisposable disposable = new CompositeDisposable();
 
-    private MutableLiveData<Week> weekLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Week> weekLiveData = new MutableLiveData<>();
 
     public int getWeekNumber() {
         return weekNumber;

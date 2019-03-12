@@ -21,7 +21,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 import android.view.animation.OvershootInterpolator;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,39 +44,39 @@ import static java.lang.Math.sin;
 public class FluidSlider extends View {
 
     //default view height and width
-    public static final int ANIMATION_DURATION = 400;
+    private static final int ANIMATION_DURATION = 400;
 
 
-    public static final float BAR_CORNER_RADIUS = 2;
-    public static final float BAR_VERTICAL_OFFSET = 1.5f;
-    public static final float BAR_INNER_HORIZONTAL_OFFSET = 0;
+    private static final float BAR_CORNER_RADIUS = 2;
+    private static final float BAR_VERTICAL_OFFSET = 1.5f;
+    private static final float BAR_INNER_HORIZONTAL_OFFSET = 0;
 
-    public static final float SLIDER_WIDTH = 4;
-    public static final float SLIDER_HEIGHT = 1 + BAR_VERTICAL_OFFSET;
+    private static final float SLIDER_WIDTH = 4;
+    private static final float SLIDER_HEIGHT = 1 + BAR_VERTICAL_OFFSET;
 
-    public static final float TOP_CIRCLE_DIAMETER = 1;
-    public static final float BOTTOM_CIRCLE_DIAMETER = 25.0f;
-    public static final float TOUCH_CIRCLE_DIAMETER = 1;
-    public static final float LABEL_CIRCLE_DIAMETER = 10;
-    public static final String TEXT_START = "1";
-    public static final float TOP_SPREAD_FACTOR = 0.4f;
-    public static final float BOTTOM_START_SPREAD_FACTOR = 0.25f;
-    public static final float BOTTOM_END_SPREAD_FACTOR = 0.1f;
-    public static final float METABALL_HANDLER_FACTOR = 2.4f;
-    public static final float METABALL_MAX_DISTANCE = 15.0f;
-    public static final float METABALL_RISE_DISTANCE = 1.1f;
+    private static final float TOP_CIRCLE_DIAMETER = 1;
+    private static final float BOTTOM_CIRCLE_DIAMETER = 25.0f;
+    private static final float TOUCH_CIRCLE_DIAMETER = 1;
+    private static final float LABEL_CIRCLE_DIAMETER = 10;
+    private static final String TEXT_START = "1";
+    private static final float TOP_SPREAD_FACTOR = 0.4f;
+    private static final float BOTTOM_START_SPREAD_FACTOR = 0.25f;
+    private static final float BOTTOM_END_SPREAD_FACTOR = 0.1f;
+    private static final float METABALL_HANDLER_FACTOR = 2.4f;
+    private static final float METABALL_MAX_DISTANCE = 15.0f;
+    private static final float METABALL_RISE_DISTANCE = 1.1f;
 
-    public static final float TEXT_SIZE = 12;
+    private static final float TEXT_SIZE = 12;
     public static final float TEXT_OFFSET = 8;
-    public static final String TEXT_END = "40";
+    private static final String TEXT_END = "40";
     private static final int DEFAULT_WIDTH = 350;
 
-    public static final int COLOR_BAR = Color.parseColor("#ffca3b3a");
-    public static final int COLOR_LABEL = Color.WHITE;
-    public static final int COLOR_LABEL_TEXT = Color.parseColor("#b9150e");
-    public static final int COLOR_BAR_TEXT = Color.WHITE;
+    private static final int COLOR_BAR = Color.parseColor("#ffca3b3a");
+    private static final int COLOR_LABEL = Color.WHITE;
+    private static final int COLOR_LABEL_TEXT = Color.parseColor("#b9150e");
+    private static final int COLOR_BAR_TEXT = Color.WHITE;
 
-    public static final float INITIAL_POSITION = 0.5f;
+    private static final float INITIAL_POSITION = 0.5f;
 
 
     ///////////////////////////
@@ -94,18 +93,17 @@ public class FluidSlider extends View {
 
     private float metaballMaxDistance;
     private float metaballRiseDistance;
-    private float textOffset;
 
     private float barVerticalOffset;
     private float barCornerRadius;
     private float barInnerOffset;
-    private RectF rectBar = new RectF();
-    private RectF rectTopCircle = new RectF();
-    private RectF rectBottomCircle = new RectF();
-    private RectF rectTouch = new RectF();
-    private RectF rectLabel = new RectF();
-    private Rect rectText = new Rect();
-    private Path pathMetaball = new Path();
+    private final RectF rectBar = new RectF();
+    private final RectF rectTopCircle = new RectF();
+    private final RectF rectBottomCircle = new RectF();
+    private final RectF rectTouch = new RectF();
+    private final RectF rectLabel = new RectF();
+    private final Rect rectText = new Rect();
+    private final Path pathMetaball = new Path();
 
     private Paint paintBar;
     private Paint paintLabel;
@@ -118,32 +116,30 @@ public class FluidSlider extends View {
     private long duration = (long) ANIMATION_DURATION;
     private Pair<Integer, Integer> minMax = new Pair<>(1, 40);
 
-    public int getColorBar() {
+    private int getColorBar() {
         return paintBar.getColor();
     }
 
-    public void setColorBar(int colorBar) {
+    private void setColorBar(int colorBar) {
         paintBar.setColor(colorBar);
     }
 
-    public int getColorBubble() {
+    private int getColorBubble() {
         return paintLabel.getColor();
     }
 
-    public void setColorBubble(int colorBubble) {
+    private void setColorBubble(int colorBubble) {
         paintLabel.setColor(colorBubble);
     }
 
 
-    public void setTextSize(final float textSize) {
+    private void setTextSize(final float textSize) {
         paintText.setTextSize(textSize);
     }
 
-    public float getTextSize() {
+    private float getTextSize() {
         return paintText.getTextSize();
     }
-
-    private String bubbleText = "";
 
     private String startText = TEXT_START;
 
@@ -276,7 +272,6 @@ public class FluidSlider extends View {
         barVerticalOffset = barHeight * BAR_VERTICAL_OFFSET;
         barCornerRadius = BAR_CORNER_RADIUS * density;
         barInnerOffset = BAR_INNER_HORIZONTAL_OFFSET * density;
-        textOffset = TEXT_OFFSET * density;
     }
 
 
@@ -322,7 +317,7 @@ public class FluidSlider extends View {
         canvas.drawOval(rectLabel, paintLabel);
 
 
-        String text = bubbleText == null ? "" : String.valueOf((int) (getMax() - (position * (getMax() - 1) + 1) + 1));
+        String text = String.valueOf((int) (getMax() - (position * (getMax() - 1) + 1) + 1));
         drawText(canvas, paintText, text, Paint.Align.CENTER, colorBubbleText, 0f, rectLabel, rectText);
 
     }
@@ -600,7 +595,7 @@ public class FluidSlider extends View {
 
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public final class OutlineProvider extends ViewOutlineProvider {
+    final class OutlineProvider extends ViewOutlineProvider {
         public void getOutline(@Nullable View v, @Nullable Outline outline) {
             if (Build.VERSION.SDK_INT >= 21) {
                 Rect rect = new Rect((int) FluidSlider.this.rectBar.left, (int) FluidSlider.this.rectBar.top, (int) FluidSlider.this.rectBar.right, (int) FluidSlider.this.rectBar.bottom);
@@ -716,7 +711,7 @@ public class FluidSlider extends View {
             return 0;
         }
 
-        public State(@NonNull Parcelable superState, float position, @Nullable String startText, @Nullable String endText, float textSize, int colorLabel, int colorBar, int colorBarText, int colorLabelText, long duration) {
+        State(@NonNull Parcelable superState, float position, @Nullable String startText, @Nullable String endText, float textSize, int colorLabel, int colorBar, int colorBarText, int colorLabelText, long duration) {
             super(superState);
             this.position = position;
             this.startText = startText;

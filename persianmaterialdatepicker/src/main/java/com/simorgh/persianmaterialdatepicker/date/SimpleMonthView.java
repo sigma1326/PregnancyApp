@@ -12,7 +12,7 @@ import com.simorgh.persianmaterialdatepicker.utils.LanguageUtils;
 import java.util.Locale;
 
 public class SimpleMonthView extends MonthView {
-  DatePickerController controller;
+  final DatePickerController controller;
 
   public SimpleMonthView(Context context, AttributeSet attr, DatePickerController controller) {
     super(context, attr, controller);

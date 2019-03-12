@@ -14,19 +14,24 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.FrameLayout;
 
+import java.util.Objects;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class ExpansionHeader extends FrameLayout {
 
-    int headerIndicatorId = 0;
-    int expansionLayoutId = 0;
-    boolean toggleOnClick = true;
+    private int headerIndicatorId = 0;
+    private int expansionLayoutId = 0;
+    private boolean toggleOnClick = true;
     @Nullable
+    private
     View headerIndicator;
     @Nullable
+    private
     ExpansionLayout expansionLayout;
     @Nullable
+    private
     Animator indicatorAnimator;
     private int headerRotationExpanded = 270;
     private int headerRotationCollapsed = 90;
@@ -61,11 +66,11 @@ public class ExpansionHeader extends FrameLayout {
         }
     }
 
-    public void setHeaderRotationExpanded(int headerRotationExpanded) {
+    private void setHeaderRotationExpanded(int headerRotationExpanded) {
         this.headerRotationExpanded = headerRotationExpanded;
     }
 
-    public void setHeaderRotationCollapsed(int headerRotationCollapsed) {
+    private void setHeaderRotationCollapsed(int headerRotationCollapsed) {
         this.headerRotationCollapsed = headerRotationCollapsed;
     }
 
@@ -73,11 +78,11 @@ public class ExpansionHeader extends FrameLayout {
         return toggleOnClick;
     }
 
-    public void setToggleOnClick(boolean toggleOnClick) {
+    private void setToggleOnClick(boolean toggleOnClick) {
         this.toggleOnClick = toggleOnClick;
     }
 
-    public void setHeaderIndicatorId(int headerIndicatorId) {
+    private void setHeaderIndicatorId(int headerIndicatorId) {
         this.headerIndicatorId = headerIndicatorId;
         if (headerIndicatorId != 0) {
             headerIndicator = findViewById(headerIndicatorId);
@@ -85,7 +90,7 @@ public class ExpansionHeader extends FrameLayout {
         }
     }
 
-    public void setExpansionHeaderIndicator(@Nullable View headerIndicator) {
+    private void setExpansionHeaderIndicator(@Nullable View headerIndicator) {
         this.headerIndicator = headerIndicator;
 
         //if not, the view will clip when rotate
@@ -96,12 +101,12 @@ public class ExpansionHeader extends FrameLayout {
         setup();
     }
 
-    public void setExpansionLayout(@Nullable ExpansionLayout expansionLayout) {
+    private void setExpansionLayout(@Nullable ExpansionLayout expansionLayout) {
         this.expansionLayout = expansionLayout;
         setup();
     }
 
-    public void setExpansionLayoutId(int expansionLayoutId) {
+    private void setExpansionLayoutId(int expansionLayoutId) {
         this.expansionLayoutId = expansionLayoutId;
 
         if (expansionLayoutId != 0) {
@@ -126,19 +131,11 @@ public class ExpansionHeader extends FrameLayout {
 
     private void setup() {
         if (expansionLayout != null && !expansionLayoutInitialised) {
-            expansionLayout.addIndicatorListener(new ExpansionLayout.IndicatorListener() {
-                @Override
-                public void onStartedExpand(ExpansionLayout expansionLayout, boolean willExpand) {
-                    onExpansionModifyView(willExpand);
-                }
-            });
+            expansionLayout.addIndicatorListener((expansionLayout, willExpand) -> onExpansionModifyView(willExpand));
 
-            setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (toggleOnClick) {
-                        expansionLayout.toggle(true);
-                    }
+            setOnClickListener(view -> {
+                if (toggleOnClick) {
+                    expansionLayout.toggle(true);
                 }
             });
 
@@ -148,14 +145,14 @@ public class ExpansionHeader extends FrameLayout {
     }
 
     //can be overriden
-    protected void initialiseView(boolean isExpanded) {
+    private void initialiseView(boolean isExpanded) {
         if (headerIndicator != null) {
             headerIndicator.setRotation(isExpanded ? headerRotationExpanded : headerRotationCollapsed);
         }
     }
 
     //can be overriden
-    protected void onExpansionModifyView(boolean willExpand) {
+    private void onExpansionModifyView(boolean willExpand) {
         setSelected(willExpand);
         if (headerIndicator != null) {
             if (indicatorAnimator != null) {
@@ -167,7 +164,7 @@ public class ExpansionHeader extends FrameLayout {
                 indicatorAnimator = ObjectAnimator.ofFloat(headerIndicator, View.ROTATION, headerRotationCollapsed);
             }
 
-            indicatorAnimator.addListener(new AnimatorListenerAdapter() {
+            Objects.requireNonNull(indicatorAnimator).addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation, boolean isReverse) {
                     indicatorAnimator = null;

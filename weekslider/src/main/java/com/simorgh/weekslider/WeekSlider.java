@@ -32,54 +32,52 @@ import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 public class WeekSlider extends View {
     private StateUpdateListener stateUpdateListener;
     private Bitmap clouds;
-    private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-    private int unreachedColor = Color.parseColor("#fcc0bb");
-    private int reachedColor = Color.parseColor("#ffffff");
-    private int textColorSlider = Color.parseColor("#8e1618");
-    private int textColorLabels = Color.parseColor("#5a0a0d");
-    private int colorSmallCircle = Color.parseColor("#f2776e");
+    private final int unreachedColor = Color.parseColor("#fcc0bb");
+    private final int reachedColor = Color.parseColor("#ffffff");
+    private final int textColorSlider = Color.parseColor("#8e1618");
+    private final int textColorLabels = Color.parseColor("#5a0a0d");
+    private final int colorSmallCircle = Color.parseColor("#f2776e");
 
 
     private String startTextDay = "1";
     private String startTextMonth = "فروردین";
     private String endTextDay = "13";
     private String endTextMonth = "آذر";
-    private String bubbleText = "";
 
 
-    private RectF cloudRect = new RectF();
-    private RectF reachedRect = new RectF();
-    private RectF unreachedRect = new RectF();
-    private RectF bubbleRect = new RectF();
+    private final RectF cloudRect = new RectF();
+    private final RectF reachedRect = new RectF();
+    private final RectF unreachedRect = new RectF();
+    private final RectF bubbleRect = new RectF();
 
-    private Path indicatorPath = new Path();
+    private final Path indicatorPath = new Path();
 
-    private float max = 40;
+    private final float max = 40;
     private int weekNumber;
-    private final String weekLabel = "هفته ";
     private final long DURATION = 1200;
 
 
     public WeekSlider(Context context) {
         super(context);
-        initView(context, null);
+        initView(null);
     }
 
     public WeekSlider(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        initView(context, attrs);
+        initView(attrs);
     }
 
     public WeekSlider(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initView(context, attrs);
+        initView(attrs);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public WeekSlider(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        initView(context, attrs);
+        initView(attrs);
     }
 
     @Override
@@ -146,7 +144,7 @@ public class WeekSlider extends View {
         setMeasuredDimension((width + paddingWidth), (height + paddingHeight));
     }
 
-    private void initView(Context context, @Nullable AttributeSet attrs) {
+    private void initView(@Nullable AttributeSet attrs) {
         paint.setColor(reachedColor);
         paint.setStyle(Paint.Style.FILL);
         paint.setTextAlign(Paint.Align.CENTER);
@@ -264,7 +262,8 @@ public class WeekSlider extends View {
     private void drawBubbleText(Canvas canvas) {
         paint.setColor(textColorSlider);
         paint.setTextSize(sp2px(10));
-        bubbleText = String.format("%s%s", weekLabel, numbers[weekNumber - 1]);
+        String weekLabel = "هفته ";
+        String bubbleText = String.format("%s%s", weekLabel, numbers[weekNumber - 1]);
         canvas.drawText(bubbleText, reachedX - 0.025f * getWidth(), 0.21f * getHeight(), paint);
     }
 
@@ -371,7 +370,7 @@ public class WeekSlider extends View {
     }
 
     public interface StateUpdateListener {
-        public void onStateUpdated(float percent, int weekNumber);
+        void onStateUpdated(float percent, int weekNumber);
     }
 
     public float getNewX(float newX) {
@@ -394,7 +393,7 @@ public class WeekSlider extends View {
     }
 
 
-    private static String[] numbers = {
+    private static final String[] numbers = {
             "اول",
             "دوم",
             "سوم",

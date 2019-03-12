@@ -2,8 +2,6 @@ package com.simorgh.database;
 
 import org.junit.Test;
 
-import io.reactivex.Observable;
-
 import static org.junit.Assert.*;
 
 /**

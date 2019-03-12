@@ -33,43 +33,43 @@ public abstract class DayPickerView extends ListView implements OnScrollListener
     // Affects when the month selection will change while scrolling up
     protected static final int SCROLL_HYST_WEEKS = 2;
     // How long the GoTo fling animation should last
-    protected static final int GOTO_SCROLL_DURATION = 250;
+    private static final int GOTO_SCROLL_DURATION = 250;
     // How long to wait after receiving an onScrollStateChanged notification
     // before acting on it
-    protected static final int SCROLL_CHANGE_DELAY = 40;
+    private static final int SCROLL_CHANGE_DELAY = 40;
     // The number of days to display in each week
     public static final int DAYS_PER_WEEK = 7;
-    public static int LIST_TOP_OFFSET = -1; // so that the top line will be
-                                            // under the separator
+    private static final int LIST_TOP_OFFSET = -1; // so that the top line will be
+    // under the separator
     // You can override these numbers to get a different appearance
     protected int mNumWeeks = 6;
     protected boolean mShowWeekNumber = false;
     protected int mDaysPerWeek = 7;
-//
+    //
     // These affect the scroll speed and feel
-    protected float mFriction = 1.0f;
+    private final float mFriction = 1.0f;
 
-    protected Context mContext;
-    protected Handler mHandler;
+    private Context mContext;
+    private Handler mHandler;
 
     // highlighted time
-    protected MonthAdapter.CalendarDay mSelectedDay = new MonthAdapter.CalendarDay();
-    protected MonthAdapter mAdapter;
+    private final MonthAdapter.CalendarDay mSelectedDay = new MonthAdapter.CalendarDay();
+    private MonthAdapter mAdapter;
 
-    protected MonthAdapter.CalendarDay mTempDay = new MonthAdapter.CalendarDay();
+    private final MonthAdapter.CalendarDay mTempDay = new MonthAdapter.CalendarDay();
 
     // When the week starts; numbered like Time.<WEEKDAY> (e.g. SUNDAY=0).
     protected int mFirstDayOfWeek;
     // The last name announced by accessibility
     protected CharSequence mPrevMonthName;
     // which month should be displayed/highlighted [0-11]
-    protected int mCurrentMonthDisplayed;
+    private int mCurrentMonthDisplayed;
     // used for tracking during a scroll
-    protected long mPreviousScrollPosition;
+    private long mPreviousScrollPosition;
     // used for tracking what state listview is in
-    protected int mPreviousScrollState = OnScrollListener.SCROLL_STATE_IDLE;
+    private int mPreviousScrollState = OnScrollListener.SCROLL_STATE_IDLE;
     // used for tracking what state listview is in
-    protected int mCurrentScrollState = OnScrollListener.SCROLL_STATE_IDLE;
+    private int mCurrentScrollState = OnScrollListener.SCROLL_STATE_IDLE;
 
     private DatePickerController mController;
     private boolean mPerformingScroll;
@@ -79,20 +79,20 @@ public abstract class DayPickerView extends ListView implements OnScrollListener
         init(context);
     }
 
-    public DayPickerView(Context context, DatePickerController controller) {
+    DayPickerView(Context context, DatePickerController controller) {
         super(context);
         init(context);
         setController(controller);
     }
 
-    public void setController(DatePickerController controller) {
+    private void setController(DatePickerController controller) {
         mController = controller;
         mController.registerOnDateChangedListener(this);
         refreshAdapter();
         onDateChanged();
     }
 
-    public void init(Context context) {
+    private void init(Context context) {
         mHandler = new Handler();
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         setDrawSelectorOnTop(false);
@@ -109,7 +109,7 @@ public abstract class DayPickerView extends ListView implements OnScrollListener
      * Creates a new adapter if necessary and sets up its parameters. Override
      * this method to provide a custom adapter.
      */
-    protected void refreshAdapter() {
+    private void refreshAdapter() {
         if (mAdapter == null) {
             mAdapter = createMonthAdapter(getContext(), mController);
         } else {
@@ -119,14 +119,14 @@ public abstract class DayPickerView extends ListView implements OnScrollListener
         setAdapter(mAdapter);
     }
 
-    public abstract MonthAdapter createMonthAdapter(Context context,
-            DatePickerController controller);
+    protected abstract MonthAdapter createMonthAdapter(Context context,
+                                                       DatePickerController controller);
 
     /*
      * Sets all the required fields for the list view. Override this method to
      * set a different list view behavior.
      */
-    protected void setUpListView() {
+    private void setUpListView() {
         // Transparent background on scroll
         setCacheColorHint(0);
         // No dividers
@@ -149,15 +149,15 @@ public abstract class DayPickerView extends ListView implements OnScrollListener
      * the list will not be scrolled unless forceScroll is true. This time may
      * optionally be highlighted as selected as well.
      *
-     * @param day The day to move to
-     * @param animate Whether to scroll to the given time or just redraw at the
-     *            new location
+     * @param day         The day to move to
+     * @param animate     Whether to scroll to the given time or just redraw at the
+     *                    new location
      * @param setSelected Whether to set the given time as selected
      * @param forceScroll Whether to recenter even if the time is already
-     *            visible
+     *                    visible
      * @return Whether or not the view animated to the new location
      */
-    public boolean goTo(MonthAdapter.CalendarDay day, boolean animate, boolean setSelected, boolean forceScroll) {
+    private boolean goTo(MonthAdapter.CalendarDay day, boolean animate, boolean setSelected, boolean forceScroll) {
 
         // Set the selected day
         if (setSelected) {
@@ -170,7 +170,7 @@ public abstract class DayPickerView extends ListView implements OnScrollListener
 
         View child;
         int i = 0;
-        int top = 0;
+        int top;
         // Find a child that's completely in the view
         do {
             child = getChildAt(i++);
@@ -218,13 +218,7 @@ public abstract class DayPickerView extends ListView implements OnScrollListener
 
     public void postSetSelection(final int position) {
         clearFocus();
-        post(new Runnable() {
-
-            @Override
-            public void run() {
-                setSelection(position);
-            }
-        });
+        post(() -> setSelection(position));
         onScrollStateChanged(this, OnScrollListener.SCROLL_STATE_IDLE);
     }
 
@@ -249,7 +243,7 @@ public abstract class DayPickerView extends ListView implements OnScrollListener
      * Sets the month displayed at the top of this view based on time. Override
      * to add custom events when the title is changed.
      */
-    protected void setMonthDisplayed(MonthAdapter.CalendarDay date) {
+    private void setMonthDisplayed(MonthAdapter.CalendarDay date) {
         mCurrentMonthDisplayed = date.month;
         invalidateViews();
     }
@@ -261,7 +255,7 @@ public abstract class DayPickerView extends ListView implements OnScrollListener
         mScrollStateChangedRunnable.doScrollStateChange(view, scrollState);
     }
 
-    protected ScrollStateRunnable mScrollStateChangedRunnable = new ScrollStateRunnable();
+    private final ScrollStateRunnable mScrollStateChangedRunnable = new ScrollStateRunnable();
 
     protected class ScrollStateRunnable implements Runnable {
         private int mNewState;
@@ -270,10 +264,10 @@ public abstract class DayPickerView extends ListView implements OnScrollListener
          * Sets up the runnable with a short delay in case the scroll state
          * immediately changes again.
          *
-         * @param view The list view that changed state
+         * @param view        The list view that changed state
          * @param scrollState The new state it changed to
          */
-        public void doScrollStateChange(AbsListView view, int scrollState) {
+        void doScrollStateChange(AbsListView view, int scrollState) {
             mHandler.removeCallbacks(this);
             mNewState = scrollState;
             mHandler.postDelayed(this, SCROLL_CHANGE_DELAY);
@@ -328,7 +322,7 @@ public abstract class DayPickerView extends ListView implements OnScrollListener
 
         int maxDisplayedHeight = 0;
         int mostVisibleIndex = 0;
-        int i=0;
+        int i = 0;
         int bottom = 0;
         while (bottom < height) {
             View child = getChildAt(i);
@@ -355,7 +349,7 @@ public abstract class DayPickerView extends ListView implements OnScrollListener
      * Attempts to return the date that has accessibility focus.
      *
      * @return The date that has accessibility focus, or {@code null} if no date
-     *         has focus.
+     * has focus.
      */
     private MonthAdapter.CalendarDay findAccessibilityFocus() {
         final int childCount = getChildCount();
@@ -416,7 +410,7 @@ public abstract class DayPickerView extends ListView implements OnScrollListener
     public void onInitializeAccessibilityEvent(@NonNull AccessibilityEvent event) {
         super.onInitializeAccessibilityEvent(event);
         event.setItemCount(-1);
-   }
+    }
 
     private static String getMonthAndYearString(MonthAdapter.CalendarDay day) {
         PersianCalendar mPersianCalendar = new PersianCalendar();
@@ -437,11 +431,10 @@ public abstract class DayPickerView extends ListView implements OnScrollListener
     @SuppressWarnings("deprecation")
     public void onInitializeAccessibilityNodeInfo(@NonNull AccessibilityNodeInfo info) {
         super.onInitializeAccessibilityNodeInfo(info);
-        if(Build.VERSION.SDK_INT >= 21) {
+        if (Build.VERSION.SDK_INT >= 21) {
             info.addAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_SCROLL_BACKWARD);
             info.addAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_SCROLL_FORWARD);
-        }
-        else {
+        } else {
             info.addAction(AccessibilityNodeInfo.ACTION_SCROLL_FORWARD);
             info.addAction(AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD);
         }
@@ -471,7 +464,7 @@ public abstract class DayPickerView extends ListView implements OnScrollListener
                 day.month = 0;
                 day.year++;
             }
-        } else if (action == AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD) {
+        } else {
             View firstVisibleView = getChildAt(0);
             // If the view is fully visible, jump one month back. Otherwise, we'll just jump
             // to the first day of first visible month.

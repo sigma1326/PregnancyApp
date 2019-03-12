@@ -267,7 +267,7 @@ public class BloodPressureView extends ExpansionsViewGroupLinearLayout {
             this.bloodPressure = bloodPressure;
         }
 
-        public State(Parcelable superState, BloodPressure bloodPressure) {
+        State(Parcelable superState, BloodPressure bloodPressure) {
             super(superState);
             this.bloodPressure = bloodPressure;
         }

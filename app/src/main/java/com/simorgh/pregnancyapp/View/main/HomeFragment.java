@@ -82,11 +82,6 @@ public class HomeFragment extends BaseFragment {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
     private final ViewSwitcher.ViewFactory mFactory = () -> {
         TextView t = new TextView(getContext());
         t.setGravity(Gravity.START);

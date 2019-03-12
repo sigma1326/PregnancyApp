@@ -29,7 +29,6 @@ import static android.util.TypedValue.COMPLEX_UNIT_PX;
 public class EmbryoWeekInfoView extends ConstraintLayout {
     private ExpandableLayout expandableLayout;
     private TextSwitcher summary;
-    private TextView readMore;
     private TextView title;
     private OnReadMoreClickedListener clickedListener;
 
@@ -54,7 +53,7 @@ public class EmbryoWeekInfoView extends ConstraintLayout {
         initView(context, attrs);
     }
 
-    private ViewSwitcher.ViewFactory mFactory = () -> {
+    private final ViewSwitcher.ViewFactory mFactory = () -> {
         TextView t = new TextView(getContext());
         t.setGravity(Gravity.START);
         t.setTypeface(Typeface.createFromAsset(Objects.requireNonNull(getContext()).getAssets(), "fonts/iransans_medium.ttf"));
@@ -77,14 +76,12 @@ public class EmbryoWeekInfoView extends ConstraintLayout {
 
         expandableLayout = findViewById(R.id.expandable_layout);
         summary = findViewById(R.id.tv_summary);
-        readMore = findViewById(R.id.tv_read_more);
+        TextView readMore = findViewById(R.id.tv_read_more);
         title = findViewById(R.id.tv_title);
 
         summary.setFactory(mFactory);
 
-        title.setOnClickListener(v1 -> {
-            expandableLayout.toggle();
-        });
+        title.setOnClickListener(v1 -> expandableLayout.toggle());
 
         readMore.setOnClickListener(v1 -> {
             if (clickedListener != null) {

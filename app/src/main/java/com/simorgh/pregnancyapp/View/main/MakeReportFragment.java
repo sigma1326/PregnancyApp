@@ -30,7 +30,7 @@ import butterknife.BindView;
 public class MakeReportFragment extends BaseFragment implements DatePickerDialog.OnDateSetListener {
 
     private MakeReportViewModel mViewModel;
-    private PersianCalendar temp = new PersianCalendar();
+    private final PersianCalendar temp = new PersianCalendar();
 
     @BindView(R.id.chb_drugs)
     CheckBox mDrugs;
@@ -86,22 +86,14 @@ public class MakeReportFragment extends BaseFragment implements DatePickerDialog
         ViewCompat.setLayoutDirection(view, ViewCompat.LAYOUT_DIRECTION_LTR);
 
 
-        mViewModel.getStartDateString().observe(this, date -> {
-            mStartRange.setText(date);
-        });
+        mViewModel.getStartDateString().observe(this, date -> mStartRange.setText(date));
 
-        mViewModel.getEndDateString().observe(this, date -> {
-            mEndRange.setText(date);
-        });
+        mViewModel.getEndDateString().observe(this, date -> mEndRange.setText(date));
 
 
-        mStartRange.setOnClickListener(v -> {
-            createDateDialog(true);
-        });
+        mStartRange.setOnClickListener(v -> createDateDialog(true));
 
-        mEndRange.setOnClickListener(v -> {
-            createDateDialog(false);
-        });
+        mEndRange.setOnClickListener(v -> createDateDialog(false));
 
         mMakeReport.setOnClickListener(v -> {
 

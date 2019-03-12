@@ -16,9 +16,9 @@ import androidx.lifecycle.ViewModel;
 import io.reactivex.Completable;
 
 public class RegisterViewModel extends ViewModel {
-    private MutableLiveData<Date> pregnancyStartDate;
-    private MutableLiveData<Date> motherBirthDate;
-    private MutableLiveData<BloodType> bloodType = new MediatorLiveData<>();
+    private final MutableLiveData<Date> pregnancyStartDate;
+    private final MutableLiveData<Date> motherBirthDate;
+    private final MutableLiveData<BloodType> bloodType = new MediatorLiveData<>();
 
     {
         Date now = new Date(Calendar.getInstance(), true);
@@ -44,21 +44,15 @@ public class RegisterViewModel extends ViewModel {
     }
 
     public void setPregnancyStartDate(Date value) {
-        ThreadUtils.onUI(() -> {
-            pregnancyStartDate.setValue(value);
-        });
+        ThreadUtils.onUI(() -> pregnancyStartDate.setValue(value));
     }
 
     public void setMotherBirthDate(Date value) {
-        ThreadUtils.onUI(() -> {
-            motherBirthDate.setValue(value);
-        });
+        ThreadUtils.onUI(() -> motherBirthDate.setValue(value));
     }
 
     public void setBloodType(BloodType value) {
-        ThreadUtils.onUI(() -> {
-            bloodType.setValue(value);
-        });
+        ThreadUtils.onUI(() -> bloodType.setValue(value));
     }
 
     public void login(Repository repository, onUserUpdatedCallback callback) {
@@ -82,8 +76,8 @@ public class RegisterViewModel extends ViewModel {
     }
 
     public interface onUserUpdatedCallback {
-        public void onUserUpdated();
+        void onUserUpdated();
 
-        public void onFailed();
+        void onFailed();
     }
 }

@@ -450,12 +450,12 @@ public class NumberPicker extends LinearLayout {
     /**
      * @see ViewConfiguration#getScaledTouchSlop()
      */
-    private int mTouchSlop;
+    private final int mTouchSlop;
 
     /**
      * @see ViewConfiguration#getScaledMinimumFlingVelocity()
      */
-    private int mMinimumFlingVelocity;
+    private final int mMinimumFlingVelocity;
 
     /**
      * @see ViewConfiguration#getScaledMaximumFlingVelocity()
@@ -515,17 +515,17 @@ public class NumberPicker extends LinearLayout {
     /**
      * Flag whether the selector wheel should hidden until the picker has focus.
      */
-    private boolean mHideWheelUntilFocused;
+    private final boolean mHideWheelUntilFocused;
 
     /**
      * The width of this widget.
      */
-    private float mWidth;
+    private final float mWidth;
 
     /**
      * The height of this widget.
      */
-    private float mHeight;
+    private final float mHeight;
 
     /**
      * The orientation of this widget.
@@ -565,7 +565,7 @@ public class NumberPicker extends LinearLayout {
     /**
      * The context of this widget.
      */
-    private Context mContext;
+    private final Context mContext;
 
     /**
      * The number formatter for current locale.
@@ -575,7 +575,7 @@ public class NumberPicker extends LinearLayout {
     /**
      * The view configuration of this widget.
      */
-    private ViewConfiguration mViewConfiguration;
+    private final ViewConfiguration mViewConfiguration;
 
     /**
      * Interface to listen for changes of the current value.

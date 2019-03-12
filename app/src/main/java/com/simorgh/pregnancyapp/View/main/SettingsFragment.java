@@ -46,11 +46,11 @@ public class SettingsFragment extends BaseFragment implements DatePickerDialog.O
     private NavController navController;
 
 
-    private volatile PersianCalendar tempPersianDate = CalendarTool.GregorianToPersian(Calendar.getInstance());
-    private Calendar min = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-    private Calendar max = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
+    private final PersianCalendar tempPersianDate = CalendarTool.GregorianToPersian(Calendar.getInstance());
+    private final Calendar min = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
+    private final Calendar max = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
     private Calendar temp = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-    private Calendar now = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
+    private final Calendar now = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
 
     @BindView(R.id.tv_pregnancy_start_date)
     TextView mPregnancyStartDate;
@@ -119,21 +119,13 @@ public class SettingsFragment extends BaseFragment implements DatePickerDialog.O
 
         mBloodType.setOnClickListener(this::createBloodTypeDialog);
 
-        mBirthDateStartDateTitle.setOnClickListener(v -> {
-            createDateDialog(2);
-        });
+        mBirthDateStartDateTitle.setOnClickListener(v -> createDateDialog(2));
 
-        mBirthDateStartDate.setOnClickListener(v -> {
-            createDateDialog(2);
-        });
+        mBirthDateStartDate.setOnClickListener(v -> createDateDialog(2));
 
-        mPregnancyStartDateTitle.setOnClickListener(v -> {
-            createDateDialog(1);
-        });
+        mPregnancyStartDateTitle.setOnClickListener(v -> createDateDialog(1));
 
-        mPregnancyStartDate.setOnClickListener(v -> {
-            createDateDialog(1);
-        });
+        mPregnancyStartDate.setOnClickListener(v -> createDateDialog(1));
 
         mViewModel.getMotherBirthDate().observe(this, s -> mBirthDateStartDate.setText(s));
         mViewModel.getPregnancyStartDate().observe(this, s -> mPregnancyStartDate.setText(s));
@@ -144,15 +136,11 @@ public class SettingsFragment extends BaseFragment implements DatePickerDialog.O
     }
 
     private void createFontSizeDialog(View v) {
-        DialogMaker.createFontChangeDialog(v.getContext(), value -> {
-            mViewModel.updateFontSize(repository, value);
-        });
+        DialogMaker.createFontChangeDialog(v.getContext(), value -> mViewModel.updateFontSize(repository, value));
     }
 
     private void createBloodTypeDialog(View v) {
-        DialogMaker.createBloodTypeDialog(v.getContext(), (type, isNegative) -> {
-            mViewModel.updateBloodType(repository, type, isNegative);
-        });
+        DialogMaker.createBloodTypeDialog(v.getContext(), (type, isNegative) -> mViewModel.updateBloodType(repository, type, isNegative));
     }
 
     private void createDateDialog(int type) {

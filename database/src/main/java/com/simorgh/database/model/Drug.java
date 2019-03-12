@@ -3,7 +3,6 @@ package com.simorgh.database.model;
 import com.simorgh.database.Date;
 
 import java.util.Objects;
-import java.util.Random;
 
 import androidx.annotation.Keep;
 import androidx.annotation.Nullable;

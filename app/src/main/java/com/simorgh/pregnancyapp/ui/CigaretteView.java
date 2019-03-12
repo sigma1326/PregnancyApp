@@ -40,8 +40,8 @@ public class CigaretteView extends ExpansionsViewGroupLinearLayout {
     private final Cigarette cigarette = new Cigarette();
     private Drawable selectedBkg;
     private Drawable unSelectedBkg;
-    private int unSelectedTextColor = Color.parseColor("#80545454");
-    private int selectedTextColor = Color.parseColor("#ffffff");
+    private final int unSelectedTextColor = Color.parseColor("#80545454");
+    private final int selectedTextColor = Color.parseColor("#ffffff");
 
 
     public CigaretteView(Context context) {
@@ -252,7 +252,7 @@ public class CigaretteView extends ExpansionsViewGroupLinearLayout {
             this.cigarette = cigarette;
         }
 
-        public State(Parcelable superState, Cigarette cigarette) {
+        State(Parcelable superState, Cigarette cigarette) {
             super(superState);
             this.cigarette = cigarette;
         }

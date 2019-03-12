@@ -39,7 +39,7 @@ public class TextViewWithCircularIndicator extends AppCompatTextView {
 
     private static final int SELECTED_CIRCLE_ALPHA = 255;
 
-    Paint mCirclePaint = new Paint();
+    final Paint mCirclePaint = new Paint();
 
     private final int mRadius;
     private final int mCircleColor;
@@ -76,7 +76,7 @@ public class TextViewWithCircularIndicator extends AppCompatTextView {
             final int width = getWidth();
             final int height = getHeight();
             int radius = Math.min(width, height) / 2;
-            canvas.drawCircle(width / 2, height / 2, radius, mCirclePaint);
+            canvas.drawCircle(width / 2f, height / 2f, radius, mCirclePaint);
         }
         setSelected(mDrawCircle);
         super.onDraw(canvas);

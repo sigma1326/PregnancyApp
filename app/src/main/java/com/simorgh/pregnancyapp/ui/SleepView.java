@@ -203,7 +203,7 @@ public class SleepView extends ExpansionsViewGroupLinearLayout {
             this.sleepTime = sleepTime;
         }
 
-        public State(Parcelable superState, SleepTime sleepTime) {
+        State(Parcelable superState, SleepTime sleepTime) {
             super(superState);
             this.sleepTime = sleepTime;
         }

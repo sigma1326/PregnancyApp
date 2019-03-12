@@ -25,9 +25,7 @@ import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.ViewOutlineProvider;
-import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 
 import java.util.ArrayList;
@@ -72,9 +70,6 @@ public class BottomBar extends View {
     //default view height and width
     private static final int DEFAULT_HEIGHT = 70;
     private static final int DEFAULT_WIDTH = 360;
-
-
-    private Typeface typeface;
 
 
     private final RectF circleIconRect = new RectF();
@@ -213,7 +208,7 @@ public class BottomBar extends View {
 
         AssetManager assetMgr = getContext().getAssets();
         //noinspection SpellCheckingInspection
-        typeface = Typeface.createFromAsset(assetMgr, "fonts/iransans_medium.ttf");
+        Typeface typeface = Typeface.createFromAsset(assetMgr, "fonts/iransans_medium.ttf");
 
         itemTextPaint = new TextPaint();
         itemTextPaint.setTextSize(itemTextSize);

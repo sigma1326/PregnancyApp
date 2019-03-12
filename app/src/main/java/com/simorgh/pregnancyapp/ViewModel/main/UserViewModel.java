@@ -23,7 +23,7 @@ import io.reactivex.disposables.Disposable;
 
 @SuppressLint({"DefaultLocale"})
 public class UserViewModel extends ViewModel {
-    private MutableLiveData<Date> firstLoggedDate = new MutableLiveData<>();
+    private final MutableLiveData<Date> firstLoggedDate = new MutableLiveData<>();
     private final Calendar nowC = Calendar.getInstance();
     private LiveData<String> pregnancyStartDate;
     private LiveData<String> motherBirthDate = new MutableLiveData<>();

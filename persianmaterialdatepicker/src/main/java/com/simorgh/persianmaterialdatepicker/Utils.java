@@ -68,15 +68,15 @@ public class Utils {
         }
     }
 
-    /**
-     * Takes a number of weeks since the epoch and calculates the Julian day of
-     * the Monday for that week.
-     *
-     * This assumes that the week containing the {@link Time#EPOCH_JULIAN_DAY}
-     * is considered week 0. It returns the Julian day for the Monday
-     * {@code week} weeks after the Monday of the week containing the epoch.
-     *
-     * @param week Number of weeks since the epoch
+    /*
+      Takes a number of weeks since the epoch and calculates the Julian day of
+      the Monday for that week.
+
+      This assumes that the week containing the {@link Time#EPOCH_JULIAN_DAY}
+      is considered week 0. It returns the Julian day for the Monday
+      {@code week} weeks after the Monday of the week containing the epoch.
+
+      @param week Number of weeks since the epoch
      * @return The julian day for the Monday of the given week since the epoch
      */
     /**

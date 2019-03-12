@@ -122,9 +122,7 @@ public class AddLogFragment extends BaseFragment {
 
         });
 
-        clearFields.setOnClickListener(v -> {
-            mViewModel.clearFields(true);
-        });
+        clearFields.setOnClickListener(v -> mViewModel.clearFields(true));
 
 
         ThreadUtils.onUI(() -> {
@@ -139,36 +137,32 @@ public class AddLogFragment extends BaseFragment {
             }
         }, 200);
 
-        datePicker.setOnDateSelectedListener(date -> {
-            mViewModel.setDate(date);
-        });
+        datePicker.setOnDateSelectedListener(date -> mViewModel.setDate(date));
 
 
-        ThreadUtils.onUI(() -> {
-            mViewModel.getEditing().observe(this, enabled -> {
-                boolean isInputDate = false;
-                if (mViewModel.getDate().getValue() != null && mViewModel.getInputDate()!=null) {
-                    isInputDate = mViewModel.getInputDate().getDateLong() == mViewModel.getDate().getValue().getDateLong();
-                }
-                enabled |= isInputDate;
-                drugInsertView.setEnabled(enabled);
-                bloodPressureView.setEnabled(enabled);
-                motherWeightView.setEnabled(enabled);
-                feverView.setEnabled(enabled);
-                cigaretteView.setEnabled(enabled);
-                alcoholView.setEnabled(enabled);
-                sleepView.setEnabled(enabled);
-                exerciseView.setEnabled(enabled);
+        ThreadUtils.onUI(() -> mViewModel.getEditing().observe(this, enabled -> {
+            boolean isInputDate = false;
+            if (mViewModel.getDate().getValue() != null && mViewModel.getInputDate()!=null) {
+                isInputDate = mViewModel.getInputDate().getDateLong() == mViewModel.getDate().getValue().getDateLong();
+            }
+            enabled |= isInputDate;
+            drugInsertView.setEnabled(enabled);
+            bloodPressureView.setEnabled(enabled);
+            motherWeightView.setEnabled(enabled);
+            feverView.setEnabled(enabled);
+            cigaretteView.setEnabled(enabled);
+            alcoholView.setEnabled(enabled);
+            sleepView.setEnabled(enabled);
+            exerciseView.setEnabled(enabled);
 
-                saveLog.setEnabled(enabled);
-                saveLog.animate().alpha(enabled ? 1f : 0.5f);
+            saveLog.setEnabled(enabled);
+            saveLog.animate().alpha(enabled ? 1f : 0.5f);
 
-                clearFields.setEnabled(enabled);
-                clearFields.animate().alpha(enabled ? 1f : 0.5f);
+            clearFields.setEnabled(enabled);
+            clearFields.animate().alpha(enabled ? 1f : 0.5f);
 
-                ((DrugAdapter) Objects.requireNonNull(rvDrugs.getAdapter())).setCanEdit(enabled);
-            });
-        },300);
+            ((DrugAdapter) Objects.requireNonNull(rvDrugs.getAdapter())).setCanEdit(enabled);
+        }),300);
 
 
         rvDrugs.setHasFixedSize(false);
@@ -189,17 +183,9 @@ public class AddLogFragment extends BaseFragment {
         }));
 
 
-        mViewModel.getDrug().observe(this, drug -> {
-            drugInsertView.setDrug(drug);
-        });
+        mViewModel.getDrug().observe(this, drug -> drugInsertView.setDrug(drug));
 
-        drugInsertView.setInsertDrugListener(drug -> {
-            mViewModel.addDrug(drug, success -> {
-                ThreadUtils.onUI(() -> {
-                    Toast.makeText(getContext(), success ? "دارو اضافه شد" : "دارو موجود است", Toast.LENGTH_SHORT).show();
-                });
-            });
-        });
+        drugInsertView.setInsertDrugListener(drug -> mViewModel.addDrug(drug, success -> ThreadUtils.onUI(() -> Toast.makeText(getContext(), success ? "دارو اضافه شد" : "دارو موجود است", Toast.LENGTH_SHORT).show())));
 
         mViewModel.getAlcohol().observe(this, alcohol -> {
             if (!mViewModel.isSaving()) {
@@ -213,25 +199,17 @@ public class AddLogFragment extends BaseFragment {
             }
         });
 
-        mViewModel.getBloodPressure().observe(this, bloodPressure -> {
-            bloodPressureView.setBloodPressure(bloodPressure);
-        });
+        mViewModel.getBloodPressure().observe(this, bloodPressure -> bloodPressureView.setBloodPressure(bloodPressure));
 
-        mViewModel.getDrugs().observe(this, drugs -> {
-            ThreadUtils.onUI(() -> {
+        mViewModel.getDrugs().observe(this, drugs -> ThreadUtils.onUI(() -> {
 //                rvDrugs.setMinimumHeight(drugs.size() * 45);
-                ((DrugAdapter) Objects.requireNonNull(rvDrugs.getAdapter())).submitList(drugs);
-                Objects.requireNonNull(rvDrugs.getAdapter()).notifyDataSetChanged();
-            });
-        });
+            ((DrugAdapter) Objects.requireNonNull(rvDrugs.getAdapter())).submitList(drugs);
+            Objects.requireNonNull(rvDrugs.getAdapter()).notifyDataSetChanged();
+        }));
 
-        mViewModel.getMotherWeight().observe(this, weight -> {
-            motherWeightView.setWeight(weight);
-        });
+        mViewModel.getMotherWeight().observe(this, weight -> motherWeightView.setWeight(weight));
 
-        mViewModel.getExerciseTime().observe(this, exerciseTime -> {
-            exerciseView.setExerciseTime(exerciseTime);
-        });
+        mViewModel.getExerciseTime().observe(this, exerciseTime -> exerciseView.setExerciseTime(exerciseTime));
 
         mViewModel.getFever().observe(this, fever -> {
             if (!mViewModel.isSaving()) {
@@ -239,9 +217,7 @@ public class AddLogFragment extends BaseFragment {
             }
         });
 
-        mViewModel.getSleepTime().observe(this, sleepTime -> {
-            sleepView.setSleepTime(sleepTime);
-        });
+        mViewModel.getSleepTime().observe(this, sleepTime -> sleepView.setSleepTime(sleepTime));
 
 
         saveLog.setOnClickListener(v -> {
@@ -257,13 +233,9 @@ public class AddLogFragment extends BaseFragment {
             String error = mViewModel.checkErrors();
             if (error == null) {
                 mViewModel.saveLog(repository);
-                ThreadUtils.onUI(() -> {
-                    Toast.makeText(getContext(), getString(R.string.data_saved), Toast.LENGTH_SHORT).show();
-                });
+                ThreadUtils.onUI(() -> Toast.makeText(getContext(), getString(R.string.data_saved), Toast.LENGTH_SHORT).show());
             } else {
-                ThreadUtils.onUI(() -> {
-                    Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
-                });
+                ThreadUtils.onUI(() -> Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show());
             }
             mViewModel.setSaving(false);
         });

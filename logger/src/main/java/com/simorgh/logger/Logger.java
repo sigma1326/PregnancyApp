@@ -4,7 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-public class Logger {
+public final class Logger {
     private static final String LOGTAG = "pregnancy-app";
 
     private static String getLogString(String format, Object... args) {

@@ -30,9 +30,7 @@ public class AppManager extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
 
-        RxJavaPlugins.setErrorHandler(throwable -> {
-            Logger.e("Received undelivered error: " + throwable.getMessage());
-        });
+        RxJavaPlugins.setErrorHandler(throwable -> Logger.e("Received undelivered error: " + throwable.getMessage()));
 
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .detectDiskReads()
@@ -77,15 +75,13 @@ public class AppManager extends MultiDexApplication {
     }
 
     private void initTypeFace() {
-        Completable.fromRunnable(() -> {
-            ViewPump.init(ViewPump.builder()
-                    .addInterceptor(new CalligraphyInterceptor(
-                            new CalligraphyConfig.Builder()
-                                    .setDefaultFontPath("fonts/iransans_medium.ttf")
-                                    .setFontAttrId(R.attr.fontPath)
-                                    .build()))
-                    .build());
-        }).subscribeWith(Repository.completableObserver);
+        Completable.fromRunnable(() -> ViewPump.init(ViewPump.builder()
+                .addInterceptor(new CalligraphyInterceptor(
+                        new CalligraphyConfig.Builder()
+                                .setDefaultFontPath("fonts/iransans_medium.ttf")
+                                .setFontAttrId(R.attr.fontPath)
+                                .build()))
+                .build())).subscribeWith(Repository.completableObserver);
     }
 
 

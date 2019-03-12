@@ -28,17 +28,17 @@ public class NiceDatePickerSmall extends ConstraintLayout {
 
     private TextView tvDate;
 
-    private PersianCalendar persianCalendar;
+    private final PersianCalendar persianCalendar;
     private PersianCalendar selectedPersianDate;
-    private PersianCalendar tempPersianDate;
+    private final PersianCalendar tempPersianDate;
 
     private Date date;
 
     private int maxYear;
     private int minYear;
 
-    private Calendar minDate;
-    private Calendar maxDate;
+    private final Calendar minDate;
+    private final Calendar maxDate;
 
     {
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());

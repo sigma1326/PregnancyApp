@@ -31,6 +31,7 @@ import com.simorgh.persianmaterialdatepicker.Utils;
 /**
  * Draw the two smaller AM and PM circles next to where the larger circle will be.
  */
+@SuppressWarnings("SpellCheckingInspection")
 public class AmPmCirclesView extends View {
   private static final String TAG = "AmPmCirclesView";
 
@@ -61,8 +62,8 @@ public class AmPmCirclesView extends View {
   private int mAmPmYCenter;
   private int mAmOrPm;
   private int mAmOrPmPressed;
-  private Context context;
-  private String fontName="DroidNaskh-Regular";
+  private final Context context;
+  private String fontName;
 
   public AmPmCirclesView(Context context, String fontName) {
     super(context);

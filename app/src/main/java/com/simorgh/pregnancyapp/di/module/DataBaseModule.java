@@ -5,8 +5,6 @@ import android.app.Application;
 import com.simorgh.database.PregnancyDataBase;
 import com.simorgh.database.Repository;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 

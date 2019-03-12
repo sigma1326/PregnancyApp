@@ -4,8 +4,6 @@ import com.simorgh.database.Date;
 import com.simorgh.database.model.Alcohol;
 
 import androidx.annotation.Keep;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;

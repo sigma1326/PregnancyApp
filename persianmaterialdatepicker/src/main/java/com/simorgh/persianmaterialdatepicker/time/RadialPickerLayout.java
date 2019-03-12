@@ -78,13 +78,13 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
   private boolean mHideAmPm;
   private int mCurrentItemShowing;
 
-  private CircleView mCircleView;
-  private AmPmCirclesView mAmPmCirclesView;
-  private RadialTextsView mHourRadialTextsView;
-  private RadialTextsView mMinuteRadialTextsView;
-  private RadialSelectorView mHourRadialSelectorView;
-  private RadialSelectorView mMinuteRadialSelectorView;
-  private View mGrayBox;
+  private final CircleView mCircleView;
+  private final AmPmCirclesView mAmPmCirclesView;
+  private final RadialTextsView mHourRadialTextsView;
+  private final RadialTextsView mMinuteRadialTextsView;
+  private final RadialSelectorView mHourRadialSelectorView;
+  private final RadialSelectorView mMinuteRadialSelectorView;
+  private final View mGrayBox;
 
   private int[] mSnapPrefer30sMap;
   private boolean mInputEnabled;
@@ -94,10 +94,10 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
   private int mDownDegrees;
   private float mDownX;
   private float mDownY;
-  private AccessibilityManager mAccessibilityManager;
+  private final AccessibilityManager mAccessibilityManager;
 
   private AnimatorSet mTransition;
-  private Handler mHandler = new Handler();
+  private final Handler mHandler = new Handler();
 
   private String fontName="DroidNaskh-Regular";
 
@@ -153,9 +153,6 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
     mTimeInitialized = false;
   }
 
-  /**
-   * Measure the view to end up as a square, based on the minimum of the height and width.
-   */
   /**
    * @Override public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
    * int measuredWidth = MeasureSpec.getSize(widthMeasureSpec);
@@ -632,12 +629,9 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
           // in case the user moves their finger quickly.
           mHapticFeedbackController.tryVibrate();
           mDownDegrees = -1;
-          mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-              mAmPmCirclesView.setAmOrPmPressed(mIsTouchingAmOrPm);
-              mAmPmCirclesView.invalidate();
-            }
+          mHandler.postDelayed(() -> {
+            mAmPmCirclesView.setAmOrPmPressed(mIsTouchingAmOrPm);
+            mAmPmCirclesView.invalidate();
           }, TAP_TIMEOUT);
         } else {
           // If we're in accessibility mode, force the touch to be legal. Otherwise,
@@ -649,15 +643,12 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
             // If it's a legal touch, set that number as "selected" after the
             // TAP_TIMEOUT in case the user moves their finger quickly.
             mHapticFeedbackController.tryVibrate();
-            mHandler.postDelayed(new Runnable() {
-              @Override
-              public void run() {
-                mDoingMove = true;
-                int value = reselectSelector(mDownDegrees, isInnerCircle[0],
-                  false, true);
-                mLastValueSelected = value;
-                mListener.onValueSelected(getCurrentItemShowing(), value, false);
-              }
+            mHandler.postDelayed(() -> {
+              mDoingMove = true;
+              int value1 = reselectSelector(mDownDegrees, isInnerCircle[0],
+                false, true);
+              mLastValueSelected = value1;
+              mListener.onValueSelected(getCurrentItemShowing(), value1, false);
             }, TAP_TIMEOUT);
           }
         }
@@ -850,7 +841,7 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
       int degrees = value * stepSize;
       degrees = snapOnly30s(degrees, changeMultiplier);
       value = degrees / stepSize;
-      int maxValue = 0;
+      int maxValue;
       int minValue = 0;
       if (currentItemShowing == HOUR_INDEX) {
         if (mIs24HourMode) {

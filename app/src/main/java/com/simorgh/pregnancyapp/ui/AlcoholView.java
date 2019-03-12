@@ -40,8 +40,8 @@ public class AlcoholView extends ExpansionsViewGroupLinearLayout {
     private final Alcohol alcohol = new Alcohol();
     private Drawable selectedBkg;
     private Drawable unSelectedBkg;
-    private int unSelectedTextColor = Color.parseColor("#80545454");
-    private int selectedTextColor = Color.parseColor("#ffffff");
+    private final int unSelectedTextColor = Color.parseColor("#80545454");
+    private final int selectedTextColor = Color.parseColor("#ffffff");
 
 
     public AlcoholView(Context context) {
@@ -101,13 +101,9 @@ public class AlcoholView extends ExpansionsViewGroupLinearLayout {
         });
 
 
-        have.setOnClickListener(v1 -> {
-            toggleSelected(true, true);
-        });
+        have.setOnClickListener(v1 -> toggleSelected(true, true));
 
-        haveNot.setOnClickListener(v1 -> {
-            toggleSelected(false, true);
-        });
+        haveNot.setOnClickListener(v1 -> toggleSelected(false, true));
 
     }
 
@@ -246,7 +242,7 @@ public class AlcoholView extends ExpansionsViewGroupLinearLayout {
             this.alcohol = alcohol;
         }
 
-        public State(Parcelable superState, Alcohol alcohol) {
+        State(Parcelable superState, Alcohol alcohol) {
             super(superState);
             this.alcohol = alcohol;
         }

@@ -24,8 +24,8 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
 public class MakeReportViewModel extends ViewModel {
-    private MutableLiveData<Date> startDate;
-    private MutableLiveData<Date> endDate;
+    private final MutableLiveData<Date> startDate;
+    private final MutableLiveData<Date> endDate;
     private LiveData<String> startDateString = new MutableLiveData<>();
     private LiveData<String> endDateString = new MutableLiveData<>();
     private boolean start;
@@ -69,9 +69,7 @@ public class MakeReportViewModel extends ViewModel {
     }
 
     public void setStartDate(Date value) {
-        ThreadUtils.onUI(() -> {
-            startDate.setValue(value);
-        });
+        ThreadUtils.onUI(() -> startDate.setValue(value));
     }
 
     public MutableLiveData<Date> getEndDate() {
@@ -79,9 +77,7 @@ public class MakeReportViewModel extends ViewModel {
     }
 
     public void setEndDate(Date value) {
-        ThreadUtils.onUI(() -> {
-            endDate.setValue(value);
-        });
+        ThreadUtils.onUI(() -> endDate.setValue(value));
     }
 
     public LiveData<String> getStartDateString() {

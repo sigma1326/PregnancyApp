@@ -21,7 +21,6 @@ import android.util.AttributeSet;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatTextView;
 

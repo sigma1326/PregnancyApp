@@ -30,7 +30,6 @@ import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -271,44 +270,32 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
         setCurrentItemShowing(currentItemShowing, false, true, true);
         mTimePicker.invalidate();
 
-        mHourView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setCurrentItemShowing(HOUR_INDEX, true, false, true);
-                tryVibrate();
-            }
+        mHourView.setOnClickListener(v -> {
+            setCurrentItemShowing(HOUR_INDEX, true, false, true);
+            tryVibrate();
         });
-        mMinuteView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setCurrentItemShowing(MINUTE_INDEX, true, false, true);
-                tryVibrate();
-            }
+        mMinuteView.setOnClickListener(v -> {
+            setCurrentItemShowing(MINUTE_INDEX, true, false, true);
+            tryVibrate();
         });
 
-        mOkButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mInKbMode && isTypedTimeFullyLegal()) {
-                    finishKbMode(false);
-                } else {
-                    tryVibrate();
-                }
-                if (mCallback != null) {
-                    mCallback.onTimeSet(mTimePicker,
-                            mTimePicker.getHours(), mTimePicker.getMinutes());
-                }
-                dismiss();
+        mOkButton.setOnClickListener(v -> {
+            if (mInKbMode && isTypedTimeFullyLegal()) {
+                finishKbMode(false);
+            } else {
+                tryVibrate();
             }
+            if (mCallback != null) {
+                mCallback.onTimeSet(mTimePicker,
+                        mTimePicker.getHours(), mTimePicker.getMinutes());
+            }
+            dismiss();
         });
         mOkButton.setOnKeyListener(keyboardListener);
 
-        mCancelButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tryVibrate();
-                getDialog().cancel();
-            }
+        mCancelButton.setOnClickListener(v -> {
+            tryVibrate();
+            getDialog().cancel();
         });
         mCancelButton.setVisibility(isCancelable() ? View.VISIBLE : View.GONE);
 
@@ -325,19 +312,16 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
         } else {
             mAmPmTextView.setVisibility(View.VISIBLE);
             updateAmPmDisplay(mInitialHourOfDay < 12 ? AM : PM);
-            mAmPmHitspace.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    tryVibrate();
-                    int amOrPm = mTimePicker.getIsCurrentlyAmOrPm();
-                    if (amOrPm == AM) {
-                        amOrPm = PM;
-                    } else if (amOrPm == PM) {
-                        amOrPm = AM;
-                    }
-                    updateAmPmDisplay(amOrPm);
-                    mTimePicker.setAmOrPm(amOrPm);
+            mAmPmHitspace.setOnClickListener(v -> {
+                tryVibrate();
+                int amOrPm = mTimePicker.getIsCurrentlyAmOrPm();
+                if (amOrPm == AM) {
+                    amOrPm = PM;
+                } else if (amOrPm == PM) {
+                    amOrPm = AM;
                 }
+                updateAmPmDisplay(amOrPm);
+                mTimePicker.setAmOrPm(amOrPm);
             });
         }
 
@@ -1031,8 +1015,8 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
      * mChildren are the children that can be reached from this node.
      */
     private static class Node {
-        private int[] mLegalKeys;
-        private ArrayList<Node> mChildren;
+        private final int[] mLegalKeys;
+        private final ArrayList<Node> mChildren;
 
         public Node(int... legalKeys) {
             mLegalKeys = legalKeys;
@@ -1044,8 +1028,8 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
         }
 
         public boolean containsKey(int key) {
-            for (int i = 0; i < mLegalKeys.length; i++) {
-                if (mLegalKeys[i] == key) {
+            for (int mLegalKey : mLegalKeys) {
+                if (mLegalKey == key) {
                     return true;
                 }
             }

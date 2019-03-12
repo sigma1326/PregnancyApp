@@ -4,10 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 
 import com.huma.room_for_asset.RoomAsset;
-import com.simorgh.database.callback.ArticleCallBack;
 import com.simorgh.database.callback.ArticlesForTypeCallBack;
 import com.simorgh.database.callback.ParagraphsCallBack;
-import com.simorgh.database.callback.WeekCallBack;
 import com.simorgh.database.model.Alcohol;
 import com.simorgh.database.model.Article;
 import com.simorgh.database.model.BloodPressure;
@@ -21,7 +19,6 @@ import com.simorgh.database.model.User;
 import com.simorgh.database.model.Week;
 import com.simorgh.database.model.Weight;
 import com.simorgh.logger.Logger;
-import com.simorgh.threadutils.ThreadUtils;
 
 import org.jetbrains.annotations.Contract;
 

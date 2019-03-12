@@ -40,8 +40,8 @@ public class FeverView extends ExpansionsViewGroupLinearLayout {
     private final Fever fever = new Fever();
     private Drawable selectedBkg;
     private Drawable unSelectedBkg;
-    private int unSelectedTextColor = Color.parseColor("#80545454");
-    private int selectedTextColor = Color.parseColor("#ffffff");
+    private final int unSelectedTextColor = Color.parseColor("#80545454");
+    private final int selectedTextColor = Color.parseColor("#ffffff");
 
 
     public FeverView(Context context) {
@@ -84,9 +84,7 @@ public class FeverView extends ExpansionsViewGroupLinearLayout {
         imgDescription.setAlpha(0.5f);
         imgDescription.setEnabled(false);
 
-        imgDescription.setOnClickListener(v1 -> {
-            expandableLayout.toggle(true);
-        });
+        imgDescription.setOnClickListener(v1 -> expandableLayout.toggle(true));
 
         have.setOnClickListener(v1 -> {
             Utils.hideKeyboard((Activity) v1.getContext());
@@ -245,7 +243,7 @@ public class FeverView extends ExpansionsViewGroupLinearLayout {
             this.fever = fever;
         }
 
-        public State(Parcelable superState, Fever fever) {
+        State(Parcelable superState, Fever fever) {
             super(superState);
             this.fever = fever;
         }

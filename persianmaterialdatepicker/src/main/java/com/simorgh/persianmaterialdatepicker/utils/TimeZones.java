@@ -150,7 +150,7 @@ public enum TimeZones {
 
 	private final TimeZone tz;
 
-	private TimeZones(final TimeZone tz) {
+	TimeZones(final TimeZone tz) {
 		this.tz = tz;
 	}
 

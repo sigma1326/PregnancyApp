@@ -3,7 +3,6 @@ package com.simorgh.nicedatepicker;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -34,15 +33,15 @@ public class NiceDatePicker extends ConstraintLayout {
     private TextView tvDate;
 
     private volatile PersianCalendar selectedPersianDate;
-    private volatile PersianCalendar tempPersianDate;
+    private final PersianCalendar tempPersianDate;
 
 
     private volatile OnDateSelectedListener onDateSelectedListener;
 
-    private volatile Date date;
+    private final Date date;
 
     private volatile Calendar minDate;
-    private volatile Calendar maxDate;
+    private final Calendar maxDate;
 
     private final int currentPersianYear;
 
@@ -121,16 +120,15 @@ public class NiceDatePicker extends ConstraintLayout {
 
         npMonth.setOnValueChangedListener((picker, oldVal, newVal) -> {
             int year = selectedPersianDate.getPersianYear();
-            int month = newVal;
             int day = selectedPersianDate.getPersianDay();
-            tempPersianDate.setPersianDate(year, month, day);
+            tempPersianDate.setPersianDate(year, newVal, day);
 
             boolean invalid = tempPersianDate.before(minDate) || tempPersianDate.after(maxDate);
             if (invalid) {
                 npMonth.setValue(oldVal);
                 Toast.makeText(getContext(), getContext().getString(R.string.can_not_be_selected), Toast.LENGTH_SHORT).show();
             } else {
-                selectedPersianDate.setPersianDate(year, month, day);
+                selectedPersianDate.setPersianDate(year, newVal, day);
                 if (newVal <= 6) {
                     npDay.setMaxValue(31);
                 } else {
@@ -156,17 +154,16 @@ public class NiceDatePicker extends ConstraintLayout {
         });
 
         npYear.setOnValueChangedListener((picker, oldVal, newVal) -> {
-            int year = newVal;
             int month = selectedPersianDate.getPersianMonth() + 1;
             int day = selectedPersianDate.getPersianDay();
-            tempPersianDate.setPersianDate(year, month, day);
+            tempPersianDate.setPersianDate(newVal, month, day);
             boolean invalid = tempPersianDate.before(minDate) || tempPersianDate.after(maxDate);
 
             if (invalid) {
                 npYear.setValue(oldVal);
                 Toast.makeText(getContext(), getContext().getString(R.string.can_not_be_selected), Toast.LENGTH_SHORT).show();
             } else {
-                selectedPersianDate.setPersianDate(year, month, day);
+                selectedPersianDate.setPersianDate(newVal, month, day);
                 if (selectedPersianDate.isPersianLeapYear()) {
                     if (npMonth.getValue() == 12) {
                         if (npDay.getValue() > 30) {

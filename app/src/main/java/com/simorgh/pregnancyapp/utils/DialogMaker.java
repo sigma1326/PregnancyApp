@@ -17,11 +17,11 @@ public class DialogMaker {
 
 
     public interface FontSizeChangeListener {
-        public void onFontSizeChanged(int value);
+        void onFontSizeChanged(int value);
     }
 
     public interface BloodTypeChangeListener {
-        public void onBloodTypeChanged(String type, boolean isNegative);
+        void onBloodTypeChanged(String type, boolean isNegative);
     }
 
     public static void createFontChangeDialog(@NonNull final Context context, @NonNull FontSizeChangeListener listener) {

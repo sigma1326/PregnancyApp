@@ -56,9 +56,7 @@ public class DrugAdapter extends ListAdapter<Drug, DrugAdapter.DrugViewHolder> {
             name.setText(item.getDrugName());
             if (item.getInfo() != null && !item.getInfo().isEmpty()) {
                 description.setText(item.getInfo());
-                expand.setOnClickListener(v -> {
-                    expandableLayout.toggle(true);
-                });
+                expand.setOnClickListener(v -> expandableLayout.toggle(true));
                 expand.setAlpha(1f);
                 expand.setEnabled(true);
             } else {
@@ -97,9 +95,9 @@ public class DrugAdapter extends ListAdapter<Drug, DrugAdapter.DrugViewHolder> {
     }
 
     public interface ItemClickListener {
-        public void removeItem(long itemId, int position);
+        void removeItem(long itemId, int position);
 
-        public void selectItemToEdit(Drug drug, int position);
+        void selectItemToEdit(Drug drug, int position);
     }
 
 

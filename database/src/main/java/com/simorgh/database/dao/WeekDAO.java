@@ -26,11 +26,6 @@ public interface WeekDAO {
     Maybe<Week> getWeek(int number);
 
     @Query("select * from weeks  where week_number=:number")
-    Week getWeekOld(int number);
-
-    @Query("select * from weeks  where week_number=:number")
     LiveData<Week> getWeekLiveData(int number);
 
-    @Query("select * from weeks order by week_number ASC")
-    Single<List<Week>> getWeeks();
 }

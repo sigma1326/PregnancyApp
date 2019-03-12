@@ -306,7 +306,7 @@ public class RadialSelectorView extends View {
         if (mForceDrawDot | mSelectionDegrees % 30 != 0) {
             // We're not on a direct tick (or we've been told to draw the dot anyway).
             mPaint.setAlpha(FULL_ALPHA);
-            canvas.drawCircle(pointX, pointY, (mSelectionRadius * 2 / 7), mPaint);
+            canvas.drawCircle(pointX, pointY, (mSelectionRadius * 2 / 7f), mPaint);
         } else {
             // We're not drawing the dot, so shorten the line to only go as far as the edge of the
             // selection circle.

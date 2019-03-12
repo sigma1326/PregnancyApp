@@ -63,9 +63,7 @@ public class PregnancyStartDateFragment extends BaseFragment {
         } else {
             datePicker.setSelectedDate(value);
         }
-        datePicker.setOnDateSelectedListener(date -> {
-            mViewModel.setPregnancyStartDate(date);
-        });
+        datePicker.setOnDateSelectedListener(date -> mViewModel.setPregnancyStartDate(date));
     }
 
     @Override

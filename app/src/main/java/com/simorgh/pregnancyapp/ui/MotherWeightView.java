@@ -114,17 +114,6 @@ public class MotherWeightView extends ExpansionsViewGroupLinearLayout {
     }
 
 
-    public void setDescription(String summaryText) {
-        boolean enabled = summaryText != null && !summaryText.isEmpty();
-        if (enabled) {
-            weight.setInfo(summaryText);
-            description.setText(summaryText);
-        } else {
-            weight.setInfo(null);
-            description.setText(null);
-        }
-    }
-
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
@@ -206,7 +195,7 @@ public class MotherWeightView extends ExpansionsViewGroupLinearLayout {
     }
 
     public static final class State extends BaseSavedState {
-        private Weight weight;
+        private final Weight weight;
 
         public State(Parcel source, Weight weight) {
             super(source);
@@ -219,7 +208,7 @@ public class MotherWeightView extends ExpansionsViewGroupLinearLayout {
             this.weight = weight;
         }
 
-        public State(Parcelable superState, Weight weight) {
+        State(Parcelable superState, Weight weight) {
             super(superState);
             this.weight = weight;
         }

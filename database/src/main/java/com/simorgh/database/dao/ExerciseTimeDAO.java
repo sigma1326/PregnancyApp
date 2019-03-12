@@ -4,7 +4,6 @@ import com.simorgh.database.Date;
 import com.simorgh.database.model.ExerciseTime;
 
 import androidx.annotation.Keep;
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;

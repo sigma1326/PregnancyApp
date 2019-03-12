@@ -18,7 +18,7 @@ import androidx.lifecycle.ViewModel;
 
 public class ArticleDetailViewModel extends ViewModel {
     private int articleType;
-    private MediatorLiveData<Integer> weekNumber = new MediatorLiveData<>();
+    private final MediatorLiveData<Integer> weekNumber = new MediatorLiveData<>();
     private LiveData<List<ArticleViewSubItem>> items = new MutableLiveData<>();
     private LiveData<List<Paragraph>> paragraphs;
     private LiveData<Article> article = new MediatorLiveData<>();
