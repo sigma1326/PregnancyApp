@@ -9,9 +9,12 @@ import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.view.View;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.simorgh.database.model.ExerciseTime;
 import com.simorgh.expandablelayout.ExpansionLayout;
@@ -52,14 +55,20 @@ public class ExerciseView extends ExpansionsViewGroupLinearLayout {
     }
 
     private void initView(@NonNull final Context context, AttributeSet attrs) {
-        View v = View.inflate(context, R.layout.view_exercise, this);
-        ViewCompat.setLayoutDirection(v, ViewCompat.LAYOUT_DIRECTION_LTR);
+        LayoutInflater.from(context).inflate(R.layout.view_exercise, this);
+        ViewCompat.setLayoutDirection(this, ViewCompat.LAYOUT_DIRECTION_LTR);
+        setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        setLayerType(LAYER_TYPE_HARDWARE, null);
+        setOrientation(VERTICAL);
+        setBackground(null);
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) getLayoutParams();
+        params.gravity = Gravity.CENTER;
+        setLayoutParams(params);
 
-
-        expandableLayout = v.findViewById(R.id.expandable_layout);
-        description = v.findViewById(R.id.et_description);
-        time = v.findViewById(R.id.et_time);
-        imgDescription = v.findViewById(R.id.img_description);
+        expandableLayout = findViewById(R.id.expandable_layout);
+        description = findViewById(R.id.et_description);
+        time = findViewById(R.id.et_time);
+        imgDescription = findViewById(R.id.img_description);
         imgDescription.setAlpha(0.5f);
         imgDescription.setEnabled(false);
 
@@ -134,6 +143,7 @@ public class ExerciseView extends ExpansionsViewGroupLinearLayout {
         }
 
     }
+
     private void updateViewData() {
         if (exerciseTime.getMinute() != 0) {
             time.setText(String.valueOf((int) exerciseTime.getMinute()));
@@ -150,6 +160,7 @@ public class ExerciseView extends ExpansionsViewGroupLinearLayout {
         imgDescription.setEnabled(descriptionEnabled);
         imgDescription.animate().alpha(descriptionEnabled ? 1f : 0.5f);
     }
+
     public ExerciseTime getExerciseTime() {
         if (time != null && description != null) {
             try {

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="top"
-    android:background="@drawable/expandable_layout_bkg">
+    android:background="@drawable/expandable_layout_bkg"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
     <com.simorgh.expandablelayout.ExpandableLayout
         android:id="@+id/expandable_layout"
@@ -82,7 +83,6 @@
         android:background="@drawable/btn_expandable_layout_bkg"
         android:gravity="center"
         android:lineSpacingExtra="-5.6sp"
-        tools:text="اطلاعات مربوط به نوزاد در هفته 25ام"
         android:textColor="#ffffff"
         android:textSize="14.7sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -92,6 +92,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0"
         app:layout_constraintWidth_percent="0.9999999"
-        tools:fontFamily="@font/iransans_medium" />
+        tools:fontFamily="@font/iransans_medium"
+        tools:text="اطلاعات مربوط به نوزاد در هفته 25ام" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</merge>

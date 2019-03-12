@@ -24,24 +24,12 @@
         </activity>
         <activity
             android:name=".View.register.RegisterActivity"
-            android:screenOrientation="unspecified">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
-
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        </activity>
+            android:screenOrientation="unspecified"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".View.main.MainActivity"
-            android:screenOrientation="unspecified">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
-
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        </activity>
-
-
+            android:screenOrientation="unspecified"
+            android:theme="@style/AppTheme" />
 
 
         <!-- File Provider -->

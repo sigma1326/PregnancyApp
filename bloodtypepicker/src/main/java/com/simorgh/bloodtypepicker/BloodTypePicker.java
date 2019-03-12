@@ -3,7 +3,9 @@ package com.simorgh.bloodtypepicker;
 import android.content.Context;
 import android.text.Html;
 import android.util.AttributeSet;
-import android.view.View;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.simorgh.numberpicker.NumberPicker;
@@ -11,6 +13,7 @@ import com.simorgh.numberpicker.NumberPicker;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.ViewCompat;
 
 @Keep
 public class BloodTypePicker extends ConstraintLayout {
@@ -86,11 +89,16 @@ public class BloodTypePicker extends ConstraintLayout {
     }
 
     private void initView(@NonNull Context context, AttributeSet attributeSet) {
-        View v = View.inflate(context, R.layout.blood_type_picker_layout, this);
+        LayoutInflater.from(context).inflate(R.layout.blood_type_picker_layout, this);
+        ViewCompat.setLayoutDirection(this, ViewCompat.LAYOUT_DIRECTION_LTR);
 
-        npBloodType = v.findViewById(R.id.np_blood_type);
-        npNegative = v.findViewById(R.id.np_negative);
-        bloodTypeTextView = v.findViewById(R.id.tv_blood_type);
+        setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        setLayerType(LAYER_TYPE_HARDWARE, null);
+
+
+        npBloodType = findViewById(R.id.np_blood_type);
+        npNegative = findViewById(R.id.np_negative);
+        bloodTypeTextView = findViewById(R.id.tv_blood_type);
 
         npBloodType.setMinValue(1);
         npBloodType.setMaxValue(bloodTypes.length);

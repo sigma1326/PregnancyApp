@@ -2,16 +2,16 @@ package com.simorgh.nicedatepicker;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.simorgh.calendarutil.CalendarTool;
 import com.simorgh.calendarutil.persiancalendar.PersianCalendar;
 import com.simorgh.database.Date;
-import com.simorgh.logger.Logger;
 import com.simorgh.numberpicker.NumberPicker;
-import com.simorgh.threadutils.ThreadUtils;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -20,6 +20,7 @@ import java.util.TimeZone;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.ViewCompat;
 
 @Keep
 public class NiceDatePickerSmall extends ConstraintLayout {
@@ -83,11 +84,15 @@ public class NiceDatePickerSmall extends ConstraintLayout {
     }
 
     private void initView(Context context, AttributeSet attributeSet) {
-        View v = View.inflate(context, R.layout.nice_date_picker_small_layout, this);
+        LayoutInflater.from(context).inflate(R.layout.nice_date_picker_small_layout, this);
+        ViewCompat.setLayoutDirection(this, ViewCompat.LAYOUT_DIRECTION_LTR);
+
+        setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        setLayerType(LAYER_TYPE_HARDWARE, null);
 
 
-        tvDate = v.findViewById(R.id.tv_date);
-        npDay = v.findViewById(R.id.np_day);
+        tvDate = findViewById(R.id.tv_date);
+        npDay = findViewById(R.id.np_day);
 
 
         updateView();

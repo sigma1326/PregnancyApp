@@ -9,9 +9,12 @@ import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.view.View;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.simorgh.database.Date;
@@ -55,22 +58,24 @@ public class DrugInsertView extends ExpansionsViewGroupLinearLayout {
         initView(context, attrs);
     }
 
-//    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-//    public DrugInsertView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-//        super(context, attrs, defStyleAttr, defStyleRes);
-//        initView(context, attrs);
-//    }
 
     private void initView(@NonNull final Context context, AttributeSet attrs) {
-        View v = View.inflate(context, R.layout.view_drug_insert, this);
-        ViewCompat.setLayoutDirection(v, ViewCompat.LAYOUT_DIRECTION_LTR);
+        LayoutInflater.from(context).inflate(R.layout.view_drug_insert, this);
+        ViewCompat.setLayoutDirection(this, ViewCompat.LAYOUT_DIRECTION_LTR);
+        setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        setLayerType(LAYER_TYPE_HARDWARE, null);
+        setOrientation(VERTICAL);
+        setBackground(null);
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) getLayoutParams();
+        params.gravity = Gravity.CENTER;
+        setLayoutParams(params);
 
 
-        expandableLayout = v.findViewById(R.id.expandable_layout);
-        description = v.findViewById(R.id.et_description);
-        imgDescription = v.findViewById(R.id.img_description);
-        imgApply = v.findViewById(R.id.img_apply);
-        name = v.findViewById(R.id.et_drug_name);
+        expandableLayout = findViewById(R.id.expandable_layout);
+        description = findViewById(R.id.et_description);
+        imgDescription = findViewById(R.id.img_description);
+        imgApply = findViewById(R.id.img_apply);
+        name = findViewById(R.id.et_drug_name);
 
         imgDescription.setOnClickListener(v1 -> {
             expandableLayout.toggle(true);

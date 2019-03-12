@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.simorgh.expandablelayout.viewgroup.ExpansionsViewGroupLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layerType="hardware"
-
     android:orientation="vertical"
-    tools:background="@color/white">
+    tools:background="@color/white"
+    tools:parentTag="com.simorgh.expandablelayout.viewgroup.ExpansionsViewGroupLinearLayout">
 
     <com.simorgh.expandablelayout.ExpansionHeader
         android:layout_width="match_parent"
@@ -85,8 +85,8 @@
         android:background="@drawable/btn_range_bkg"
         android:paddingStart="18dp"
         android:paddingEnd="18dp"
-        tools:expansion_expanded="true"
-        app:expansion_duration="200">
+        app:expansion_duration="200"
+        tools:expansion_expanded="true">
 
         <EditText
             android:id="@+id/et_description"
@@ -117,4 +117,4 @@
 
     </com.simorgh.expandablelayout.ExpansionLayout>
 
-</com.simorgh.expandablelayout.viewgroup.ExpansionsViewGroupLinearLayout>
+</merge>

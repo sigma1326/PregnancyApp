@@ -5,7 +5,9 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.Gravity;
-import android.view.View;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
@@ -62,13 +64,20 @@ public class MotherWeekInfoView extends ConstraintLayout {
     };
 
     private void initView(@NonNull final Context context, AttributeSet attrs) {
-        View v = View.inflate(context, R.layout.view_mother_week_info, this);
-        ViewCompat.setLayoutDirection(v, ViewCompat.LAYOUT_DIRECTION_LTR);
+        LayoutInflater.from(context).inflate(R.layout.view_mother_week_info, this);
+        ViewCompat.setLayoutDirection(this, ViewCompat.LAYOUT_DIRECTION_LTR);
+        setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        setLayerType(LAYER_TYPE_HARDWARE, null);
+        setBackground(getResources().getDrawable(R.drawable.expandable_layout_bkg));
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) getLayoutParams();
+        params.gravity = Gravity.TOP;
+        setLayoutParams(params);
 
-        expandableLayout = v.findViewById(R.id.expandable_layout);
-        summary = v.findViewById(R.id.tv_summary);
-        readMore = v.findViewById(R.id.tv_read_more);
-        title = v.findViewById(R.id.tv_title);
+
+        expandableLayout = findViewById(R.id.expandable_layout);
+        summary = findViewById(R.id.tv_summary);
+        readMore = findViewById(R.id.tv_read_more);
+        title = findViewById(R.id.tv_title);
 
         summary.setFactory(mFactory);
 
@@ -85,14 +94,6 @@ public class MotherWeekInfoView extends ConstraintLayout {
         readMore.setTextSize(COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.tv_summary));
     }
 
-//    @Override
-//    protected void onDetachedFromWindow() {
-//        readMore.setOnClickListener(null);
-//        summary = null;
-//        readMore = null;
-//        title = null;
-//        super.onDetachedFromWindow();
-//    }
 
     public void setTitle(@NonNull String titleText) {
         if (title != null) {

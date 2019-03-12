@@ -2,7 +2,10 @@ package com.simorgh.nicedatepicker;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +23,7 @@ import java.util.TimeZone;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.ViewCompat;
 
 @Keep
 public class NiceDatePicker extends ConstraintLayout {
@@ -83,13 +87,17 @@ public class NiceDatePicker extends ConstraintLayout {
     }
 
     private void initView(Context context, AttributeSet attributeSet) {
-        View v = View.inflate(context, R.layout.nice_date_picker_layout, this);
+        LayoutInflater.from(context).inflate(R.layout.nice_date_picker_layout, this);
+        ViewCompat.setLayoutDirection(this, ViewCompat.LAYOUT_DIRECTION_LTR);
 
-        npDay = v.findViewById(R.id.np_day);
-        npMonth = v.findViewById(R.id.np_month);
-        npYear = v.findViewById(R.id.np_year);
+        setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        setLayerType(LAYER_TYPE_HARDWARE, null);
 
-        tvDate = v.findViewById(R.id.tv_date);
+        npDay = findViewById(R.id.np_day);
+        npMonth = findViewById(R.id.np_month);
+        npYear = findViewById(R.id.np_year);
+
+        tvDate = findViewById(R.id.tv_date);
 
 
         npMonth.setMinValue(1);

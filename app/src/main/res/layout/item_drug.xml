@@ -16,9 +16,11 @@
     <com.simorgh.expandablelayout.ExpansionHeader
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <ImageView
                 android:id="@+id/img_delete"
                 android:layout_width="40dp"
@@ -85,7 +87,7 @@
         android:paddingStart="18dp"
         android:paddingEnd="18dp"
         app:expansion_duration="200"
-        tools:expansion_expanded="false">
+        tools:expansion_expanded="true">
 
         <TextView
             android:id="@+id/tv_description"

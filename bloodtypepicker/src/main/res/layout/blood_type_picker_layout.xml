@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center">
+    android:layout_gravity="center"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
     <TextView
         android:id="@+id/tv_blood_type"
@@ -12,9 +13,9 @@
         android:layout_height="0dp"
         android:layout_marginTop="32dp"
         android:background="@drawable/date_bkg"
+        android:ems="4"
         android:gravity="center"
         android:textColor="#801210"
-        android:ems="4"
         android:textSize="50sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="@id/view_blood_type"
@@ -27,7 +28,6 @@
         app:layout_constraintWidth_percent="0.45"
         tools:fontFamily="@font/iransans_medium"
         tools:text="O^+" />
-
 
 
     <View
@@ -113,4 +113,4 @@
         app:np_textAlign="textAlignCenter"
         app:np_textSize="@dimen/text_size" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</merge>

@@ -9,10 +9,13 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.view.View;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.simorgh.database.model.Cigarette;
 import com.simorgh.expandablelayout.ExpansionLayout;
@@ -57,15 +60,21 @@ public class CigaretteView extends ExpansionsViewGroupLinearLayout {
     }
 
     private void initView(@NonNull final Context context, AttributeSet attrs) {
-        View v = View.inflate(context, R.layout.view_cigarette, this);
-        ViewCompat.setLayoutDirection(v, ViewCompat.LAYOUT_DIRECTION_LTR);
+        LayoutInflater.from(context).inflate(R.layout.view_cigarette, this);
+        ViewCompat.setLayoutDirection(this, ViewCompat.LAYOUT_DIRECTION_LTR);
+        setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        setLayerType(LAYER_TYPE_HARDWARE, null);
+        setOrientation(VERTICAL);
+        setBackground(null);
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) getLayoutParams();
+        params.gravity = Gravity.CENTER;
+        setLayoutParams(params);
 
-
-        expandableLayout = v.findViewById(R.id.expandable_layout);
-        description = v.findViewById(R.id.et_description);
-        have = v.findViewById(R.id.btn_have);
-        haveNot = v.findViewById(R.id.btn_have_not);
-        imgDescription = v.findViewById(R.id.img_description);
+        expandableLayout = findViewById(R.id.expandable_layout);
+        description = findViewById(R.id.et_description);
+        have = findViewById(R.id.btn_have);
+        haveNot = findViewById(R.id.btn_have_not);
+        imgDescription = findViewById(R.id.img_description);
 
         selectedBkg = context.getResources().getDrawable(R.drawable.btn_have_bkg);
         unSelectedBkg = context.getResources().getDrawable(R.drawable.btn_have_not_bkg);
