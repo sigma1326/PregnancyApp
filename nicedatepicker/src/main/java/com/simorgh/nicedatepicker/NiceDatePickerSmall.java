@@ -29,7 +29,7 @@ public class NiceDatePickerSmall extends ConstraintLayout {
     private TextView tvDate;
 
     private final PersianCalendar persianCalendar;
-    private PersianCalendar selectedPersianDate;
+    private final PersianCalendar selectedPersianDate;
     private final PersianCalendar tempPersianDate;
 
     private Date date;
@@ -221,7 +221,8 @@ public class NiceDatePickerSmall extends ConstraintLayout {
 
     public void setSelectedDate(@NonNull final Date selectedDate) {
         this.date = selectedDate;
-        selectedPersianDate = CalendarTool.GregorianToPersian(selectedDate.getCalendar());
+        PersianCalendar p = CalendarTool.GregorianToPersian(selectedDate.getCalendar());
+        selectedPersianDate.setPersianDate(p.getPersianYear(), p.getPersianMonth() + 1, p.getPersianDay());
         updateView();
         updateBubbleText();
     }

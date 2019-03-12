@@ -51,7 +51,7 @@ dependencies {
     RxJava()
     Gson()
     Room()
-    Stetho()
+//    Stetho()
     TransitionEveryWhere()
     HtmlTextView()
     LeakCanary()

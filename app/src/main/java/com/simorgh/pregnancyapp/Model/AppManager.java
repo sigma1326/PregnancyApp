@@ -3,7 +3,6 @@ package com.simorgh.pregnancyapp.Model;
 import android.annotation.SuppressLint;
 import android.os.StrictMode;
 
-import com.facebook.stetho.Stetho;
 import com.simorgh.database.Repository;
 import com.simorgh.logger.Logger;
 import com.simorgh.pregnancyapp.BuildConfig;
@@ -55,7 +54,7 @@ public class AppManager extends MultiDexApplication {
 
         Completable.fromRunnable(() -> {
             if (BuildConfig.DEBUG) {
-                Stetho.initializeWithDefaults(this);
+//                Stetho.initializeWithDefaults(this);
             }
 
 //            initLeakCanary();
