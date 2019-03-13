@@ -4,11 +4,12 @@ apply plugin: 'androidx.navigation.safeargs'
 
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion rootProject.compileSdkVersion
+
     defaultConfig {
         applicationId "com.simorgh.pregnancyapp"
-        minSdkVersion 16
-        targetSdkVersion 28
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
         versionCode 1
         versionName "1.0"
         // Enabling multidex support.
