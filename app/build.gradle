@@ -135,6 +135,7 @@ private void Default() {
     dependencies.implementation "android.arch.navigation:navigation-fragment:$rootProject.navigationVersion"
     dependencies.implementation "android.arch.navigation:navigation-ui:$rootProject.navigationVersion"
     dependencies.implementation "androidx.core:core:$rootProject.coreVersion"
+    dependencies.implementation "org.jetbrains:annotations-java5:$rootProject.annotationsJavaVersion"
 }
 
 private void Test(){
