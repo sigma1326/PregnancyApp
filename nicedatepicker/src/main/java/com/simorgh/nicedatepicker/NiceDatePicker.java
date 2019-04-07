@@ -156,6 +156,17 @@ public class NiceDatePicker extends ConstraintLayout {
         npYear.setOnValueChangedListener((picker, oldVal, newVal) -> {
             int month = selectedPersianDate.getPersianMonth() + 1;
             int day = selectedPersianDate.getPersianDay();
+            if (newVal < oldVal) {
+                month = 12;
+                day = 1;
+                npMonth.setValue(month);
+                npDay.setValue(day);
+            } else if (newVal > oldVal) {
+                month = 1;
+                day = 1;
+                npMonth.setValue(month);
+                npDay.setValue(day);
+            }
             tempPersianDate.setPersianDate(newVal, month, day);
             boolean invalid = tempPersianDate.before(minDate) || tempPersianDate.after(maxDate);
 
