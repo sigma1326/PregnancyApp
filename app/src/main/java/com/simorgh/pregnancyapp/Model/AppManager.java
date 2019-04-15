@@ -13,6 +13,8 @@ import com.simorgh.pregnancyapp.di.module.DataBaseModule;
 import com.simorgh.threadutils.ThreadUtils;
 import com.squareup.leakcanary.LeakCanary;
 
+import org.jetbrains.annotations.Contract;
+
 import androidx.multidex.MultiDexApplication;
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
@@ -84,6 +86,7 @@ public class AppManager extends MultiDexApplication {
     }
 
 
+    @Contract(pure = true)
     public static DaggerApplicationComponent getDaggerApplicationComponent() {
         return daggerApplicationComponent;
     }
